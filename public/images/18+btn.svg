@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="185" height="182" viewBox="0 0 185 182">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ef5d60"/>
+      <stop offset="1" stop-color="#ff1c1f"/>
+    </linearGradient>
+    <filter id="Ellipse_237" x="0" y="0" width="185" height="182" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="ONLY_18_" x="44" y="59" width="97" height="42" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_6403" data-name="Group 6403" transform="translate(-100.5 -2365.686)">
+    <g transform="matrix(1, 0, 0, 1, 100.5, 2365.69)" filter="url(#Ellipse_237)">
+      <g id="Ellipse_237-2" data-name="Ellipse 237" transform="translate(30 30)" stroke="#ff0005" stroke-width="5" fill="url(#linear-gradient)">
+        <ellipse cx="62.5" cy="61" rx="62.5" ry="61" stroke="none"/>
+        <ellipse cx="62.5" cy="61" rx="60" ry="58.5" fill="none"/>
+      </g>
+    </g>
+    <text id="_" data-name="!" transform="translate(182.5 2482.686)" fill="red" font-size="80" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">!</tspan></text>
+    <g transform="matrix(1, 0, 0, 1, 100.5, 2365.69)" filter="url(#ONLY_18_)">
+      <text id="ONLY_18_2" data-name="ONLY 18+" transform="translate(53 87)" fill="#080708" font-size="18" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">ONLY 18+</tspan></text>
+    </g>
+    <text id="CLICK_TO_ENTER" data-name="CLICK TO ENTER" transform="translate(193.5 2467.686)" fill="#080708" font-size="12" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="-45.771" y="0">CLICK TO ENTER</tspan></text>
+  </g>
+</svg>

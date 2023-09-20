@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="201.947" height="40" viewBox="0 0 201.947 40">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.805" y1="1" x2="0.216" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fdd519"/>
+      <stop offset="1" stop-color="#fffae2"/>
+    </linearGradient>
+    <filter id="Ellipse_119" x="130.947" y="0" width="40" height="40" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#080708"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="position2" transform="translate(-0.053 -32.605)">
+    <g id="Group_701" data-name="Group 701" transform="translate(-914.656 -2424.395)">
+      <g id="Path_637" data-name="Path 637" transform="translate(1065.5 2468)" fill="#fff">
+        <path d="M 39.65612030029297 17.5 L 0.5000001788139343 17.5 L 0.5000001788139343 0.5 L 39.65612030029297 0.5 L 39.65612030029297 17.5 Z" stroke="none"/>
+        <path d="M 1 1 L 1 17 L 39.15612030029297 17 L 39.15612030029297 1 L 1 1 M 0 0 L 40.15612030029297 0 L 40.15612030029297 18 L 0 18 L 0 0 Z" stroke="none" fill="#b7b7b7"/>
+      </g>
+    </g>
+    <g id="Path_638" data-name="Path 638" transform="translate(-43.258 43.605)" fill="url(#linear-gradient)">
+      <path d="M 193.6017456054688 17.5 L 43.8106689453125 17.5 L 43.8106689453125 9.77973461151123 L 48.10639572143555 3.989624977111816 L 193.6017456054688 0.5120960474014282 L 193.6017456054688 17.5 Z" stroke="none"/>
+      <path d="M 193.1017456054688 1.024192810058594 L 48.36244201660156 4.483651161193848 L 44.3106689453125 9.944943428039551 L 44.3106689453125 17 L 193.1017456054688 17 L 193.1017456054688 1.024192810058594 M 194.1017456054688 0 L 194.1017456054688 18 L 43.3106689453125 18 L 43.3106689453125 9.614500045776367 L 47.85032653808594 3.495599746704102 L 194.1017456054688 0 Z" stroke="none" fill="#080708"/>
+    </g>
+    <g id="Group_698" data-name="Group 698" transform="translate(-799 -2305.395)">
+      <g transform="matrix(1, 0, 0, 1, 799.05, 2338)" filter="url(#Ellipse_119)">
+        <circle id="Ellipse_119-2" data-name="Ellipse 119" cx="11" cy="11" r="11" transform="translate(139.95 9)" fill="#080708"/>
+      </g>
+      <text id="_02" data-name="02" transform="translate(943 2362)" fill="#fdd519" font-size="12" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">02</tspan></text>
+    </g>
+    <g id="Group_699" data-name="Group 699" transform="translate(-756.264 -2299.395)">
+      <g id="Group_700" data-name="Group 700">
+        <circle id="Ellipse_119-3" data-name="Ellipse 119" cx="11" cy="11" r="11" transform="translate(936.264 2341)" fill="#b7b7b7"/>
+        <text id="_01" data-name="01" transform="translate(940.264 2356)" fill="rgba(255,255,255,0.47)" font-size="12" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">01</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 90 90">
+  <g id="add_shop_picture" transform="translate(-138 -1205)">
+    <g id="Path_610" data-name="Path 610" transform="translate(138 1205)" fill="#fff">
+      <path d="M 89.5 89.5 L 0.5273935198783875 89.5 L 5.047060489654541 4.793036937713623 L 89.5 0.5259031653404236 L 89.5 89.5 Z" stroke="none"/>
+      <path d="M 89 1.051803588867188 L 5.522331237792969 5.269645690917969 L 1.054771423339844 89 L 89 89 L 89 1.051803588867188 M 90 0 L 90 90 L 0 90 L 4.57177734375 4.316398620605469 L 90 0 Z" stroke="none" fill="#080708"/>
+    </g>
+    <g id="photo_camera-24px" transform="translate(167.615 1236)">
+      <path id="Path_276" data-name="Path 276" d="M0,0H31.385V31.385H0Z" fill="none"/>
+      <circle id="Ellipse_8" data-name="Ellipse 8" cx="4.185" cy="4.185" r="4.185" transform="translate(11.508 11.508)"/>
+      <path id="Path_277" data-name="Path 277" d="M11.154,2,8.761,4.615H4.615A2.623,2.623,0,0,0,2,7.231V22.923a2.623,2.623,0,0,0,2.615,2.615H25.539a2.623,2.623,0,0,0,2.615-2.615V7.231a2.623,2.623,0,0,0-2.615-2.615H21.393L19,2Zm3.923,19.616a6.539,6.539,0,1,1,6.539-6.539A6.541,6.541,0,0,1,15.077,21.616Z" transform="translate(0.615 0.615)"/>
+    </g>
+    <g id="add_circle-24px" transform="translate(189 1255)">
+      <path id="Path_421" data-name="Path 421" d="M0,0H18.174V18.174H0Z" fill="none"/>
+      <path id="Path_422" data-name="Path 422" d="M9.087,2a7.087,7.087,0,1,0,7.087,7.087A7.089,7.089,0,0,0,9.087,2ZM12.63,9.8H9.8V12.63H8.378V9.8H5.543V8.378H8.378V5.543H9.8V8.378H12.63Z"/>
+    </g>
+  </g>
+</svg>

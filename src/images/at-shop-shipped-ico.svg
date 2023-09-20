@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="70.482" height="68" viewBox="0 0 70.482 68">
+  <defs>
+    <filter id="Path_5805" x="0" y="0" width="70.482" height="68" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_6393" data-name="Group 6393" transform="translate(834.982 4268)">
+    <g transform="matrix(1, 0, 0, 1, -834.98, -4268)" filter="url(#Path_5805)">
+      <g id="Path_5805-2" data-name="Path 5805" transform="translate(11.48 6)" fill="#fdd519">
+        <path d="M 48 48 L -0.322341650724411 48 L 2.968632936477661 5.30002498626709 L 23.59648132324219 2 L 48 2 L 48 48 Z" stroke="none"/>
+        <path d="M 23.75544738769531 4 L 4.841545104980469 7.025829315185547 L 1.837734222412109 46 L 46 46 L 46 4 L 23.75544738769531 4 M 23.4375 0 L 50 0 L 50 50 L -2.482421875 50 L 1.095699310302734 3.574222564697266 L 23.4375 0 Z" stroke="none" fill="#080708"/>
+      </g>
+    </g>
+    <g id="Group_6392" data-name="Group 6392" transform="translate(-752.137 -2947)">
+      <g id="Rectangle_360" data-name="Rectangle 360" transform="translate(-49.631 -1293.649)" fill="none" stroke="#080708" stroke-width="1.5">
+        <rect width="17.632" height="11.754" stroke="none"/>
+        <rect x="0.75" y="0.75" width="16.132" height="10.254" fill="none"/>
+      </g>
+      <g id="Rectangle_361" data-name="Rectangle 361" transform="translate(-49.631 -1296)" fill="none" stroke="#080708" stroke-width="1.5">
+        <rect width="17.632" height="2.351" stroke="none"/>
+        <rect x="-0.75" y="-0.75" width="19.132" height="3.851" fill="none"/>
+      </g>
+      <line id="Line_48" data-name="Line 48" x1="10.579" transform="translate(-63.149 -1289.535)" fill="none" stroke="#080708" stroke-width="1.5"/>
+      <line id="Line_49" data-name="Line 49" x1="7.053" transform="translate(-59.623 -1293.649)" fill="none" stroke="#080708" stroke-width="1.5"/>
+      <line id="Line_50" data-name="Line 50" x1="12.93" transform="translate(-65.5 -1285.421)" fill="none" stroke="#080708" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="tick-circle-ico" transform="translate(-1517 -2507)">
+    <g id="query_builder-24px" transform="translate(1517 2507)">
+      <path id="Path_286" data-name="Path 286" d="M0,0H24V24H0Z" fill="rgba(0,0,0,0)"/>
+      <path id="Path_287" data-name="Path 287" d="M11.99,2A10,10,0,1,0,22,12,10,10,0,0,0,11.99,2ZM12,20a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"/>
+    </g>
+    <path id="Path_682" data-name="Path 682" d="M1523.217,2519l3.832,3.983,7.089-8.047" fill="none" stroke="#666" stroke-width="1.5"/>
+  </g>
+</svg>

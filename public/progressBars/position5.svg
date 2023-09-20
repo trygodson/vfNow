@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="201.947" height="40" viewBox="0 0 201.947 40">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.805" y1="1" x2="0.216" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fdd519"/>
+      <stop offset="1" stop-color="#fffae2"/>
+    </linearGradient>
+    <filter id="Ellipse_119" x="21.947" y="0" width="40" height="40" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#080708"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_640498" data-name="Group 640498" transform="translate(-0.053 -32.605)">
+    <g id="Group_701" data-name="Group 701" transform="translate(-1023.5 -2424.395)">
+      <g id="Path_637" data-name="Path 637" transform="translate(1065.5 2468)" fill="#fff">
+        <path d="M 148.5 17.5 L 0.5000123977661133 17.5 L 0.5000123977661133 0.5 L 148.5 0.5 L 148.5 17.5 Z" stroke="none"/>
+        <path d="M 0.9999847412109375 1 L 0.9999847412109375 17 L 147.9999694824219 17 L 147.9999694824219 1 L 0.9999847412109375 1 M -1.52587890625e-05 0 L 148.9999694824219 0 L 148.9999694824219 18 L -1.52587890625e-05 18 L -1.52587890625e-05 0 Z" stroke="none" fill="#b7b7b7"/>
+      </g>
+    </g>
+    <g id="Path_638" data-name="Path 638" transform="translate(-43.258 43.605)" fill="url(#linear-gradient)">
+      <path d="M 84.25787353515625 17.5 L 43.81067276000977 17.5 L 43.81067276000977 9.664979934692383 L 44.97377395629883 3.961381912231445 L 84.25787353515625 0.5453644990921021 L 84.25787353515625 17.5 Z" stroke="none"/>
+      <path d="M 83.75787353515625 1.090730667114258 L 45.38907623291016 4.427155494689941 L 44.3106689453125 9.715400695800781 L 44.3106689453125 17 L 83.75787353515625 17 L 83.75787353515625 1.090730667114258 M 84.75787353515625 0 L 84.75787353515625 18 L 43.3106689453125 18 L 43.3106689453125 9.614500045776367 L 44.55846405029297 3.495610237121582 L 84.75787353515625 0 Z" stroke="none" fill="#080708"/>
+    </g>
+    <g id="Group_698" data-name="Group 698" transform="translate(-908 -2305.395)">
+      <g transform="matrix(1, 0, 0, 1, 908.05, 2338)" filter="url(#Ellipse_119)">
+        <circle id="Ellipse_119-2" data-name="Ellipse 119" cx="11" cy="11" r="11" transform="translate(30.95 9)" fill="#080708"/>
+      </g>
+    </g>
+    <g id="Group_699" data-name="Group 699" transform="translate(-756.264 -2299.395)">
+      <g id="Group_700" data-name="Group 700">
+        <circle id="Ellipse_119-3" data-name="Ellipse 119" cx="11" cy="11" r="11" transform="translate(936.264 2341)" fill="#b7b7b7"/>
+        <text id="_01" data-name="01" transform="translate(940.264 2356)" fill="rgba(255,255,255,0.47)" font-size="12" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">01</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="210.947" height="40" viewBox="0 0 210.947 40">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.805" y1="1" x2="0.216" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fdd519"/>
+      <stop offset="1" stop-color="#fffae2"/>
+    </linearGradient>
+    <filter id="Ellipse_119" x="170.947" y="0" width="40" height="40" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#080708"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_6379" data-name="Group 6379" transform="translate(-0.053 -32.605)">
+    <g id="Path_638" data-name="Path 638" transform="translate(-43.258 43.605)" fill="url(#linear-gradient)">
+      <path d="M 233.7578735351562 17.5 L 43.81067657470703 17.5 L 43.81067657470703 9.812526702880859 L 49.27937698364258 3.991523027420044 L 233.7578735351562 0.5095201730728149 L 233.7578735351562 17.5 Z" stroke="none"/>
+      <path d="M 233.2578735351562 1.01905632019043 L 49.49949645996094 4.487471580505371 L 44.3106689453125 10.01055526733398 L 44.3106689453125 17 L 233.2578735351562 17 L 233.2578735351562 1.01905632019043 M 234.2578735351562 0 L 234.2578735351562 18 L 43.3106689453125 18 L 43.3106689453125 9.614500045776367 L 49.05924987792969 3.495599746704102 L 234.2578735351562 0 Z" stroke="none" fill="#080708"/>
+    </g>
+    <g id="Group_698" data-name="Group 698" transform="translate(-759 -2305.395)">
+      <g transform="matrix(1, 0, 0, 1, 759.05, 2338)" filter="url(#Ellipse_119)">
+        <circle id="Ellipse_119-2" data-name="Ellipse 119" cx="11" cy="11" r="11" transform="translate(179.95 9)" fill="#080708"/>
+      </g>
+      <text id="_01" data-name="01" transform="translate(943 2362)" fill="#fdd519" font-size="12" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">01</tspan></text>
+    </g>
+  </g>
+</svg>

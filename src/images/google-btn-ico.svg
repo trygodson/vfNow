@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18" viewBox="0 0 18 18">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_17852" data-name="Rectangle 17852" width="18" height="18" transform="translate(-21605 -9474)" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="google-btn-ico" transform="translate(21605 9474)" clip-path="url(#clip-path)">
+    <g id="search" transform="translate(-21602.664 -9471.662)">
+      <path id="Path_229" data-name="Path 229" d="M2.953,142.722l-.464,1.732-1.7.036a6.674,6.674,0,0,1-.049-6.222h0l1.509.277.661,1.5a3.976,3.976,0,0,0,.037,2.677Z" transform="translate(0 -134.669)" fill="#fbbb00"/>
+      <path id="Path_230" data-name="Path 230" d="M268.028,208.176a6.66,6.66,0,0,1-2.375,6.441h0l-1.9-.1-.269-1.68a3.971,3.971,0,0,0,1.709-2.028h-3.563v-2.636h6.4Z" transform="translate(-254.819 -202.758)" fill="#518ef8"/>
+      <path id="Path_231" data-name="Path 231" d="M40.549,313.214h0a6.665,6.665,0,0,1-10.04-2.038l2.159-1.767a3.963,3.963,0,0,0,5.71,2.029Z" transform="translate(-29.715 -301.356)" fill="#28b446"/>
+      <path id="Path_232" data-name="Path 232" d="M38.795,1.534,36.636,3.3a3.962,3.962,0,0,0-5.841,2.075L28.624,3.6h0A6.664,6.664,0,0,1,38.795,1.534Z" transform="translate(-27.879)" fill="#f14336"/>
+    </g>
+  </g>
+</svg>

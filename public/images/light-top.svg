@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="335.656" height="229.22" viewBox="0 0 335.656 229.22">
+  <defs>
+    <clipPath id="clip-path">
+      <ellipse id="Ellipse_235" data-name="Ellipse 235" cx="90.539" cy="32.29" rx="90.539" ry="32.29" transform="translate(0 0)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+    <radialGradient id="radial-gradient" cx="0.5" cy="0.5" r="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fdd519"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="clip-path-2">
+      <ellipse id="Ellipse_237" data-name="Ellipse 237" cx="90.539" cy="18.158" rx="90.539" ry="18.158" transform="translate(0 0)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+    <radialGradient id="radial-gradient-3" cx="0.5" cy="0.5" r="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffda37"/>
+      <stop offset="1" stop-color="#fe0" stop-opacity="0.051"/>
+    </radialGradient>
+    <clipPath id="clip-path-3">
+      <ellipse id="Ellipse_240" data-name="Ellipse 240" cx="90.539" cy="32.291" rx="90.539" ry="32.291" transform="translate(3050 9010.506)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+    <clipPath id="clip-path-4">
+      <ellipse id="Ellipse_242" data-name="Ellipse 242" cx="90.539" cy="18.158" rx="90.539" ry="18.158" transform="translate(3050 9010.506)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+    <radialGradient id="radial-gradient-7" gradientTransform="matrix(1, 0, 0, -1, 0, 1)" xlink:href="#radial-gradient"/>
+    <radialGradient id="radial-gradient-9" gradientTransform="matrix(1, 0, 0, -1, 0, 1)" xlink:href="#radial-gradient-3"/>
+  </defs>
+  <g id="Group_6389" data-name="Group 6389" transform="translate(-28.941 -758)">
+    <g id="Group_6384" data-name="Group 6384" transform="matrix(0.839, -0.545, 0.545, 0.839, 24.313, 824.007)">
+      <g id="Mask_Group_95" data-name="Mask Group 95" transform="translate(64.581 8.5) rotate(90)" opacity="0.39" clip-path="url(#clip-path)">
+        <ellipse id="Ellipse_234" data-name="Ellipse 234" cx="138.175" cy="65.359" rx="138.175" ry="65.359" transform="translate(-95.271 -32.679)" fill="url(#radial-gradient)"/>
+      </g>
+      <g id="Mask_Group_96" data-name="Mask Group 96" transform="translate(50.45 7.169) rotate(90)" clip-path="url(#clip-path-2)">
+        <ellipse id="Ellipse_236" data-name="Ellipse 236" cx="138.175" cy="36.753" rx="138.175" ry="36.753" transform="translate(-95.271 -18.377)" fill="url(#radial-gradient)"/>
+      </g>
+      <rect id="Rectangle_17851" data-name="Rectangle 17851" width="11" height="6" transform="translate(26.525 0)" fill="#080708"/>
+      <rect id="Rectangle_17852" data-name="Rectangle 17852" width="17" height="5" transform="translate(23.525 6)" fill="#080708"/>
+      <ellipse id="Ellipse_238" data-name="Ellipse 238" cx="9" cy="6" rx="9" ry="6" transform="translate(23.525 6)" fill="url(#radial-gradient-3)"/>
+    </g>
+    <g id="Group_6385" data-name="Group 6385" transform="translate(2.047 -219)">
+      <g id="Mask_Group_97" data-name="Mask Group 97" transform="translate(9241.563 -2064.5) rotate(90)" opacity="0.39" clip-path="url(#clip-path-3)">
+        <ellipse id="Ellipse_239" data-name="Ellipse 239" cx="138.175" cy="65.359" rx="138.175" ry="65.359" transform="translate(2954.729 8977.826)" fill="url(#radial-gradient)"/>
+      </g>
+      <g id="Mask_Group_98" data-name="Mask Group 98" transform="translate(9227.431 -2065.831) rotate(90)" clip-path="url(#clip-path-4)">
+        <ellipse id="Ellipse_241" data-name="Ellipse 241" cx="138.175" cy="36.754" rx="138.175" ry="36.754" transform="translate(2954.729 8992.129)" fill="url(#radial-gradient)"/>
+      </g>
+      <rect id="Rectangle_17853" data-name="Rectangle 17853" width="11" height="6" transform="translate(193 977)" fill="#080708"/>
+      <rect id="Rectangle_17854" data-name="Rectangle 17854" width="17" height="5" transform="translate(190 983)" fill="#080708"/>
+      <ellipse id="Ellipse_243" data-name="Ellipse 243" cx="9" cy="6" rx="9" ry="6" transform="translate(190 983)" fill="url(#radial-gradient-3)"/>
+    </g>
+    <g id="Group_6386" data-name="Group 6386" transform="translate(265.977 987.22) rotate(-147)">
+      <g id="Mask_Group_99" data-name="Mask Group 99" transform="translate(0 181.078) rotate(-90)" opacity="0.39" clip-path="url(#clip-path)">
+        <ellipse id="Ellipse_244" data-name="Ellipse 244" cx="138.175" cy="65.359" rx="138.175" ry="65.359" transform="translate(-95.271 -33.457)" fill="url(#radial-gradient-7)"/>
+      </g>
+      <g id="Mask_Group_100" data-name="Mask Group 100" transform="translate(14.133 182.409) rotate(-90)" clip-path="url(#clip-path-2)">
+        <ellipse id="Ellipse_246" data-name="Ellipse 246" cx="138.175" cy="36.753" rx="138.175" ry="36.753" transform="translate(-95.271 -18.814)" fill="url(#radial-gradient-7)"/>
+      </g>
+      <rect id="Rectangle_17855" data-name="Rectangle 17855" width="11" height="6" transform="translate(26.524 183.578)" fill="#080708"/>
+      <rect id="Rectangle_17856" data-name="Rectangle 17856" width="17" height="5" transform="translate(23.524 178.578)" fill="#080708"/>
+      <ellipse id="Ellipse_248" data-name="Ellipse 248" cx="9" cy="6" rx="9" ry="6" transform="translate(23.524 171.578)" fill="url(#radial-gradient-9)"/>
+    </g>
+  </g>
+</svg>

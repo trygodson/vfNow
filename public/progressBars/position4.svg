@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="201.947" height="40" viewBox="0 0 201.947 40">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.805" y1="1" x2="0.216" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fdd519"/>
+      <stop offset="1" stop-color="#fffae2"/>
+    </linearGradient>
+    <filter id="Ellipse_119" x="57.947" y="0" width="40" height="40" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#080708"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_6404" data-name="Group 6404" transform="translate(-0.053 -32.605)">
+    <g id="Group_701" data-name="Group 701" transform="translate(-987.627 -2424.395)">
+      <g id="Path_637" data-name="Path 637" transform="translate(1065.5 2468)" fill="#fff">
+        <path d="M 112.6275634765625 17.5 L 0.5000064969062805 17.5 L 0.5000064969062805 0.5 L 112.6275634765625 0.5 L 112.6275634765625 17.5 Z" stroke="none"/>
+        <path d="M 0.9999923706054688 1 L 0.9999923706054688 17 L 112.1275482177734 17 L 112.1275482177734 1 L 0.9999923706054688 1 M -7.62939453125e-06 0 L 113.1275482177734 0 L 113.1275482177734 18 L -7.62939453125e-06 18 L -7.62939453125e-06 0 Z" stroke="none" fill="#b7b7b7"/>
+      </g>
+    </g>
+    <g id="Path_638" data-name="Path 638" transform="translate(-43.258 43.605)" fill="url(#linear-gradient)">
+      <path d="M 120.7578735351562 17.5 L 43.81067276000977 17.5 L 43.81067276000977 9.707101821899414 L 46.00707626342773 3.979975700378418 L 120.7578735351562 0.5236566066741943 L 120.7578735351562 17.5 Z" stroke="none"/>
+      <path d="M 120.2578735351562 1.047306060791016 L 46.35681915283203 4.464325904846191 L 44.3106689453125 9.799671173095703 L 44.3106689453125 17 L 120.2578735351562 17 L 120.2578735351562 1.047306060791016 M 121.2578735351562 0 L 121.2578735351562 18 L 43.3106689453125 18 L 43.3106689453125 9.614500045776367 L 45.65731811523438 3.495599746704102 L 121.2578735351562 0 Z" stroke="none" fill="#080708"/>
+    </g>
+    <g id="Group_698" data-name="Group 698" transform="translate(-872 -2305.395)">
+      <g transform="matrix(1, 0, 0, 1, 872.05, 2338)" filter="url(#Ellipse_119)">
+        <circle id="Ellipse_119-2" data-name="Ellipse 119" cx="11" cy="11" r="11" transform="translate(66.95 9)" fill="#080708"/>
+      </g>
+      <text id="_04" data-name="04" transform="translate(943 2362)" fill="#fdd519" font-size="12" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">04</tspan></text>
+    </g>
+    <g id="Group_699" data-name="Group 699" transform="translate(-756.264 -2299.395)">
+      <g id="Group_700" data-name="Group 700">
+        <circle id="Ellipse_119-3" data-name="Ellipse 119" cx="11" cy="11" r="11" transform="translate(936.264 2341)" fill="#b7b7b7"/>
+        <text id="_01" data-name="01" transform="translate(940.264 2356)" fill="rgba(255,255,255,0.47)" font-size="12" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">01</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

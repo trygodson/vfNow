@@ -1,0 +1,8 @@
+<svg id="msg-not-sent-ico" xmlns="http://www.w3.org/2000/svg" width="12" height="10.667" viewBox="0 0 12 10.667">
+  <g id="Path_705" data-name="Path 705" fill="#fff">
+    <path d="M 11.25 9.91666316986084 L 0.8211404085159302 9.91666316986084 L 1.600719451904297 1.325896382331848 L 11.25 0.7926018834114075 L 11.25 9.91666316986084 Z" stroke="none"/>
+    <path d="M 10.5 1.585189819335938 L 2.289090156555176 2.038989067077637 L 1.642280578613281 9.16666316986084 L 10.5 9.16666316986084 L 10.5 1.585189819335938 M 12 3.814697265625e-06 L 12 10.66666316986084 L 0 10.66666316986084 L 0.9123497009277344 0.6127939224243164 L 12 3.814697265625e-06 Z" stroke="none" fill="#707070"/>
+  </g>
+  <line id="Line_59" data-name="Line 59" x2="2.667" transform="translate(4.333 6)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1.5"/>
+  <line id="Line_60" data-name="Line 60" x1="1.333" y2="2.667" transform="translate(7 3.333)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1.5"/>
+</svg>
