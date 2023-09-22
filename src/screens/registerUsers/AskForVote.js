@@ -57,7 +57,6 @@ export default function UserProfileElections() {
             toPng(ref.current, { cacheBust: true })
               .then((dataUrl) => {
                 setLoading(false);
-
                 window.ReactNativeWebView.postMessage(
                   JSON.stringify({
                     shareVotePic: true,
