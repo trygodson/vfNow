@@ -82,12 +82,13 @@ export default function UserProfileElections() {
     },
     [ref],
   );
+
   const onMobileShareVoteImageClick = useCallback(
     (ref) => {
-      setLoading(true);
+      setLoader(true);
       toPng(ref.current, { cacheBust: true })
         .then((dataUrl) => {
-          setLoading(false);
+          setLoader(false);
           window.ReactNativeWebView.postMessage(
             JSON.stringify({
               shareVotePic: true,
