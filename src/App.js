@@ -76,6 +76,7 @@ import { ApiCall } from './services/ApiCall';
 import { getUserData, storeUserLatitude, storeUserLongitude, GetAppTrackFunction } from './Functions/Functions';
 import SelectElection from './screens/businessUsers/SelectElection';
 import CopyElectionProvider from './context/copyElectionContext';
+import UnknownRoute from './screens/404';
 // import SocketProvider from './context/socketContext';
 // import { onMessageListener } from "./Firebase";
 // import { getMessaging, getToken, onMessage } from "firebase/messaging";
@@ -265,7 +266,7 @@ function App() {
             <Route path="/election" element={<Election />} />
             <Route path="/selectElection" element={<SelectElection />} />
             <Route path="/electionShare" element={<ElectionShare />} />
-            <Route path="/electionDetails" element={<ElectionBusinessDetail />} />
+            <Route path="/electionDetails/:id" element={<ElectionBusinessDetail />} />
             <Route path="/electionModify" element={<ElectionModify />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/friendChat" element={<FriendChat />} />
@@ -279,10 +280,12 @@ function App() {
             <Route path="/UserFriendList" element={<UserFriendList />} />
             <Route path="/UserChat" element={<UserChat />} />
             <Route path="/UserVoteHistory" element={<UserVoteHistory />} />
+            <Route path="/404" element={<UnknownRoute />} />
 
             <Route path="/GiveVote" element={<GiveVote />} />
             <Route path="/GiveVoteRank" element={<GiveVoteRank />} />
             <Route path="/VoteUser" element={<VoteUser />} />
+            <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
         </ScrollTop>
       </CopyElectionProvider>

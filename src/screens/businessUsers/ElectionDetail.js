@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link, useLocation, useParams } from 'react-router-dom';
 import TopHeader from '../../components/BusinessHeader';
 import BusinessFooter from '../../components/BusinessFooter';
 import Loader from '../../components/Loader';
@@ -18,19 +18,19 @@ import { Carousel } from 'react-responsive-carousel';
 import ReactToPdf from 'react-to-pdf';
 import { QrReader } from 'react-qr-reader';
 
-import logo from '../../images/logo-dummy.png';
 import dollar from '../../images/dollar-ico.svg';
 import { ShareView } from './ElectionShare';
 import { useCopyElectionContext } from '../../context/copyElectionContext';
 import CustomCircularProgressBar from '../../components/CircularProgressBar';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { PdfExportFormat } from '../../components/ElectionPdf';
+import { DoesNotExist } from '../../components/OfflineMsg';
 
 export default function ElectionDetails() {
   const ref = useRef();
   const shareImageRef = useRef();
   const navigate = useNavigate();
-  const location = useLocation();
+  let { id } = useParams();
   const { t } = useTranslation();
   const [preview, setPreview] = useState();
   const [election, setElection] = useState();
@@ -58,8 +58,8 @@ export default function ElectionDetails() {
   const [isImageView, setIsImageView] = React.useState(false);
   const [imageView, setImageView] = React.useState(false);
   const [timeLeft, setTimeLeft] = useState();
-  const calculateTimeLeft = () => {
-    let diffTime = Math.abs(new Date().valueOf() - new Date(`${location?.state?.election_date_time}`).valueOf());
+  const calculateTimeLeft = (dd) => {
+    let diffTime = Math.abs(new Date().valueOf() - new Date(`${dd}`).valueOf());
     let days = diffTime / (24 * 60 * 60 * 1000);
     let hours = (days % 1) * 24;
     let minutes = (hours % 1) * 60;
@@ -79,11 +79,11 @@ export default function ElectionDetails() {
     // if (election) {
     // }
   }, [election]);
-  useEffect(() => {
-    setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-  });
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setTimeLeft(calculateTimeLeft());
+  //   }, 1000);
+  // });
 
   useEffect(async () => {
     const userData = await getUserData();
@@ -101,7 +101,7 @@ export default function ElectionDetails() {
     var formData = new FormData();
     formData.append('user_id', user.id);
     formData.append('business_id', user.business_id);
-    formData.append('election_id', location.state.election_id);
+    formData.append('election_id', id);
 
     ApiCall('Post', API.electiondetailhApi, formData, {
       Authorization: 'Bearer ' + user?.access_token,
@@ -122,6 +122,7 @@ export default function ElectionDetails() {
           setPreview(resp.data.data);
           setElection(resp.data.data.election_details);
           console.log(resp.data.data.election_details, 'election data');
+          setTimeLeft(calculateTimeLeft(resp?.data?.data?.election_details?.election_date_time));
           setFeedback(resp.data.data.feedbacks);
           setWinner(resp.data.data.winner);
           setCandidate(resp.data.data.candidates);
@@ -140,7 +141,7 @@ export default function ElectionDetails() {
     var formData = new FormData();
 
     formData.append('business_id', user.business_id);
-    formData.append('election_id', location.state.election_id);
+    formData.append('election_id', id);
 
     ApiCall('Post', API.electionQRcodeApi, formData, {
       Authorization: 'Bearer ' + user?.access_token,
@@ -165,9 +166,9 @@ export default function ElectionDetails() {
   }
   function BusinessGiftShippedAddressFtn(user) {
     var formData = new FormData();
-    console.log('location.state.election_id', location.state.election_id);
+    console.log('id', id);
     setLoader(true);
-    formData.append('election_id', location.state.election_id);
+    formData.append('election_id', id);
 
     ApiCall('Post', API.BusinessGiftShippedAddress, formData, {
       Authorization: 'Bearer ' + user?.access_token,
@@ -195,7 +196,7 @@ export default function ElectionDetails() {
   function BusinessGiftShippedConfirmedFtn(user) {
     setLoader(true);
     var formData = new FormData();
-    formData.append('election_id', location.state.election_id);
+    formData.append('election_id', id);
     // formData.append("election_id", 5);
     formData.append('shipment_company_link', giftAddress);
     formData.append('track_number', giftTrack);
@@ -226,7 +227,7 @@ export default function ElectionDetails() {
   function BusinessGiftOnlineFtn(user) {
     var formData = new FormData();
     setLoader(true);
-    // formData.append("election_id", location.state.election_id);
+    // formData.append("election_id", id);
     formData.append('election_id', 5);
     formData.append('online_gift_link', giftAddress);
 
@@ -255,7 +256,7 @@ export default function ElectionDetails() {
   function feedbackApiFtn(user) {
     setLoader(true);
     var formData = new FormData();
-    formData.append('election_id', location.state.election_id);
+    formData.append('election_id', id);
     formData.append('user_id', user.id);
     formData.append('business_id', user.business_id);
 
@@ -335,7 +336,7 @@ export default function ElectionDetails() {
     setLoader(true);
 
     formData.append('qr_user_id', response?.user_id);
-    formData.append('election_id', location.state.election_id);
+    formData.append('election_id', id);
 
     ApiCall('Post', API.SCANWinnerAPI, formData, {
       Authorization: `Bearer ` + user?.access_token,
@@ -355,7 +356,7 @@ export default function ElectionDetails() {
   function replyFeedbackapiFtn(user, feedbackID) {
     setLoader(true);
     var formData = new FormData();
-    // formData.append("election_id", location.state.election_id);
+    // formData.append("election_id", id);
     formData.append('feedback_id', feedbackID);
     formData.append('business_id', user.business_id);
     formData.append('reply', userfeedbackReply);
@@ -383,11 +384,11 @@ export default function ElectionDetails() {
   function userchatSendCandidateApiftn() {
     setLoader(true);
     var formData = new FormData();
-    // formData.append("election_id", location.state.election_id);
+    // formData.append("election_id", id);
 
     formData.append('message', chatmsgSend);
     formData.append('user_id', user.id);
-    formData.append('election_id', location.state.election_id);
+    formData.append('election_id', id);
 
     ApiCall('Post', API.userchatSendCandidateApi, formData, {
       Authorization: 'Bearer ' + user?.access_token,
@@ -455,7 +456,11 @@ export default function ElectionDetails() {
                       <div className="logo-sec">
                         <img
                           className="img-fluid"
-                          src={election?.business_details?.avatar ? election?.business_details?.avatar : logo}
+                          src={
+                            election?.business_details?.avatar
+                              ? election?.business_details?.avatar
+                              : '/images/logo-dummy.png'
+                          }
                           alt="logo"
                         />
                       </div>
@@ -478,22 +483,22 @@ export default function ElectionDetails() {
                     <div className="img-wrap">
                       {election?.election_status == 'Not Started' ? (
                         <div className="status end">
-                          <img src="images/not-started-bg.svg" alt="" />
+                          <img src="/images/not-started-bg.svg" alt="" />
                           {/* <img className="img-white" src={startyellow} alt="image" /> */}
                           <span className="text-white">{election?.election_status}</span>
                         </div>
                       ) : election?.election_status == 'Started' ? (
                         <div className="status start">
-                          <img src="images/yellow-start-bg.svg" alt="image" />
+                          <img src="/images/yellow-start-bg.svg" alt="image" />
                           <span>
-                            <img className="ico" src="images/vote-ico.svg" alt="ico" />
+                            <img className="ico" src="/images/vote-ico.svg" alt="ico" />
                             {election?.election_status}
                           </span>
                         </div>
                       ) : (
                         <>
                           <div className="status end">
-                            <img className="img-white" src="images/yellow-start-bg.svg" alt="image" />
+                            <img className="img-white" src="/images/yellow-start-bg.svg" alt="image" />
                             <span>{election?.election_status}</span>
                           </div>
                         </>
@@ -552,17 +557,17 @@ export default function ElectionDetails() {
                         <div className="ico-cont justify-content-end">
                           {election?.gift_delivery_option?.value == '1' ? (
                             <>
-                              <img src="images/shipped-ico.svg" alt="" className="icon-size" />
+                              <img src="/images/shipped-ico.svg" alt="" className="icon-size" />
                               {t('election.Shipped')}
                             </>
                           ) : election?.gift_delivery_option?.value == '2' ? (
                             <>
-                              <img src={'images/mail-ico.svg'} alt="" />
+                              <img src={'/images/mail-ico.svg'} alt="" />
                               {t('election.On-line delivery')}
                             </>
                           ) : (
                             <>
-                              <img src="images/shop-line-ico.svg" alt="" className="icon-size" />
+                              <img src="/images/shop-line-ico.svg" alt="" className="icon-size" />
                               {t('election.At the place')}
                             </>
                           )}
@@ -616,14 +621,14 @@ export default function ElectionDetails() {
               <h3> {t('election.Election Performance')}</h3>
             </div>
             <div className="performance-sec candid-per">
-              <img className="bg-perf" src="images/performance-bg.png" alt="ico" />
+              <img className="bg-perf" src="/images/performance-bg.png" alt="ico" />
               <div className="per-cont">
                 <div className="cont-circle c1">
                   <CustomCircularProgressBar percentage={preview?.performance?.visit_at_shop_progress} />
 
                   {/* <img className="img-fluid" src="images/performance-circle.png" alt="" /> */}
                   <div className="cont">
-                    <img className="ico opacity-25" src="images/qr-ico-black.svg" alt="ico" />
+                    <img className="ico opacity-25" src="/images/qr-ico-black.svg" alt="ico" />
                     <span className="count">{preview?.performance?.visit_at_shop}</span>
                     <p>
                       {t('election.VISIT AT')}
@@ -631,13 +636,13 @@ export default function ElectionDetails() {
                       {t('election.THE SHOP')}
                     </p>
                   </div>
-                  <img className="img-fluid tail-ico" src="images/tail-ico.png" alt="ico" />
+                  <img className="img-fluid tail-ico" src="/images/tail-ico.png" alt="ico" />
                 </div>
                 <div className="cont-circle c3">
                   {/* <img className="img-fluid" src="images/performance-circle-2.png" alt="" /> */}
                   <CustomCircularProgressBar percentage={preview?.performance?.election_favourite_progress} />
                   <div className="cont">
-                    <img className="ico" src="images/heart-ico.svg" alt="ico" />
+                    <img className="ico" src="/images/heart-ico.svg" alt="ico" />
                     <span className="count">{preview?.performance?.election_favourite}</span>
                     <p>
                       {t('election.ELECTION')}
@@ -645,15 +650,15 @@ export default function ElectionDetails() {
                       {t('election.FAVOURITE')}
                     </p>
                   </div>
-                  <img className="img-fluid tail-ico" src="images/tail-ico-2.png" alt="ico" />
+                  <img className="img-fluid tail-ico" src="/images/tail-ico-2.png" alt="ico" />
                 </div>
                 <div className="big-circle election-circle">
                   {/* <img className="img-fluid" src="images/performance-circle-big.png" alt="ico" /> */}
                   <CustomCircularProgressBar percentage={preview?.performance?.better_than} max={100} />
                   <div className="cont">
-                    <img className="ico" src="images/candidate-logo.png" alt="ico" />
+                    <img className="ico" src="/images/candidate-logo.png" alt="ico" />
                     <hr />
-                    <img className="chart-img img-fluid" src="images/bar-chat.png" alt="ico" />
+                    <img className="chart-img img-fluid" src="/images/bar-chat.png" alt="ico" />
                     <hr />
                     <span className="yellow">{t('businessPage.Better than')}</span>
                     <h5>{preview?.performance?.better_than} %</h5>
@@ -665,7 +670,7 @@ export default function ElectionDetails() {
 
                   {/* <img className="img-fluid" src="images/performance-circle-3.png" alt="" /> */}
                   <div className="cont">
-                    <img className="ico" src="images/vote-btn-ico.png" alt="ico" />
+                    <img className="ico" src="/images/vote-btn-ico.png" alt="ico" />
                     <span className="count">{preview?.performance?.total_votes}</span>
                     <p>
                       {t('businessPage.TOTAL')}
@@ -673,14 +678,14 @@ export default function ElectionDetails() {
                       {t('businessPage.VOTE')}
                     </p>
                   </div>
-                  <img className="img-fluid tail-ico" src="images/tail-ico-3.png" alt="ico" />
+                  <img className="img-fluid tail-ico" src="/images/tail-ico-3.png" alt="ico" />
                 </div>
                 <div className="cont-circle c5">
                   <CustomCircularProgressBar percentage={preview?.performance?.total_candidates_progress} />
 
                   {/* <img className="img-fluid" src="images/performance-circle-4.png" alt="" /> */}
                   <div className="cont">
-                    <img className="ico" src="images/my-acc-ico.svg" alt="ico" />
+                    <img className="ico" src="/images/my-acc-ico.svg" alt="ico" />
                     <span className="count">{preview?.performance?.total_candidates}</span>
                     <p>
                       {t('businessPage.TOTAL')}
@@ -688,7 +693,7 @@ export default function ElectionDetails() {
                       {t('businessPage.CANDIDATE')}
                     </p>
                   </div>
-                  <img className="img-fluid tail-ico" src="images/tail-ico-4.png" alt="ico" />
+                  <img className="img-fluid tail-ico" src="/images/tail-ico-4.png" alt="ico" />
                 </div>
               </div>
             </div>
@@ -718,24 +723,24 @@ export default function ElectionDetails() {
                 data-bs-target={'#share8-modal'}
               >
                 <span>{t('Buttons.SHARE')}</span>
-                <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
               </button>
 
               {election?.election_status == 'Not Started' ? (
                 <button className="btn btn-yellow btn-clip btn-white mt-0">
                   <span>{t('Buttons.No message to reply')}</span>
-                  <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                  <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                 </button>
               ) : (
                 <Link to={'/customers'} className="btn btn-yellow btn-clip mt-0">
                   <span>
                     {t('Buttons.REPLY to election message')}
                     <span className="chat-count">
-                      <img className="img-fluid" src="images/chat-ico.svg" alt="ico" />
+                      <img className="img-fluid" src="/images/chat-ico.svg" alt="ico" />
                       <span>4</span>
                     </span>
                   </span>
-                  <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                  <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                 </Link>
               )}
               {election?.election_status === 'Not Started' ? (
@@ -747,18 +752,18 @@ export default function ElectionDetails() {
                   }}
                 >
                   <span>{t('Buttons.MODIFY ELECTION')}</span>
-                  <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                  <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                 </button>
               ) : (
                 <button className="btn btn-yellow btn-clip btn-white mt-0">
                   <span>{t('Buttons.Election Started - modification not allowed')}</span>
-                  <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                  <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                 </button>
               )}
               {election?.election_status === 'Not Started' || election?.election_status == 'Started' ? (
                 <button className="btn btn-yellow btn-clip btn-white mt-0">
                   <span>{t('Buttons.No gift to be given')}</span>
-                  <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                  <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                 </button>
               ) : (
                 <div>
@@ -774,7 +779,7 @@ export default function ElectionDetails() {
                           <img src="images/at-the-shop-ico.svg" alt="" />
                           {election?.gift_delivery_option.option}
                         </span>
-                        <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                        <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                       </span>
                     </button>
                   )}
@@ -787,10 +792,10 @@ export default function ElectionDetails() {
                       <span>{t('Buttons.GIVE FREE GIFT')}</span>
                       <span className="txt-ico">
                         <span className="me-2">
-                          <img src="images/at-the-shop-ico.svg" alt="" />
+                          <img src="/images/at-the-shop-ico.svg" alt="" />
                           {election?.gift_delivery_option.option}
                         </span>
-                        <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                        <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                       </span>
                     </button>
                   )}
@@ -803,10 +808,10 @@ export default function ElectionDetails() {
                       <span>{t('Buttons.GIVE FREE GIFT')}</span>
                       <span className="txt-ico">
                         <span className="me-2">
-                          <img src="images/at-the-shop-ico.svg" alt="" />
+                          <img src="/images/at-the-shop-ico.svg" alt="" />
                           {election?.gift_delivery_option.option}
                         </span>
-                        <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                        <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                       </span>
                     </button>
                   )}
@@ -819,12 +824,12 @@ export default function ElectionDetails() {
                   data-bs-target="#messages-feed-10"
                 >
                   <span>{t('Buttons.Reply to Feedback')}</span>
-                  <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                  <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                 </button>
               ) : (
                 <button className="btn btn-yellow btn-clip btn-white mt-0">
                   <span>{t('Buttons.No feedback received yet')}</span>
-                  <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                  <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                 </button>
               )}
 
@@ -836,15 +841,15 @@ export default function ElectionDetails() {
                 }}
               >
                 <span>{t('Buttons.COPY ELECTION')}</span>
-                <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
               </button>
             </div>
           </div>
           {winner?.user_id && winner && (
             <div className="winner-sec mt-minus-65">
-              <img className="img-fluid top-light" src="images/light-top.svg" alt="image" />
+              <img className="img-fluid top-light" src="/images/light-top.svg" alt="image" />
               <div className="winner-img">
-                <img src={winner ? winner?.avatar : 'images/avatar-big-1.png'} alt="username" />
+                <img src={winner ? winner?.avatar : '/images/avatar-big-1.png'} alt="username" />
               </div>
               <div className="winner-badge">
                 <div className="badge-cont">
@@ -852,11 +857,11 @@ export default function ElectionDetails() {
                   <p>{t('election.The Winner')}</p>
                   <span className="win-place">01</span>
                 </div>
-                <img className="img-fluid" src="images/winner-badge.svg" alt="image" />
+                <img className="img-fluid" src="/mages/winner-badge.svg" alt="image" />
                 <div className="btn-clip-wrap">
                   <button className="btn btn-yellow btn-clip mt-0">
                     <span>{t('Buttons.CONTACT WINNER')}</span>
-                    <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+                    <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
                   </button>
                 </div>
               </div>
@@ -866,7 +871,7 @@ export default function ElectionDetails() {
           {winner?.user_id == undefined && election?.election_status == 'Ended' && (
             <div className="row">
               <div className="col-12 alert-bubble">
-                <img className="img-fluid" src="images/alert-bubble.svg" alt="ico" />
+                <img className="img-fluid" src="/images/alert-bubble.svg" alt="ico" />
                 <div className="alert-cont">
                   <h5 className="mb-0"> {t('alerts.OPS!!!')}</h5>
                   <p className="mb-3">{t('alerts.There is no candidate in election')}</p>
@@ -890,41 +895,41 @@ export default function ElectionDetails() {
               return election?.election_status != 'Not Started' ? (
                 <div key={index} className="candidate-snippet w-100">
                   <div className="user-img">
-                    <img src={item?.avatar ? item?.avatar : 'images/avatar-img-1.png'} alt="Name" />
+                    <img src={item?.avatar ? item?.avatar : '/images/avatar-img-1.png'} alt="Name" />
                   </div>
                   <div className="avatar-cont">
                     <div className="ac-lft">
                       <h6 className="text-truncate">{item?.username}</h6>
                       <div className="vote-count">
-                        <img src="images/vote-ico.svg" alt="ico" /> {item?.votes_count}
+                        <img src="/images/vote-ico.svg" alt="ico" /> {item?.votes_count}
                       </div>
                       <div className="vote-progress">
                         <ProgressBar position={item?.position} />
                       </div>
                     </div>
                     <button className="btn btn-empty mt-0">
-                      <img className="img-fluid" src="images/vote-button-active.svg" alt="ico" />
+                      <img className="img-fluid" src="/images/vote-button-active.svg" alt="ico" />
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="candidate-snippet w-100">
                   <div className="user-img">
-                    <img src={item?.avatar ? item?.avatar : 'images/avatar-img-1.png'} alt="Name" />
+                    <img src={item?.avatar ? item?.avatar : '/images/avatar-img-1.png'} alt="Name" />
                   </div>
                   <div className="avatar-cont">
                     <div className="ac-lft">
                       <h6 className="text-truncate">{item?.username}</h6>
                       <div className="vote-count">
-                        <img src="images/vote-ico.svg" alt="ico" />
+                        <img src="/images/vote-ico.svg" alt="ico" />
                         {item?.votes_count}
                       </div>
                       <div className="vote-progress">
-                        <img className="img-fluid" src="images/progress-bar.svg" alt="ico" />
+                        <img className="img-fluid" src="/images/progress-bar.svg" alt="ico" />
                       </div>
                     </div>
                     <button className="btn btn-empty mt-0">
-                      <img className="img-fluid" src="images/vote-btn-light.svg" alt="ico" />
+                      <img className="img-fluid" src="/images/vote-btn-light.svg" alt="ico" />
                     </button>
                   </div>
                 </div>
@@ -940,7 +945,7 @@ export default function ElectionDetails() {
               data-bs-target="#tc-modal"
             >
               <span>{t('Buttons.CONTACT ALL CANDIDATE')}</span>
-              <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+              <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
             </button>
             <button
               className={`btn btn-yellow btn-clip mt-0 ${election?.election_status == 'Ended' && 'btn-white'}`}
@@ -949,17 +954,13 @@ export default function ElectionDetails() {
               data-bs-target="#pdfModal"
             >
               <span>{t('Buttons.ELECTION QR-CODE')}</span>
-              <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+              <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
             </button>
           </div>
           <div className="btn-clip-wrap">
-            <Link
-              to={'/ElectionVoteHistory'}
-              state={{ election_id: location.state.election_id }}
-              className="btn btn-yellow btn-clip mt-0 "
-            >
+            <Link to={'/ElectionVoteHistory'} state={{ election_id: id }} className="btn btn-yellow btn-clip mt-0 ">
               <span>{t('Buttons.VOTE HISTORY')}</span>
-              <img className="arrow" src="images/arrow-ico.svg" alt="ico" />
+              <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
             </Link>
           </div>
         </section>
@@ -972,10 +973,10 @@ export default function ElectionDetails() {
             <div className="modal-content">
               {ischatmsgSend && (
                 <div className="alert-bubble-img rect-pop mt-4">
-                  <img className="img-fluid" src="images/rectangle-popup-1.svg" alt="ico" />
+                  <img className="img-fluid" src="/images/rectangle-popup-1.svg" alt="ico" />
                   <div className="cont">
                     <h6 className="text-center">{t('alerts.Hey')}!</h6>
-                    <img className="finger-ico img-fluid mb-2" src="images/alert-finger-ico.png" alt="ico" />
+                    <img className="finger-ico img-fluid mb-2" src="/images/alert-finger-ico.png" alt="ico" />
                     <p className="dark-txt mb-2">
                       {t('alerts.You are going to')} <strong>{t('alerts.write to all your candidate')}</strong>{' '}
                       {t('alerts.Please be professionale and respectfull')}
@@ -996,7 +997,7 @@ export default function ElectionDetails() {
                 <div className={`type-area ${ischatmsgSend ? 'opacity-25' : 'opacity-1'} `}>
                   <div className="type-inside">
                     <button className="btn btn-emoti">
-                      <img src="images/smilie-ico.svg" alt="ico" />
+                      <img src="/images/smilie-ico.svg" alt="ico" />
                     </button>
                     <input
                       type="text"
@@ -1014,7 +1015,7 @@ export default function ElectionDetails() {
                   </div>
                 </div>
                 <button className="btn btn-close-x p-0">
-                  <img className="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+                  <img className="img-fluid" src="/images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
                 </button>
               </div>
             </div>
@@ -1025,7 +1026,7 @@ export default function ElectionDetails() {
             <div className="modal-content rounded-0 position-relative">
               {/* <!-- Modal Header --> */}
               <div className="modal-">
-                <img src="images/pdf-top-img.png" className="img-fluid" alt="" />
+                <img src="/images/pdf-top-img.png" className="img-fluid" alt="" />
                 <button type="button" className="btn-close __close text-white" data-bs-dismiss="modal"></button>
               </div>
 
@@ -1036,7 +1037,7 @@ export default function ElectionDetails() {
                     src={
                       election?.business_details?.avatar
                         ? election?.business_details?.avatar
-                        : 'images/cate-rest-ico.png'
+                        : '/images/cate-rest-ico.png'
                     }
                     className="img-fluid __sowner me-2 user-img"
                     alt=""
@@ -1140,17 +1141,17 @@ export default function ElectionDetails() {
                     <div className="ico-cont justify-content-end">
                       {election?.gift_delivery_option?.value == '1' ? (
                         <>
-                          <img src="images/shipped-ico.svg" alt="" className="icon-size" />{' '}
+                          <img src="/images/shipped-ico.svg" alt="" className="icon-size" />{' '}
                           <span style={{ 'font-size': '12px' }}>{t('election.Shipped')}</span>
                         </>
                       ) : election?.gift_delivery_option?.value == '2' ? (
                         <>
-                          <img src={'images/mail-ico.svg'} alt="" />{' '}
+                          <img src={'/images/mail-ico.svg'} alt="" />{' '}
                           <span style={{ 'font-size': '12px' }}>{t('election.On-line delivery')}</span>
                         </>
                       ) : (
                         <>
-                          <img src="images/shop-line-ico.svg" alt="" className="icon-size" />{' '}
+                          <img src="/images/shop-line-ico.svg" alt="" className="icon-size" />{' '}
                           <span style={{ 'font-size': '12px' }}>{t('election.At the place')}</span>
                         </>
                       )}
@@ -1173,7 +1174,7 @@ export default function ElectionDetails() {
                   {electionQR?.qr_image && <img src={'data:image/png;base64,' + electionQR?.qr_image} width={100} />}
                 </div>
                 <div className="mb-2">
-                  <img src="images/vf-pdf-logo.png" className="img-fluid __vflogo" width={80} alt="" />
+                  <img src="/images/vf-pdf-logo.png" className="img-fluid __vflogo" width={80} alt="" />
                 </div>
               </div>
             </div>
@@ -1243,7 +1244,7 @@ export default function ElectionDetails() {
           <div className="modal-dialog modal-dialog-centered" data-bs-dismiss="modal">
             <div className="modal-content">
               <div className="free-gift-info mt-4">
-                <img className="finger-ico img-fluid mb-2 mt-3" src="images/alert-finger-ico.png" alt="ico" />
+                <img className="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
                 <h6 className="text-center text-danger">
                   {t('alerts.IMPORTANT')}
                   <br />
@@ -1252,7 +1253,7 @@ export default function ElectionDetails() {
                 <div className="edge-fade mt-4">
                   {t('alerts.This gift shall be given')}
                   <span>
-                    <img src="images/at-the-shop-ico.svg" alt="" />
+                    <img src="/images/at-the-shop-ico.svg" alt="" />
                     {t('election.At the place')}
                   </span>
                 </div>
@@ -1317,7 +1318,7 @@ export default function ElectionDetails() {
               <div className="modal-content minh-unset" data-bs-dismiss="modal" onClick={() => setgiftshow(false)}>
                 <div className="gift-rib min-mt z9">
                   <a href="javascript:;" className="gift-ribbon-wrap">
-                    <img className="img-fluid" src="images/gift-ribbon.png" alt="images" />
+                    <img className="img-fluid" src="/images/gift-ribbon.png" alt="images" />
                     <div className="gift-img">
                       <div className="img-wrap">
                         <img
@@ -1325,7 +1326,7 @@ export default function ElectionDetails() {
                           alt="ProductName"
                         />
                         <span className="img-count">
-                          <img className="ico" src="images/camera-ico.svg" alt="" />1
+                          <img className="ico" src="/images/camera-ico.svg" alt="" />1
                         </span>
                       </div>
                       <span className="title text-truncate">{election?.gift_title}</span>
@@ -1334,9 +1335,9 @@ export default function ElectionDetails() {
                   </a>
                 </div>
                 <div className="winner-sec modal-pop">
-                  <img className="img-fluid top-light" src="images/light-top.svg" alt="image" />
+                  <img className="img-fluid top-light" src="/images/light-top.svg" alt="image" />
                   <div className="winner-img">
-                    <img src={winner?.avatar ? winner?.avatar : 'images/avatar-big-1.png'} alt="username" />
+                    <img src={winner?.avatar ? winner?.avatar : '/images/avatar-big-1.png'} alt="username" />
                   </div>
                   <div className="winner-badge">
                     <div className="badge-cont">
@@ -1344,7 +1345,7 @@ export default function ElectionDetails() {
                       <p>{t('election.The Winner')}r</p>
                       <span className="win-place">01</span>
                     </div>
-                    <img className="img-fluid" src="images/winner-badge.svg" alt="image" />
+                    <img className="img-fluid" src="/images/winner-badge.svg" alt="image" />
                   </div>
                   <h6 className="confirm">{t('alerts.Confirm that you gave the gift')}</h6>
                   <div className="px-3 mt-4 mb-4 z9">
@@ -1369,7 +1370,7 @@ export default function ElectionDetails() {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content minh-unset" data-bs-dismiss="modal">
               <div class="alert-bubble-img">
-                <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
+                <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
                 <div class="cont">
                   <h5 class="dark mt-4"> {t('alerts.THANK YOU!!!')}</h5>
                   <p class="dark-txt fs-14">
@@ -1389,7 +1390,7 @@ export default function ElectionDetails() {
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content minh-unset" data-bs-dismiss="modal">
               <div class="alert-bubble-img min-mt">
-                <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
+                <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
                 <div class="cont">
                   <h5>{t('alerts.OH NO')}!!!</h5>
                   <p class="dark-txt fs-14 mb-2">{t('alerts.This is not good! Please explain that gift is free')}</p>
@@ -1421,7 +1422,7 @@ export default function ElectionDetails() {
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content minh-unset" data-bs-dismiss="modal">
               <div class="alert-bubble-img">
-                <img class="img-fluid" src="images/alert-bubble-msg-height.png" alt="ico" />
+                <img class="img-fluid" src="/images/alert-bubble-msg-height.png" alt="ico" />
                 <div class="cont">
                   <h5>{t('alerts.THANK YOU!!!')}</h5>
                   <p class="dark-txt fs-14 mb-2">{t('alerts.For your trying')}!!!</p>
@@ -1442,7 +1443,7 @@ export default function ElectionDetails() {
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content minh-unset" data-bs-dismiss="modal">
               <div class="alert-bubble-img mt-3">
-                <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
+                <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
                 <div class="cont">
                   <h5 class="mt-2">{t('alerts.OPS!!!')}</h5>
                   <p class="dark-txt fs-14 mb-2">{t('alerts.Something went wrong')}</p>
@@ -1469,7 +1470,7 @@ export default function ElectionDetails() {
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="free-gift-info mt-4">
-                <img class="finger-ico img-fluid mb-2 mt-3" src="images/alert-finger-ico.png" alt="ico" />
+                <img class="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
                 <h6 class="text-center text-danger">
                   {t('alerts.IMPORTANT')}
                   <br />
@@ -1478,7 +1479,7 @@ export default function ElectionDetails() {
                 <div class="edge-fade mt-4">
                   {t('alerts.This gift shall be given')}
                   <span>
-                    <img src="images/ship-ico-big.svg" alt="" />
+                    <img src="/images/ship-ico-big.svg" alt="" />
                     {t('election.Shipped')}
                   </span>
                 </div>
@@ -1538,7 +1539,7 @@ export default function ElectionDetails() {
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="free-gift-info mt-4">
-                <img class="finger-ico img-fluid mb-2 mt-3" src="images/alert-finger-ico.png" alt="ico" />
+                <img class="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
                 <h6 class="text-center text-danger">
                   {t('alerts.IMPORTANT')}
                   <br />
@@ -1547,7 +1548,7 @@ export default function ElectionDetails() {
                 <div class="edge-fade mt-4">
                   {t('alerts.This gift shall be given')}
                   <span>
-                    <img src="images/ship-msg-ico-big.svg" alt="" />
+                    <img src="/images/ship-msg-ico-big.svg" alt="" />
                     {t('filter.On-line delivery')}
                   </span>
                 </div>
@@ -1624,7 +1625,7 @@ export default function ElectionDetails() {
                       <div class="f-row" key={index}>
                         <div class="fr-head">
                           <div class="avatar">
-                            <img src={item.avatar ? item.avatar : 'images/avatar-big-1.png'} alt="username" />
+                            <img src={item.avatar ? item.avatar : '/images/avatar-big-1.png'} alt="username" />
                           </div>
                           <div class="avatar-detail">
                             <h6>{item.username}</h6>
@@ -1653,7 +1654,7 @@ export default function ElectionDetails() {
                     <div class="fr-head">
                       <div class="avatar">
                         <img
-                          src={userfeedback?.avatar ? userfeedback?.avatar : 'images/logo-dummy.png'}
+                          src={userfeedback?.avatar ? userfeedback?.avatar : '/images/logo-dummy.png'}
                           alt="username"
                         />
                       </div>
@@ -1674,7 +1675,7 @@ export default function ElectionDetails() {
                     <div class="type-area">
                       <div class="type-inside">
                         <button class="btn btn-emoti">
-                          <img src="images/smilie-ico.svg" alt="ico" />
+                          <img src="/images/smilie-ico.svg" alt="ico" />
                         </button>
                         <input
                           type="text"
@@ -1691,7 +1692,7 @@ export default function ElectionDetails() {
                       </div>
                     </div>
                     <button class="btn btn-close-x p-0">
-                      <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+                      <img class="img-fluid" src="/images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
                     </button>
                   </>
                 )}
@@ -1699,7 +1700,7 @@ export default function ElectionDetails() {
                 {isUserFeedbackReply && (
                   <>
                     <div class="free-gift-info mt-2">
-                      <img class="finger-ico img-fluid mb-2 mt-3" src="images/alert-finger-ico.png" alt="ico" />
+                      <img class="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
                       <h6 class="text-center text-danger"> {t('alerts.IMPORTANT')}</h6>
                       <p class="fs-14 text-danger">
                         {t(
@@ -1731,7 +1732,7 @@ export default function ElectionDetails() {
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content minh-unset" data-bs-dismiss="modal">
               <div class="alert-bubble-img">
-                <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
+                <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
                 <div class="cont">
                   <h5>{t('alerts.THANK YOU!!!')}</h5>
                   <p class="dark-txt fs-14 mb-2">
@@ -1750,14 +1751,16 @@ export default function ElectionDetails() {
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content modal-lay-wrap">
             <div class="layout-thumb lay-5 lay-7 elect-lay" ref={shareImageRef}>
-              <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
+              <img class="img-fluid" src="/images/layout-4-bg.png" alt="images" />
               <div class="cont">
                 <div class="prod-thumb">
                   <div class="thumb-in">
                     <img
                       class="prod-img img-fluid"
                       src={
-                        election?.gift_images[0]?.picture ? election?.gift_images[0]?.picture : 'images/product-img.jpg'
+                        election?.gift_images[0]?.picture
+                          ? election?.gift_images[0]?.picture
+                          : '/images/product-img.jpg'
                       }
                       alt="ico"
                     />
@@ -1766,13 +1769,13 @@ export default function ElectionDetails() {
                         src={
                           election?.business_details?.avatar
                             ? election?.business_details?.avatar
-                            : 'images/logo-dummy.png'
+                            : '/images/logo-dummy.png'
                         }
                         alt=""
                       />
                     </div>
                     <div class="pls-vote-badge">
-                      <img class="img-fluid" src="images/pls-vote-vertical-badge.png" alt="img" />
+                      <img class="img-fluid" src="/images/pls-vote-vertical-badge.png" alt="img" />
                     </div>
                   </div>
                 </div>
@@ -1792,7 +1795,7 @@ export default function ElectionDetails() {
             />
 
             <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+              <img class="img-fluid" src="/images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
           </div>
         </div>

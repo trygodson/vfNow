@@ -1,52 +1,35 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toPng } from 'html-to-image';
-
 import Footer from '../../components/Footer';
 import TopHeader from '../../components/TopHeader';
 import Loader from '../../components/Loader';
-
 import { useTranslation } from 'react-i18next';
 import '../../languages/i18n';
-import API from '../../services/ApiLists';
-import { ApiCall } from '../../services/ApiCall';
-
 import {
-  EmailShareButton,
   FacebookShareButton,
   FacebookIcon,
-  HatenaShareButton,
   InstapaperShareButton,
   InstapaperIcon,
-  LineShareButton,
   LinkedinShareButton,
   LinkedinIcon,
-  LivejournalShareButton,
-  MailruShareButton,
-  OKShareButton,
   PinterestShareButton,
   PinterestIcon,
   FacebookMessengerShareButton,
   FacebookMessengerIcon,
-  PocketShareButton,
-  RedditShareButton,
   TelegramShareButton,
   TelegramIcon,
-  TumblrShareButton,
-  TwitterShareButton,
-  TwitterIcon,
-  ViberShareButton,
-  VKShareButton,
   WhatsappShareButton,
   WhatsappIcon,
-  WorkplaceShareButton,
 } from 'react-share';
+import API from '../../services/ApiLists';
+import { ApiCall } from '../../services/ApiCall';
 import { storeUserData, getUserData } from '../../Functions/Functions';
 export default function UserProfileElections() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
-
+  const shareImageRef = useRef();
   const [userProfile, setUserProfile] = useState();
   const [giftImages, setGiftImages] = useState();
   const [SelectedGiftImage, setSelectedGiftImage] = useState();
@@ -67,24 +50,35 @@ export default function UserProfileElections() {
     (ref) => {
       if (ref.current === null) {
         return;
+      } else {
+        if (window?.isNative) {
+          return toPng(ref.current, { cacheBust: true })
+            .then((dataUrl) => {
+              // setLoader(false);
+
+              return dataUrl;
+            })
+            .catch((err) => {
+              // setMobileSharingLoading(false)
+              alert('download err', err);
+            });
+        } else {
+          alert(navigator.share);
+          toPng(ref.current, { cacheBust: true })
+            .then((dataUrl) => {
+              const link = document.createElement('a');
+              console.log('image', dataUrl);
+              setShareGiftImage(dataUrl);
+              link.download = 'my-image-name.png';
+              link.href = dataUrl;
+              link.click();
+              handleOnSubmit(dataUrl);
+            })
+            .catch((err) => {
+              alert('download err', err);
+            });
+        }
       }
-      alert(navigator.share);
-      // handleOnSubmit(
-      //   "https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI"
-      // );
-      toPng(ref.current, { cacheBust: true })
-        .then((dataUrl) => {
-          const link = document.createElement('a');
-          console.log('image', dataUrl);
-          setShareGiftImage(dataUrl);
-          link.download = 'my-image-name.png';
-          link.href = dataUrl;
-          link.click();
-          handleOnSubmit(dataUrl);
-        })
-        .catch((err) => {
-          alert('download err', err);
-        });
     },
     [ref],
   );
@@ -146,7 +140,7 @@ export default function UserProfileElections() {
     }
   };
 
-  const shareView = () => {
+  const ShareView = ({ shareFunc = () => null, setLoading }) => {
     return (
       <>
         <div class="ss-wrap">
@@ -157,18 +151,23 @@ export default function UserProfileElections() {
                   <FacebookIcon
                     size={32}
                     round
-                    onClick={() =>
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify({
-                          facebookStory: true,
-                          data: {
-                            name: userProfile?.username,
-                            link: `Vote and Fun Vote ${user?.name}`,
-                            imageBase64: selectedGiftImageBase64,
-                          },
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      setLoading(true);
+                      shareFunc().then((res) => {
+                        setLoading(false);
+
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({
+                            facebookStory: true,
+                            data: {
+                              name: userProfile?.username,
+                              link: `Vote and Fun Vote ${user?.name}`,
+                              imageBase64: res ?? '',
+                            },
+                          }),
+                        );
+                      });
+                    }}
                   />
                 ) : (
                   <FacebookShareButton
@@ -188,18 +187,23 @@ export default function UserProfileElections() {
                   <TelegramIcon
                     size={32}
                     round
-                    onClick={() =>
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify({
-                          telegram: true,
-                          data: {
-                            name: userProfile?.username,
-                            link: `Vote and Fun Vote ${user?.name}`,
-                            imageBase64: selectedGiftImageBase64,
-                          },
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      setLoading(true);
+                      shareFunc().then((res) => {
+                        setLoading(false);
+
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({
+                            telegram: true,
+                            data: {
+                              name: userProfile?.username,
+                              link: `Vote and Fun Vote ${user?.name}`,
+                              imageBase64: res ?? '',
+                            },
+                          }),
+                        );
+                      });
+                    }}
                   />
                 ) : (
                   <TelegramShareButton
@@ -219,18 +223,23 @@ export default function UserProfileElections() {
                   <InstapaperIcon
                     size={32}
                     round
-                    onClick={() =>
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify({
-                          instagram: true,
-                          data: {
-                            name: userProfile?.username,
-                            link: `Vote and Fun Vote ${user?.name}`,
-                            imageBase64: selectedGiftImageBase64,
-                          },
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      setLoading(true);
+                      shareFunc().then((res) => {
+                        setLoading(false);
+
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({
+                            instagram: true,
+                            data: {
+                              name: userProfile?.username,
+                              link: `Vote and Fun Vote ${user?.name}`,
+                              imageBase64: res ?? '',
+                            },
+                          }),
+                        );
+                      });
+                    }}
                   />
                 ) : (
                   <InstapaperShareButton
@@ -251,18 +260,23 @@ export default function UserProfileElections() {
                   <LinkedinIcon
                     size={32}
                     round
-                    onClick={() =>
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify({
-                          linkedin: true,
-                          data: {
-                            name: userProfile?.username,
-                            link: `Vote and Fun Vote ${user?.name}`,
-                            imageBase64: selectedGiftImageBase64,
-                          },
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      setLoading(true);
+                      shareFunc().then((res) => {
+                        setLoading(false);
+
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({
+                            linkedin: true,
+                            data: {
+                              name: userProfile?.username,
+                              link: `Vote and Fun Vote ${user?.name}`,
+                              imageBase64: res ?? '',
+                            },
+                          }),
+                        );
+                      });
+                    }}
                   />
                 ) : (
                   <LinkedinShareButton
@@ -282,18 +296,23 @@ export default function UserProfileElections() {
                   <WhatsappIcon
                     size={32}
                     round
-                    onClick={() =>
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify({
-                          whatsapp: true,
-                          data: {
-                            name: userProfile?.username,
-                            link: `Vote and Fun Vote ${user?.name}`,
-                            imageBase64: selectedGiftImageBase64,
-                          },
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      setLoading(true);
+                      shareFunc().then((res) => {
+                        setLoading(false);
+
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({
+                            whatsapp: true,
+                            data: {
+                              name: userProfile?.username,
+                              link: `Vote and Fun Vote ${user?.name}`,
+                              imageBase64: res ?? '',
+                            },
+                          }),
+                        );
+                      });
+                    }}
                   />
                 ) : (
                   <WhatsappShareButton
@@ -313,18 +332,23 @@ export default function UserProfileElections() {
                   <PinterestIcon
                     size={32}
                     round
-                    onClick={() =>
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify({
-                          pinterest: true,
-                          data: {
-                            name: userProfile?.username,
-                            link: `Vote and Fun Vote ${user?.name}`,
-                            imageBase64: selectedGiftImageBase64,
-                          },
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      setLoading(true);
+                      shareFunc().then((res) => {
+                        setLoading(false);
+
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({
+                            pinterest: true,
+                            data: {
+                              name: userProfile?.username,
+                              link: `Vote and Fun Vote ${user?.name}`,
+                              imageBase64: res ?? '',
+                            },
+                          }),
+                        );
+                      });
+                    }}
                   />
                 ) : (
                   <PinterestShareButton
@@ -351,18 +375,23 @@ export default function UserProfileElections() {
                   <WhatsappIcon
                     size={32}
                     round
-                    onClick={() =>
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify({
-                          whatsapp: true,
-                          data: {
-                            name: userProfile?.username,
-                            link: `Vote and Fun Vote ${user?.name}`,
-                            imageBase64: selectedGiftImageBase64,
-                          },
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      setLoading(true);
+                      shareFunc().then((res) => {
+                        setLoading(false);
+
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({
+                            whatsapp: true,
+                            data: {
+                              name: userProfile?.username,
+                              link: `Vote and Fun Vote ${user?.name}`,
+                              imageBase64: res ?? '',
+                            },
+                          }),
+                        );
+                      });
+                    }}
                   />
                 ) : (
                   <WhatsappShareButton
@@ -382,18 +411,23 @@ export default function UserProfileElections() {
                   <TelegramIcon
                     size={32}
                     round
-                    onClick={() =>
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify({
-                          telegram: true,
-                          data: {
-                            name: userProfile?.username,
-                            link: `Vote and Fun Vote ${user?.name}`,
-                            imageBase64: selectedGiftImageBase64,
-                          },
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      setLoading(true);
+                      shareFunc().then((res) => {
+                        setLoading(false);
+
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({
+                            telegram: true,
+                            data: {
+                              name: userProfile?.username,
+                              link: `Vote and Fun Vote ${user?.name}`,
+                              imageBase64: res ?? '',
+                            },
+                          }),
+                        );
+                      });
+                    }}
                   />
                 ) : (
                   <TelegramShareButton
@@ -414,18 +448,23 @@ export default function UserProfileElections() {
                   <FacebookMessengerIcon
                     size={32}
                     round
-                    onClick={() =>
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify({
-                          messenger: true,
-                          data: {
-                            name: userProfile?.username,
-                            link: `Vote and Fun Vote ${user?.name}`,
-                            imageBase64: selectedGiftImageBase64,
-                          },
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      setLoading(true);
+                      shareFunc().then((res) => {
+                        setLoading(false);
+
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({
+                            messenger: true,
+                            data: {
+                              name: userProfile?.username,
+                              link: `Vote and Fun Vote ${user?.name}`,
+                              imageBase64: res ?? '',
+                            },
+                          }),
+                        );
+                      });
+                    }}
                   />
                 ) : (
                   <FacebookMessengerShareButton
@@ -457,6 +496,7 @@ export default function UserProfileElections() {
       </>
     );
   };
+
   return (
     <div>
       {loader && <Loader />}
@@ -1028,7 +1068,7 @@ export default function UserProfileElections() {
       <div class="modal bg-blur" id="lay1-modal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb">
+            <div class="layout-thumb" ref={shareImageRef}>
               <img class="img-fluid" src="images/layout-1-bg.png" alt="images" />
               <div class="cont">
                 <div class="avatar">
@@ -1073,7 +1113,7 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')} </h6>
-            {shareView()}
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1154,7 +1194,13 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            {shareView()}
+            {/*             <ShareView
+              shareFunc={onButtonClick}
+              setLoading={setLoader}
+            />
+ */}
+
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1207,7 +1253,8 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            {shareView()}
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1257,7 +1304,8 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            {shareView()}
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1306,7 +1354,8 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            {shareView()}
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1356,7 +1405,8 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            {shareView()}
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1401,7 +1451,8 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            {shareView()}
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1443,7 +1494,8 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            {shareView()}
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1610,7 +1662,8 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            {shareView()}
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1644,7 +1697,8 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            {shareView()}
+            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>

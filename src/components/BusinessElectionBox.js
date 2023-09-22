@@ -116,12 +116,13 @@ const BusinessElectionBox = ({
           setCopyElection({ election_id: item?.election_id });
           navigate('/newElection', { state: {} });
         } else {
-          navigate('/electionDetails', {
-            state: {
-              election_id: item.election_id,
-              election_date_time: item?.election_date_time,
-            },
-          });
+          navigate(`/electionDetails/${item.election_id}`);
+          // navigate('/electionDetails/' + item.election_id, {
+          //   // state: {
+          //   //   election_id:,
+          //   //   election_date_time: item?.election_date_time,
+          //   // },
+          // });
         }
       }}
     >
