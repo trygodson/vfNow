@@ -52,18 +52,34 @@ export default function UserProfileElections() {
         return;
       } else {
         if (window?.isNative) {
-          return toPng(ref.current, { cacheBust: true })
-            .then((dataUrl) => {
-              // setLoader(false);
+          if (window.isVoteMobile) {
+            toPng(ref.current, { cacheBust: true })
+              .then((dataUrl) => {
+                const link = document.createElement('a');
+                // console.log('image', dataUrl);
+                setShareGiftImage(dataUrl);
+                link.download = 'my-image-name.png';
+                link.href = dataUrl;
+                link.click();
+                // handleOnSubmit(dataUrl);
+              })
+              .catch((err) => {
+                alert('download err', err);
+              });
+          } else {
+            return toPng(ref.current, { cacheBust: true })
+              .then((dataUrl) => {
+                // setLoader(false);
 
-              return dataUrl;
-            })
-            .catch((err) => {
-              // setMobileSharingLoading(false)
-              alert('download err', err);
-            });
+                return dataUrl;
+              })
+              .catch((err) => {
+                // setMobileSharingLoading(false)
+                alert('download err', err);
+              });
+          }
         } else {
-          alert(navigator.share);
+          // alert(navigator.share);
           toPng(ref.current, { cacheBust: true })
             .then((dataUrl) => {
               const link = document.createElement('a');
