@@ -1113,7 +1113,7 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')} </h6>
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref)} setLoading={setLoader} />
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1200,7 +1200,7 @@ export default function UserProfileElections() {
             />
  */}
 
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref2)} setLoading={setLoader} />
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
@@ -1253,7 +1253,7 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref3)} setLoading={setLoader} />
 
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
@@ -1304,7 +1304,7 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref4)} setLoading={setLoader} />
 
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
