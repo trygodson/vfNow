@@ -53,15 +53,21 @@ export default function UserProfileElections() {
       } else {
         if (window?.isNative) {
           if (window.isVoteMobile) {
+            setLoading(true);
             toPng(ref.current, { cacheBust: true })
               .then((dataUrl) => {
-                const link = document.createElement('a');
-                // console.log('image', dataUrl);
-                setShareGiftImage(dataUrl);
-                link.download = 'my-image-name.png';
-                link.href = dataUrl;
-                link.click();
-                // handleOnSubmit(dataUrl);
+                setLoading(false);
+
+                window.ReactNativeWebView.postMessage(
+                  JSON.stringify({
+                    shareVotePic: true,
+                    data: {
+                      name: userProfile?.username,
+                      link: `Vote and Fun Vote ${user?.name}`,
+                      imageBase64: dataUrl ?? '',
+                    },
+                  }),
+                );
               })
               .catch((err) => {
                 alert('download err', err);
