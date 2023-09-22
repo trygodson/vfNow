@@ -52,7 +52,7 @@ export default function UserProfileElections() {
         return;
       } else {
         if (window?.isNative) {
-          if (window.isVoteMobile) {
+          if (window?.isVoteMobile) {
             setLoading(true);
             toPng(ref.current, { cacheBust: true })
               .then((dataUrl) => {
