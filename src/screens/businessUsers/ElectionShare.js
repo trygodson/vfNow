@@ -61,7 +61,7 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           facebookStory: true,
                           data: {
                             name: modalElection?.business_name,
-                            link: 'www.voteandfun.com',
+                            link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
                             imageBase64: res ?? '',
                           },
                         }),
@@ -97,7 +97,7 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           telegram: true,
                           data: {
                             name: modalElection?.business_name,
-                            link: 'www.voteandfun.com',
+                            link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
                             imageBase64: res ?? '',
                           },
                         }),
@@ -132,7 +132,7 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           instagram: true,
                           data: {
                             name: modalElection?.business_name,
-                            link: 'www.voteandfun.com',
+                            link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
                             imageBase64: res ?? '',
                           },
                         }),
@@ -167,7 +167,8 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           linkedin: true,
                           data: {
                             name: modalElection?.business_name,
-                            link: 'www.voteandfun.com',
+                            link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
+
                             imageBase64: res ?? '',
                           },
                         }),
@@ -202,7 +203,8 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           whatsapp: true,
                           data: {
                             name: modalElection?.business_name,
-                            link: 'www.voteandfun.com',
+                            link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
+
                             imageBase64: res ?? '',
                           },
                         }),
@@ -237,7 +239,8 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           pinterest: true,
                           data: {
                             name: modalElection?.business_name,
-                            link: 'www.voteandfun.com',
+                            link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
+
                             imageBase64: res ?? '',
                           },
                         }),
@@ -279,7 +282,8 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           whatsapp: true,
                           data: {
                             name: modalElection?.business_name,
-                            link: 'www.voteandfun.com',
+                            link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
+
                             imageBase64: res ?? '',
                           },
                         }),
@@ -314,7 +318,8 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           telegram: true,
                           data: {
                             name: modalElection?.business_name,
-                            link: 'www.voteandfun.com',
+                            link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
+
                             imageBase64: res ?? '',
                           },
                         }),
@@ -350,7 +355,8 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           messenger: true,
                           data: {
                             name: modalElection?.business_name,
-                            link: 'www.voteandfun.com',
+                            link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
+
                             imageBase64: res ?? '',
                           },
                         }),
@@ -393,6 +399,7 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
     </>
   );
 };
+
 export default function ElectionShare() {
   const { t } = useTranslation();
   const shareImageRef = useRef();
