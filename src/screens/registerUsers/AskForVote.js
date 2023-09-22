@@ -67,7 +67,7 @@ export default function UserProfileElections() {
           toPng(ref.current, { cacheBust: true })
             .then((dataUrl) => {
               const link = document.createElement('a');
-              // console.log('image', dataUrl);
+              console.log('image', dataUrl);
               setShareGiftImage(dataUrl);
               link.download = 'my-image-name.png';
               link.href = dataUrl;
@@ -143,26 +143,26 @@ export default function UserProfileElections() {
       });
   }
 
-  const handleOnSubmit = async (image) => {
-    const response = await fetch(image);
-    // here image is url/location of image
-    const blob = await response.blob();
-    const file = new File([blob], 'share.jpg', { type: blob.type });
+  // const handleOnSubmit = async (image) => {
+  //   const response = await fetch(image);
+  //   // here image is url/location of image
+  //   const blob = await response.blob();
+  //   const file = new File([blob], 'share.jpg', { type: blob.type });
 
-    if (navigator.share) {
-      await navigator
-        .share({
-          title: 'title',
-          text: 'ajeeb testing web android',
-          url: 'url to share',
-          files: [file],
-        })
-        .then(() => console.log('Successful share'))
-        .catch((error) => console.log('Error in sharing', error));
-    } else {
-      alert(`system does not support sharing files.`);
-    }
-  };
+  //   if (navigator.share) {
+  //     await navigator
+  //       .share({
+  //         title: 'title',
+  //         text: 'ajeeb testing web android',
+  //         url: 'url to share',
+  //         files: [file],
+  //       })
+  //       .then(() => console.log('Successful share'))
+  //       .catch((error) => console.log('Error in sharing', error));
+  //   } else {
+  //     alert(`system does not support sharing files.`);
+  //   }
+  // };
 
   const ShareView = ({ shareFunc = () => null, setLoading }) => {
     return (
@@ -1128,8 +1128,7 @@ export default function UserProfileElections() {
                   </div>
                 </div>
                 <button
-                  class="btn btn-yellow 
-                  "
+                  class="btn btn-yellow"
                   onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref) : onButtonClick(ref))}
                 >
                   {t('vote.Vote')} {userProfile?.username}
@@ -1366,7 +1365,6 @@ export default function UserProfileElections() {
                       class="prod-img img-fluid"
                       src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
                       alt="ico"
-                      ref
                     />
                     <div class="business-logo">
                       <img
