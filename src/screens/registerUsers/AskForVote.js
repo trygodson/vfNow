@@ -67,12 +67,12 @@ export default function UserProfileElections() {
           toPng(ref.current, { cacheBust: true })
             .then((dataUrl) => {
               const link = document.createElement('a');
-              console.log('image', dataUrl);
+              // console.log('image', dataUrl);
               setShareGiftImage(dataUrl);
               link.download = 'my-image-name.png';
               link.href = dataUrl;
               link.click();
-              handleOnSubmit(dataUrl);
+              // handleOnSubmit(dataUrl);
             })
             .catch((err) => {
               alert('download err', err);
