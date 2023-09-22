@@ -52,37 +52,16 @@ export default function UserProfileElections() {
         return;
       } else {
         if (window?.isNative) {
-          if (window?.isVoteMobile) {
-            setLoading(true);
-            toPng(ref.current, { cacheBust: true })
-              .then((dataUrl) => {
-                setLoading(false);
-                window.ReactNativeWebView.postMessage(
-                  JSON.stringify({
-                    shareVotePic: true,
-                    data: {
-                      name: userProfile?.username,
-                      link: `Vote and Fun Vote ${user?.name}`,
-                      imageBase64: dataUrl ?? '',
-                    },
-                  }),
-                );
-              })
-              .catch((err) => {
-                alert('download err', err);
-              });
-          } else {
-            return toPng(ref.current, { cacheBust: true })
-              .then((dataUrl) => {
-                // setLoader(false);
+          return toPng(ref.current, { cacheBust: true })
+            .then((dataUrl) => {
+              // setLoader(false);
 
-                return dataUrl;
-              })
-              .catch((err) => {
-                // setMobileSharingLoading(false)
-                alert('download err', err);
-              });
-          }
+              return dataUrl;
+            })
+            .catch((err) => {
+              // setMobileSharingLoading(false)
+              alert('download err', err);
+            });
         } else {
           // alert(navigator.share);
           toPng(ref.current, { cacheBust: true })
@@ -100,6 +79,29 @@ export default function UserProfileElections() {
             });
         }
       }
+    },
+    [ref],
+  );
+  const onMobileShareVoteImageClick = useCallback(
+    (ref) => {
+      setLoading(true);
+      toPng(ref.current, { cacheBust: true })
+        .then((dataUrl) => {
+          setLoading(false);
+          window.ReactNativeWebView.postMessage(
+            JSON.stringify({
+              shareVotePic: true,
+              data: {
+                name: userProfile?.username,
+                link: `Vote and Fun Vote ${user?.name}`,
+                imageBase64: dataUrl ?? '',
+              },
+            }),
+          );
+        })
+        .catch((err) => {
+          alert('download err', err);
+        });
     },
     [ref],
   );
@@ -1127,7 +1129,7 @@ export default function UserProfileElections() {
                 <button
                   class="btn btn-yellow 
                   "
-                  onClick={() => onButtonClick(ref)}
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref) : onButtonClick(ref))}
                 >
                   {t('vote.Vote')} {userProfile?.username}
                 </button>
@@ -1209,7 +1211,10 @@ export default function UserProfileElections() {
                 <div class="vf-logo">
                   <img src="images/vote-fun-logo-100.png" alt="logo" />
                 </div>
-                <button class="btn btn-yellow" onClick={() => onButtonClick(ref2)}>
+                <button
+                  class="btn btn-yellow"
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref2) : onButtonClick(ref2))}
+                >
                   {t('vote.Vote')} {userProfile?.username}
                 </button>
               </div>
@@ -1268,7 +1273,10 @@ export default function UserProfileElections() {
                     </div>
                   </div>
                 </div>
-                <button class="btn btn-yellow" onClick={() => onButtonClick(ref3)}>
+                <button
+                  class="btn btn-yellow"
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref3) : onButtonClick(ref3))}
+                >
                   {t('vote.Vote')} {userProfile?.username}
                 </button>
               </div>
@@ -1313,7 +1321,10 @@ export default function UserProfileElections() {
                     </div>
                   </div>
                 </div>
-                <button class="btn btn-yellow btn-with-avatar" onClick={() => onButtonClick(ref4)}>
+                <button
+                  class="btn btn-yellow btn-with-avatar"
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref4) : onButtonClick(ref4))}
+                >
                   <div class="avatar">
                     <img
                       src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
@@ -1354,6 +1365,7 @@ export default function UserProfileElections() {
                       class="prod-img img-fluid"
                       src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
                       alt="ico"
+                      ref
                     />
                     <div class="business-logo">
                       <img
@@ -1363,7 +1375,10 @@ export default function UserProfileElections() {
                     </div>
                   </div>
                 </div>
-                <button class="btn btn-yellow btn-with-avatar" onClick={() => onButtonClick(ref5)}>
+                <button
+                  class="btn btn-yellow btn-with-avatar"
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref5) : onButtonClick(ref5))}
+                >
                   <div class="avatar edge">
                     <img
                       src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
@@ -1375,7 +1390,7 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref5)} setLoading={setLoader} />
 
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
@@ -1414,7 +1429,10 @@ export default function UserProfileElections() {
                   </div>
                 </div>
                 <span class="vote-txt"> {t('vote.please give me a vote')}</span>
-                <button class="btn btn-yellow btn-with-avatar" onClick={() => onButtonClick(ref6)}>
+                <button
+                  class="btn btn-yellow btn-with-avatar"
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref6) : onButtonClick(ref6))}
+                >
                   <div class="avatar edge">
                     <img
                       src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
@@ -1426,7 +1444,7 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref6)} setLoading={setLoader} />
 
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
@@ -1460,7 +1478,10 @@ export default function UserProfileElections() {
                     </div>
                   </div>
                 </div>
-                <button class="btn btn-yellow btn-with-avatar" onClick={() => onButtonClick(ref7)}>
+                <button
+                  class="btn btn-yellow btn-with-avatar"
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref7) : onButtonClick(ref7))}
+                >
                   <div class="avatar edge">
                     <img
                       src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
@@ -1472,7 +1493,7 @@ export default function UserProfileElections() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref7)} setLoading={setLoader} />
 
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
@@ -1509,13 +1530,16 @@ export default function UserProfileElections() {
                     />
                   </div>
                 </div>
-                <button class="btn btn-black" onClick={() => onButtonClick(ref8)}>
+                <button
+                  class="btn btn-black"
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref8) : onButtonClick(ref8))}
+                >
                   {t('vote.Vote')} {userProfile?.username}
                 </button>
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref8)} setLoading={setLoader} />
 
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
@@ -1677,13 +1701,16 @@ export default function UserProfileElections() {
                     <br />a vote!!!
                   </span>
                 </div>
-                <button class="btn btn-black" onClick={() => onButtonClick(ref9)}>
+                <button
+                  class="btn btn-black"
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref9) : onButtonClick(ref9))}
+                >
                   {t('vote.Vote')} {userProfile?.username}
                 </button>
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref9)} setLoading={setLoader} />
 
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
@@ -1712,13 +1739,16 @@ export default function UserProfileElections() {
                     alt="username"
                   />
                 </div>
-                <button class="btn btn-black" onClick={() => onButtonClick(ref10)}>
+                <button
+                  class="btn btn-black"
+                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref10) : onButtonClick(ref10))}
+                >
                   {t('vote.Vote')} {userProfile?.username}
                 </button>
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={onButtonClick} setLoading={setLoader} />
+            <ShareView shareFunc={() => onButtonClick(ref10)} setLoading={setLoader} />
 
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
