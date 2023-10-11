@@ -17,9 +17,9 @@ function Splash2() {
       if (window.isNative) {
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
-            notifiication: true,
+            notification: true,
             data: {
-              token: window.isNative,
+              token: window.token,
             },
           }),
         );
