@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { getUserData } from "../Functions/Functions";
-import { useTranslation } from "react-i18next";
-import "../languages/i18n";
+import { getUserData } from '../Functions/Functions';
+import { useTranslation } from 'react-i18next';
+import '../languages/i18n';
 
 function Splash2() {
   const navigate = useNavigate();
@@ -14,19 +14,28 @@ function Splash2() {
     const userData = await getUserData();
     if (userData) {
       setUser(userData);
-      console.log("userData", userData);
-      if (userData?.login_as == "business") {
-        navigate("/BusinessHome");
+      if (window.isNative) {
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            notifiication: true,
+            data: {
+              token: window.token,
+            },
+          }),
+        );
+      }
+      if (userData?.login_as == 'business') {
+        navigate('/BusinessHome');
       } else {
-        navigate("/Home");
+        navigate('/Home');
       }
     } else {
-      navigate("/Home");
+      navigate('/Home');
     }
   }
   return (
     <div class="splash-wrap container-fluid" onClick={() => RouteFtn()}>
-      <img src={"gifs/VFnormal.gif"} alt="loading..." />
+      <img src={'gifs/VFnormal.gif'} alt="loading..." />
     </div>
   );
 }
