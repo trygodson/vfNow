@@ -19,7 +19,7 @@ function Splash2() {
           JSON.stringify({
             notification: true,
             data: {
-              token: window.token,
+              token: window.isNative,
             },
           }),
         );
