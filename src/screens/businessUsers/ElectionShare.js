@@ -421,16 +421,16 @@ export default function ElectionShare() {
   }, []);
 
   const shareImageToBase64 = () => {
-    if (shareImageRef.current === null) {
-      return;
-    } else {
+    if (shareImageRef.current !== null) {
       // setMobileSharingLoading(true);
       return toPng(shareImageRef.current, { cacheBust: true })
         .then((dataUrl) => {
           // var img = new Image();
           // img.src = dataUrl;
 
-          setShareimage(dataUrl);
+          setLoader(false);
+
+          return dataUrl;
           // return dataUrl;
           // setMobileSharingLoading(false);
           // console.log('shareimage', dataUrl);
@@ -608,7 +608,12 @@ export default function ElectionShare() {
               </div>
             </div>
             <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView modalElection={modalElection} shareImage={shareimage} />
+            <ShareView
+              modalElection={modalElection}
+              // shareImage={shareimage}
+              shareFunc={shareImageToBase64}
+              setLoading={setLoader}
+            />
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
