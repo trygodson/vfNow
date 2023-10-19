@@ -71,13 +71,27 @@ function Login() {
           console.log('erorr reponse', error);
           //   reject(error.response);
         })
-        .then((resp) => {
+        .then(async (resp) => {
           setLoader(false);
           console.log('login', resp.data);
 
           if (resp.data.success) {
             // Token(resp.data.data);
             storeUserData(resp.data.data);
+            if (window?.isNative) {
+              await ApiCall(
+                'Post',
+                API.UpdateDeviceToken,
+                {
+                  device_token: window?.isNative,
+                  user_id: resp.data.data?.id,
+                },
+                {
+                  Authorization: 'Bearer ' + resp.data.data?.access_token,
+                  Accept: 'application/json',
+                },
+              );
+            }
             if (resp.data?.data?.login_as == 'business') {
               navigate('/businessHome');
             } else {

@@ -158,7 +158,7 @@ function BusinessDetail() {
     console.log('====>');
     console.log(userId);
     console.log(street_address);
-    if (name == '' || category == '' || description == '' || images.length == 0) {
+    if ((name == '' || category == '' || description == '' || images.length == 0, phone_number === '')) {
       setError(true);
       setLoader(false);
       seterror_title(t('alerts.Required Fields are empty'));
@@ -410,12 +410,13 @@ function BusinessDetail() {
                     required
                   />
                   <input
-                    type="text"
+                    type="tel"
                     class="form-control mb-3"
-                    placeholder={t('placeHolders.number')}
+                    placeholder={`${t('placeHolders.number')} *`}
                     onChange={(text) => setPhone_number(text.target.value)}
                     value={phone_number}
                     required
+                    maxLength={12}
                   />
                 </div>
                 <div class="form-group bg business-radio-encl mt-5">
@@ -587,7 +588,7 @@ function BusinessDetail() {
                                         address_components.postal_code = place[0].address_components[i].long_name;
                                         break;
                                     }
-                                    console.log(place[0].address_components[i]);
+                                    console.log(place[0].address_components[i], 'address');
                                   }
                                   console.log('premise => ' + address_components.premise);
                                   console.log('subpremise => ' + address_components.subpremise);
@@ -633,7 +634,7 @@ function BusinessDetail() {
                                     streetAddress = streetAddress + address_components.route + ' ';
                                   }
                                   console.log('>>>>>>>>>>>>>>>>>>>');
-                                  console.log(streetAddress);
+                                  console.log(streetAddress, 'postal_code', address_components.postal_code);
                                   setStreet_address(streetAddress);
                                   setZip_code(
                                     address_components.postal_code != undefined ? address_components.postal_code : '',

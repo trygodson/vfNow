@@ -615,7 +615,7 @@ export default function ElectionShare() {
               setLoading={setLoader}
             />
             <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+              <img class="img-fluid" src="/images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
           </div>
         </div>

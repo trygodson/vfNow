@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { getUserData } from '../Functions/Functions';
 import { useTranslation } from 'react-i18next';
 import '../languages/i18n';
+import apiCalls from '../services/ApiLists';
+import { ApiCall } from '../services/ApiCall';
 
 function Splash2() {
   const navigate = useNavigate();
@@ -15,13 +17,14 @@ function Splash2() {
     if (userData) {
       setUser(userData);
       if (window.isNative) {
-        window.ReactNativeWebView.postMessage(
-          JSON.stringify({
-            notification: true,
-            data: {
-              token: window.isNative,
-            },
-          }),
+        await ApiCall(
+          'Post',
+          apiCalls.UpdateDeviceToken,
+          { device_token: window.isNative, user_id: userData?.id },
+          {
+            Authorization: 'Bearer ' + userData?.access_token,
+            Accept: 'application/json',
+          },
         );
       }
       if (userData?.login_as == 'business') {
