@@ -206,6 +206,7 @@ export default function EditElection() {
   return (
     <div class="container-fluid">
       {loader && <Loader />}
+
       <TopHeader title={t('Header.newElection')} />
       {/* <!-- Content Section Starts here --> */}
       {!electionUpdate ? (

@@ -11,9 +11,9 @@ import { getUserData } from '../../Functions/Functions';
 import moment from 'moment';
 import { io, connect } from 'socket.io-client';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import { EVENTS } from '../../services/socketEvents';
+import { EVENTS, SOCKET_URL } from '../../services/socketEvents';
 
-var socket = io('wss://chat.voteandfun.com:7005/');
+const socket = io(SOCKET_URL);
 
 export default function UserChat() {
   const navigate = useNavigate();
@@ -28,11 +28,6 @@ export default function UserChat() {
   const [error_title, seterror_title] = useState('');
   const [review, setReview] = useState('');
   const [user, setUser] = useState();
-  
-  // console.log("chat user", location.state?.chatUser);
-  socket.emit('connected', {
-    user_id: user?.user_id,
-  });
 
   useEffect(async () => {
     const userData = await getUserData();
@@ -41,39 +36,35 @@ export default function UserChat() {
       setUser(userData);
       ChatMessages(userData);
       ChatReadMessages(userData);
-      console.log("oooooooooooooooooooooooooooooooo");
+
+      console.log("==================>");
       console.log(socket);
-      console.log("oooooooooooooooooooooooooooooooo");
+
+      socket.emit(EVENTS.CONNECTED, {
+        user_id: userData?.user_id.toString(),
+      });
+
       socket.on(EVENTS.ONLINE_USERS, (value) => {
         setLoader(false);
       });
-      console.log("//////////////////////////////");
-      console.log(msg);
-      socket.on(EVENTS.RECIEVE_MESSAGE, (msg) => { alert("recv msg");
-        // const { senderId, message, type, date, unread, totalUnread } = msg;
+
+      socket.on(EVENTS.RECIEVED_MESSAGE, (msg) => {
+        const { senderId, message, type, date, unread, totalUnread } = msg;
         console.log(msg, 'receive message');
         if (msg) {
-          console.log(msg, 'receive message');
           let newMsg = {
-            created_at: msg?.date,
-            message: msg?.message,
-            sender_id: msg?.senderId,
+            created_at: date,
+            message: message,
+            sender_id: senderId,
             receiver_id: location?.state?.chatUser?.user_id,
           };
           setUserFriendChatMessage((prev) => [newMsg, ...prev]);
         }
-        // setChatUsers(msg);
-        // setArrivalMessage({
-        //   message: { text: message.text },
-        //   sender: { username: sender.username },
-        // });
       });
     }
     return () => {
       socket.disconnect();
     };
-
-    //passing getData method to the lifecycle method
   }, []);
 
   function ChatReadMessages(user) {
@@ -151,7 +142,6 @@ export default function UserChat() {
 
   function ChatMessages(user) {
     var formData = new FormData();
-
     formData.append('user_id', user?.user_id);
     formData.append('chat_user_id', location.state?.chatUser?.user_id);
 
@@ -234,9 +224,12 @@ export default function UserChat() {
                 </div>
                 <div class="user-cont">
                   <span class="name text-truncate">{location.state?.chatUser?.username}</span>
+                  {location.state?.chatUser?.last_message_time ? (
                   <small class="text-truncate">
                     Last seen {moment(location.state?.chatUser?.last_message_time).format('LLL')}
-                  </small>
+                  </small>) : (
+                    <small class="text-truncate"></small>
+                  )}
                 </div>
               </h6>
 
@@ -330,13 +323,11 @@ export default function UserChat() {
                 setMsg(text.target.value);
               }}
               value={msg}
-              onKeyDown={(e) => {
-                if (e.code === 'Enter') {
-                  ChatMessageSend(msg);
-                  setMsg('');
-                }
-              }}
             />
+            <img src="images/chat-send.png" width="30" onClick={(e) => {
+                ChatMessageSend(msg);
+                setMsg('');
+              }}/>
           </div>
         </div>
       </div>

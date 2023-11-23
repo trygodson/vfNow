@@ -38,6 +38,8 @@ export default function AddressUpdate({
 
   const [ncity, setNcity] = useState('');
   const [nregion, setNregion] = useState('');
+  const [nhouseNumber, setNHouseField] = useState('');
+
   const [nstreet_address, setNstreet_address] = useState('');
   const [nzip_code, setNzip_code] = useState('');
 
@@ -47,6 +49,8 @@ export default function AddressUpdate({
 
   const [stateField, setStateField] = useState(false);
   const [cityField, setCityField] = useState(false);
+  const [houseField, setHouseField] = useState(false);
+  const [houseNumber, setHouseNumber] = useState('');
   const [streetAddressField, setStreetAddressField] = useState(false);
   const [zipCodeField, setZipCodeField] = useState(false);
   const [regionList, setRegionList] = useState([]);
@@ -125,6 +129,7 @@ export default function AddressUpdate({
     formData.append('city', city);
     formData.append('address', street_address);
     formData.append('zip_code', zip_code);
+    formData.append('house_number', houseNumber);
     setLoader(true);
     ApiCall('Post', API.businesscurrentlocationApi, formData, {
       Authorization: `Bearer ` + user?.access_token,
@@ -137,8 +142,8 @@ export default function AddressUpdate({
         //   reject(error.response);
       })
       .then((resp) => {
-        console.log(resp.data.success);
-        console.log(resp.data.data);
+        // console.log(resp.data.success);
+        // console.log(resp.data.data);
         if (resp.data.success) {
           //setAddress(false);
           //setlocationMap(false);
@@ -146,6 +151,7 @@ export default function AddressUpdate({
           setNregion(resp.data.data.state);
           setNcity(resp.data.data.city);
           setNstreet_address(resp.data.data.address);
+          setNHouseField(resp.data.data.houseField);
           setStateField(false);
           if (city) {
             setCityField(false);
@@ -172,6 +178,7 @@ export default function AddressUpdate({
     formData.append('latitude', parseFloat(latitude));
     formData.append('longitude', parseFloat(longitude));
     formData.append('is_only_online', is_only_online);
+    formData.append('house_number', houseNumber);
     if (is_only_online == 0) {
       formData.append('not_place_in_map', 0);
     } else {
@@ -206,6 +213,7 @@ export default function AddressUpdate({
             city: resp.data.data.city ? resp.data.data.city : '',
             street_address: resp.data.data.address ? resp.data.data.address : '',
             zip_code: resp.data.data.zip_code ? resp.data.data.zip_code : '',
+            house_number: resp.data.data.house_number ? resp.data.data.house_number : '',
           });
         } else {
           setAddress(false);
@@ -350,24 +358,6 @@ export default function AddressUpdate({
                 <>
                   <div class="w-100 d-inline-block mb-4 position-relative">
                     {cityField || !(ncity ? ncity : preview?.business_details?.city) ? (
-                      // <select
-                      //   value={city}
-                      //   onChange={(e) => setCity(e.target.value)}
-                      //   class="form-control"
-                      //   style={
-                      //     preview?.business_details?.city
-                      //       ? { 'background-color': '#eefbfb', 'border': '2px solid transparent' }
-                      //       : { 'background-color': '#eefbfb', 'border': '2px solid red' }
-                      //   }
-                      //   onMouseOut={(e) => {
-                      //     updateAddress();
-                      //   }}
-                      // >
-                      //   <option value="">{t('placeHolders.City')}</option>
-                      //   {citiesList?.map((item) => {
-                      //     return <option value={item}>{item}</option>;
-                      //   })}
-                      // </select>
                       <div className="w-100 mb-4" style={{ width: '100%', zIndex: 10, position: 'relative' }}>
                         <GooglePlacesAutocomplete
                           apiKey={'AIzaSyCDNRdBHLGuhW8MQOKnXn3T7Ot4p0fherE'}
@@ -594,6 +584,42 @@ export default function AddressUpdate({
                     >
                       <img src="images/img-edit-ico.svg" alt="ico" />
                     </a>
+
+                    {/* {!(ncity ? ncity : preview?.business_details?.city) ? (
+                      <span className="error-msg" style={{ 'font-size': '12px' }}>
+                        {t('validation.city')}
+                      </span>
+                    ) : (
+                      ''
+                    )} */}
+                  </div>
+                  <div class="w-100 d-inline-block mb-4 position-relative">
+                    {houseField || !(nhouseNumber ? nhouseNumber : preview?.business_details?.house_number) ? (
+                      <div className="w-100 mb-4" style={{ width: '100%', zIndex: 10, position: 'relative' }}>
+                        <input
+                          type="text"
+                          class="form-control mb-4"
+                          placeholder={t('placeHolders.house_no')}
+                          onChange={(text) => setHouseNumber(text.target.value)}
+                          value={houseNumber}
+                          required
+                        />
+                      </div>
+                    ) : (
+                      <span class="form-control pe-4">{city ? city : preview?.business_details?.house_number}</span>
+                    )}
+
+                    <div
+                      class="edit-btn"
+                      style={
+                        !(houseNumber ? houseNumber : preview?.business_details?.house_number)
+                          ? { 'bottom': '26px', zIndex: 50 }
+                          : { 'bottom': '10px', zIndex: 50 }
+                      }
+                      onClick={() => setHouseField(!houseField)}
+                    >
+                      <img src="images/img-edit-ico.svg" alt="ico" />
+                    </div>
 
                     {/* {!(ncity ? ncity : preview?.business_details?.city) ? (
                       <span className="error-msg" style={{ 'font-size': '12px' }}>

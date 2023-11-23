@@ -1,20 +1,14 @@
-import * as React from "react";
-import ReactMapGL, { Marker } from "react-map-gl";
-import blackpin from "../images/black.png";
-import yellowpin from "../images/yellow.png";
+import * as React from 'react';
+import ReactMapGL, { Marker } from 'react-map-gl';
+import blackpin from '../images/black.png';
+import yellowpin from '../images/yellow.png';
 
-import { useNavigate } from "react-router-dom";
-import API from "../services/ApiLists";
-import { ApiCall } from "../services/ApiCall";
-import { getBoundsForPoints } from "../Functions/Functions";
+import { useNavigate } from 'react-router-dom';
+import API from '../services/ApiLists';
+import { ApiCall } from '../services/ApiCall';
+import { getBoundsForPoints } from '../Functions/Functions';
 
-export default function Map({
-  longitude,
-  latitude,
-  user,
-  searching,
-  setLoader,
-}) {
+export default function Map({ longitude, latitude, user, searching, setLoader }) {
   const navigate = useNavigate();
   const [startSoon, setStartSoon] = React.useState();
   const [viewport, setViewport] = React.useState({
@@ -32,18 +26,18 @@ export default function Map({
     setLoader(true);
     var formData = new FormData();
 
-    formData.append("user_latitude", `${latitude}`);
-    formData.append("user_longitude", `${longitude}`);
-    formData.append("user_id", user?.user_id);
-    formData.append("batch_number", 0);
-    formData.append("list_ids", "0");
+    formData.append('user_latitude', `${latitude}`);
+    formData.append('user_longitude', `${longitude}`);
+    formData.append('user_id', user?.user_id);
+    formData.append('batch_number', 0);
+    formData.append('list_ids', '0');
 
-    ApiCall("Post", API.MapElectionsApi, formData, {
+    ApiCall('Post', API.MapElectionsApi, formData, {
       Authorization: `Bearer ` + user.access_token,
-      Accept: "application/json",
+      Accept: 'application/json',
     })
       .catch((error) => {
-        console.log("erorr reponse", error);
+        console.log('erorr reponse', error);
         setLoader(false);
         //   reject(error.response);
       })
@@ -75,7 +69,6 @@ export default function Map({
       style={{ padding: 0 }}
       dragPan={false}
       // onTouchMove={"pan-y"}
-      touchAction="pan-y"
       scrollZoom={false}
       boxZoom={false}
       onViewportChange={(viewport) => {
@@ -83,21 +76,21 @@ export default function Map({
       }}
       onClick={() => {
         if (!searching) {
-          navigate("/homeMap");
+          navigate('/homeMap');
         }
       }}
     >
       <Marker
         latitude={parseFloat(latitude)}
         longitude={parseFloat(longitude)}
-        anchor={"center"}
+        anchor={'center'}
         className="user-icon-marker"
       >
         <button
           class="btn btn-link p-0"
           onClick={() => {
             if (!searching) {
-              navigate("/homeMap", {
+              navigate('/homeMap', {
                 state: {
                   startSoon: startSoon,
                   longitude: longitude,
@@ -109,7 +102,7 @@ export default function Map({
         >
           <img
             class="img-fluid user-map-img"
-            src={user?.picture ? user?.picture : "images/VFAlien.png"}
+            src={user?.picture ? user?.picture : 'images/VFAlien.png'}
             width="30px"
             height="30px"
             // style={{ backgroundColor: "black", width: 25, height: 25 }}
@@ -130,7 +123,7 @@ export default function Map({
               class="btn btn-link"
               onClick={() => {
                 if (!searching) {
-                  navigate("/electionDetail", {
+                  navigate('/electionDetail', {
                     state: {
                       electionStatus: item?.election_status,
                       election: item,
@@ -142,9 +135,7 @@ export default function Map({
             >
               <img
                 class="img-fluid"
-                src={
-                  item?.election_status == "Not Started" ? blackpin : yellowpin
-                }
+                src={item?.election_status == 'Not Started' ? blackpin : yellowpin}
                 width="20px"
                 height="20px"
                 alt=""

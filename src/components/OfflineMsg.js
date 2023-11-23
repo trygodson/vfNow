@@ -1,7 +1,7 @@
 import React from 'react';
-
 import { useTranslation } from 'react-i18next';
 import '../languages/i18n';
+
 function Offline({ error, setError, title }) {
   const { t } = useTranslation();
   return (
@@ -38,7 +38,7 @@ export function DoesNotExist({ setError, title }) {
       role="dialog"
       aria-hidden="true"
       style={{
-        display: 'none',
+        display: 'block',
         backgroundColor: 'white',
       }}
       //   onClick={() => setError(false)}
@@ -51,6 +51,34 @@ export function DoesNotExist({ setError, title }) {
               <h5>{t('alerts.OOOPS')}</h5>
               <p>{t('alerts.wrong route')}</p>
               <p>{t('alerts.Get The route Write')}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function EnableLocation({ setError, title }) {
+  const { t } = useTranslation();
+  return (
+    <div
+      class="modal bg-blur reg-modal show"
+      role="dialog"
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        backgroundColor: 'white',
+      }}
+      //   onClick={() => setError(false)}
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content minh-unset" data-bs-dismiss="modal">
+          <div class="alert-bubble-img">
+            <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
+            <div class="cont">
+              <h5>{t('alerts.OOOPS')}</h5>
+              <p>{t('alerts.no location')}</p>
+              <p>{t('alerts.enable location')}</p>
             </div>
           </div>
         </div>

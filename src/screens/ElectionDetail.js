@@ -85,6 +85,8 @@ export default function BusinessPreview() {
 
   useEffect(async () => {
     const userData = await getUserData();
+
+    console.log(userData, 'userdata');
     if (userData) {
       setUser(userData);
       setLoader(true);
@@ -114,7 +116,9 @@ export default function BusinessPreview() {
       })
       .then((resp) => {
         setLoader(false);
-        console.log('election', resp.data.data);
+
+        console.log('election data', resp.data.data);
+
         setPreview(resp.data.data);
         setElection(resp.data.data.election_details);
         setFeedback(resp.data.data.feedbacks);
@@ -838,7 +842,7 @@ export default function BusinessPreview() {
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content minh-unset" data-bs-dismiss="modal">
             <div class="alert-bubble-img">
-              <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
+              <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
               <div class="cont py-3">
                 <h5>
                   {t('alerts.Hi!')} <br />

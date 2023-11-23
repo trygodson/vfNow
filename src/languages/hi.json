@@ -84,6 +84,7 @@
       "Say something": "Say something...",
       "Others": "Others",
       "email": "Email",
+      "house_no": "Number",
       "password": "Password",
       "username": "Username *",
       "business_name": "BUSINESS name *",
@@ -435,6 +436,8 @@
       "GIVE GIFT": "GIVE GIFT",
       "SHARE ELECTION": "SHARE ELECTION",
       "ADD NEW ELECTION": "ADD NEW ELECTION",
+      "NO_ELECTION": "There's No Election",
+      "NO_GIFT": "There's Are No Gift to Give",
       "To improve you performance we reccomand you to do any of the action below": "To improve you performance we reccomand you to do any of the action below",
       "Impove your Performance": "Impove your Performance",
       "SEE DETAILS": "SEE DETAILS",
@@ -453,6 +456,10 @@
     },
 
     "alerts": {
+      "wrong route": "Wrong Route",
+      "no location": "No Location Access",
+      "enable location": "Please Enable Location Permission",
+      "Get The route Write": "Pls Get The Right Route",
       "Ask user to add adress": "Ask user to add adress",
       "Your request has been sent": "Your request has been sent!",
       "Required Fields are empty": "Required Fields are empty!",

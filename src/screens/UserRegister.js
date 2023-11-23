@@ -40,10 +40,11 @@ function UserRegister() {
   const [image, setImages] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [emailModalIsOpen, setEmailModalIsOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [error_title, seterror_title] = useState('');
-
   const [regionList, setRegionList] = useState([]);
+  const [userData, setUserData] = useState('');
 
   const resizeFile = (file) => {
     imageCompression(file, options).then(function (compressedFile) {
@@ -104,6 +105,7 @@ function UserRegister() {
       .then((resp) => {
         setLoader(false);
         console.log('login facebook', resp);
+        setUserData(resp.data.data);
         if (resp.data.success) {
           storeUserData(resp.data.data);
           navigate('/userProfile');
@@ -138,7 +140,7 @@ function UserRegister() {
       .then((resp) => {
         setLoader(false);
         console.log('login google', resp);
-
+        setUserData(resp.data.data);
         if (resp.data.success) {
           storeUserData(resp.data.data);
           navigate('/userProfile');
@@ -150,7 +152,7 @@ function UserRegister() {
 
   function Registration() {
     setLoader(true);
-    if (username == '' || region == '' || email == '' || password == '' || image == '') {
+    if (username == '' || region == '' || email == '' || password == '') {
       setError(true);
       setLoader(false);
       seterror_title(t('alerts.Required Fields are empty'));
@@ -180,19 +182,73 @@ function UserRegister() {
         })
         .then((resp) => {
           setLoader(false);
-
+          setUserData(resp.data.data);
           console.log(resp.data.success);
 
           if (resp.data.success) {
             storeUserData(resp.data.data);
             setIsOpen(true);
-            navigate('/Home');
+            setEmailModalIsOpen(true);
+            //navigate('/Home');
           } else {
             setError(true);
             seterror_title(resp.data.message);
           }
         });
     }
+  }
+
+  function EmailVerification() {
+    setLoader(true);
+
+    var formData = new FormData();
+    formData.append('user_id', userData.id);
+
+    ApiCall('Post', API.BusinessRegEmailVerifyCheckApi, formData)
+      .catch((error) => {
+        setLoader(false);
+        console.log('erorr reponse', error);
+        //   reject(error.response);
+      })
+      .then((resp) => {
+        setLoader(false);
+        console.log('businessemail', resp.data);
+
+        if (resp.data.success) {
+          storeUserData(resp.data.data);
+          navigate('/Home');
+        } else {
+          removeUserData();
+          setError(true);
+          seterror_title(resp.data.message);
+        }
+      });
+  }
+
+  function EmailSendAgain() {
+    setLoader(true);
+
+    var formData = new FormData();
+    formData.append('user_id', userData.id);
+
+    ApiCall('Post', API.BusinessRegSendEmailAgainApi, formData)
+      .catch((error) => {
+        setLoader(false);
+        console.log('erorr reponse', error);
+        //   reject(error.response);
+      })
+      .then((resp) => {
+        setLoader(false);
+        console.log('businessemail again', resp.data);
+
+        if (resp.data.success) {
+          setError(true);
+          seterror_title(resp.data.message);
+        } else {
+          setError(true);
+          seterror_title(resp.data.message);
+        }
+      });
   }
 
   return (
@@ -268,7 +324,7 @@ function UserRegister() {
             <ButtonClick title={t('register_screen.sign_up')} onClickftn={() => Registration()} />
 
             {/* <p class="my-4">{t("login_screen.social_Account")}</p> */}
-            <FacebookLogin
+            {/* <FacebookLogin
               appId="373314744525035"
               autoLoad={true}
               fields="name,email,picture"
@@ -294,7 +350,7 @@ function UserRegister() {
                   {t('login_screen.Google')}
                 </button>
               )}
-            />
+            /> */}
 
             <p class=" mt-4">
               {t('register_screen.acc_exist')}{' '}
@@ -335,6 +391,51 @@ function UserRegister() {
                 <h5>{t('alerts.Hi!')} </h5>
                 <h5 class="dark">{t("alerts.let's start to win gifts for FREE")}</h5>
                 <p>{t('alerts.Please check your email to confirm your email address!!!')}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal bg-blur reg-modal show"
+        // onClick={() => {
+        //   setIsOpen(false);
+        // }}
+        role="dialog"
+        aria-hidden="true"
+        style={{
+          display: modalIsOpen ? 'block' : 'none',
+          backgroundColor: 'rgba(222, 223, 222 , 1)',
+        }}
+      >
+        <div class="modal-dialog modal-dialog-centered heigh-cal">
+          <div class="modal-content minh-unset">
+            <div class="alert-bubble-img mt-0">
+              <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
+              <div class="cont">
+                <h5>{t('alerts.Hi!')} </h5>
+
+                <p className="mb-0">{t('alerts.Please confirm your email address before you proceed')}</p>
+                <div class="button-btm-sec margin-set">
+                  <button
+                    onClick={() => EmailVerification()}
+                    data-bs-dismiss="modal"
+                    class="btn btn-yellow text-uppercase w-100 mb-0"
+                  >
+                    {t('Buttons.Continue')}
+                  </button>
+                  <button
+                    data-bs-dismiss="modal"
+                    onClick={() => EmailSendAgain()}
+                    class="text-link btn text-uppercase font-bold"
+                  >
+                    {t('Buttons.Send Email Again')}
+                  </button>
+                  {/* <a href="javascript:;" class="text-link">
+                Continue as Visitor
+              </a> */}
+                </div>
               </div>
             </div>
           </div>

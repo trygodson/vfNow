@@ -32,25 +32,27 @@ const Scan = () => {
 
   const Scanner = async (result, error) => {
     const userData = await getUserData();
-
-    if (!!result) {
-      setData(result?.text);
-      console.log("scan", JSON.parse(result?.text));
-      if (JSON.parse(result?.text)?.type == "user") {
+    var resultText = result?.text ? atob(result?.text) : '';
+    console.log(">>>>>>>>>>");
+    console.log(resultText);
+    if (!!resultText) {
+      setData(resultText);
+      console.log("scan", JSON.parse(resultText));
+      if (JSON.parse(resultText)?.type == "user") {
         navigate("/VoteUser", {
           state: {
-            user_id: JSON.parse(result?.text)?.user_id,
+            user_id: JSON.parse(resultText)?.user_id,
           },
         });
       }
-      if (JSON.parse(result?.text)?.type == "business") {
+      if (JSON.parse(resultText)?.type == "business") {
         navigate("/businessDetail", {
           state: {
-            business_id: JSON.parse(result?.text)?.business_id,
+            business_id: JSON.parse(resultText)?.business_id,
           },
         });
       }
-      if (JSON.parse(result?.text)?.type == "election") {
+      if (JSON.parse(resultText)?.type == "election") {
         if (userData && userData?.login_as === "visitor") {
           setError(true);
           seterror_title(t("alerts.Please register before scan!"));
@@ -60,12 +62,12 @@ const Scan = () => {
           //   },
           // });
         } else {
-          ScanFtnAPi(result?.text, userData);
+          ScanFtnAPi(resultText, userData);
 
           navigate("/electionDetail", {
             state: {
-              election: JSON.parse(result?.text),
-              election_date_time: JSON.parse(result?.text)?.election_date_time,
+              election: JSON.parse(resultText),
+              election_date_time: JSON.parse(resultText)?.election_date_time,
             },
           });
         }
@@ -78,9 +80,10 @@ const Scan = () => {
   };
   function ScanFtnAPi(response, users) {
     var formData = new FormData();
+    var qrResponse = response ? btoa(response) : '';
     setLoader(true);
 
-    formData.append("qr_response", response);
+    formData.append("qr_response", qrResponse);
     formData.append("user_id", users?.user_id);
 
     ApiCall("Post", API.SCANAPI, formData, {

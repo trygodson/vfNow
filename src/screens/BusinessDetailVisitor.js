@@ -13,7 +13,7 @@ import { getUserData } from '../Functions/Functions';
 import { useTranslation } from 'react-i18next';
 import '../languages/i18n';
 
-export default function BusinessPreview() {
+export default function BusinessDetailVisitorPreview() {
   let { id: business_id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,11 +47,11 @@ export default function BusinessPreview() {
   function PreviewBusiness(user) {
     var formData = new FormData();
     formData.append('user_id', user?.user_id);
-    formData.append(
-      'business_id',
-      location.state?.business_id ? location.state?.business_id : location.state.business.business_id,
-    );
-    // formData.append('business_id', business_id);
+    // formData.append(
+    //   'business_id',
+    //   location.state?.business_id ? location.state?.business_id : location.state.business.business_id,
+    // );
+    formData.append('business_id', business_id);
     formData.append('logged_user_id', user?.user_id);
 
     ApiCall('Post', API.businessPreviewApi, formData, {
@@ -119,7 +119,7 @@ export default function BusinessPreview() {
         {elections?.length == 0 && request == false && (
           <div class="row">
             <div class="col-12 alert-bubble">
-              <img class="img-fluid" src="./images/alert-bubble.svg" alt="ico" />
+              <img class="img-fluid" src={alertbubble} alt="icon" />
               <div class="alert-cont">
                 <h5 class="mb-0"> {t('alerts.OPS!!!')}</h5>
                 <p class="mb-3">{t('alerts.There is not elections')}</p>

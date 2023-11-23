@@ -9,8 +9,6 @@ import ButtonClick from '../components/ButtonClick';
 import logo from '../images/logo-black.png';
 import mail from '../images/login-mail-ico.svg';
 import pass from '../images/login-lock-ico.svg';
-import google from '../images/google-btn-ico.svg';
-import facebook from '../images/fb-btn-ico.svg';
 
 import API from '../services/ApiLists';
 import { ApiCall } from '../services/ApiCall';
@@ -18,15 +16,13 @@ import { useTranslation } from 'react-i18next';
 import '../languages/i18n';
 import { storeUserData, removeUserData } from '../Functions/Functions';
 // import FacebookLogin from "react-facebook-login";
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-import { GoogleLogin } from 'react-google-login';
 import Social from '../components/social/Social';
+// import { requestForToken } from '../Functions/firebase';
 // import { getMessaging, getToken } from "firebase/messaging";
 
 function Login() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loader, setLoader] = useState(false);
@@ -74,24 +70,24 @@ function Login() {
         .then(async (resp) => {
           setLoader(false);
           console.log('login', resp.data);
+          // const deviceToken = await requestForToken();
 
           if (resp.data.success) {
             // Token(resp.data.data);
             storeUserData(resp.data.data);
-            if (window?.isNative) {
-              await ApiCall(
-                'Post',
-                API.UpdateDeviceToken,
-                {
-                  device_token: window?.isNative,
-                  user_id: resp.data.data?.id,
-                },
-                {
-                  Authorization: 'Bearer ' + resp.data.data?.access_token,
-                  Accept: 'application/json',
-                },
-              );
-            }
+            // await ApiCall(
+            //   'Post',
+            //   API.UpdateDeviceToken,
+            //   {
+            //     device_token: deviceToken,
+            //     user_id: resp.data.data?.id,
+            //   },
+            //   {
+            //     Authorization: 'Bearer ' + resp.data.data?.access_token,
+            //     Accept: 'application/json',
+            //   },
+            // );
+
             if (resp.data?.data?.login_as == 'business') {
               navigate('/businessHome');
             } else {
@@ -244,10 +240,22 @@ function Login() {
         alert('Error occured!');
         //   reject(error.response);
       })
-      .then((resp) => {
+      .then(async (resp) => {
         setLoader(false);
         console.log('login google', resp);
-
+        // const deviceToken = await requestForToken();
+        // await ApiCall(
+        //   'Post',
+        //   API.UpdateDeviceToken,
+        //   {
+        //     device_token: deviceToken,
+        //     user_id: resp.data.data?.id,
+        //   },
+        //   {
+        //     Authorization: 'Bearer ' + resp.data.data?.access_token,
+        //     Accept: 'application/json',
+        //   },
+        // );
         if (resp.data.success) {
           storeUserData(resp.data.data);
           if (resp.data.data.login_as == 'business') navigate('/businessHome');
@@ -302,7 +310,7 @@ function Login() {
               <ButtonClick title={t('login_screen.Sign_In')} onClickftn={() => LoginUser()} />
             </div>
             <div class="form-group">
-              <p class="">{t('login_screen.social_Account')}</p>
+              {/* <p class="">{t('login_screen.social_Account')}</p> */}
               {/* <FacebookLogin
                 appId="373314744525035"
                 autoLoad={true}
@@ -338,7 +346,7 @@ function Login() {
                 )}
               /> */}
               {/* <App2/> */}
-              <Social GoogleLoginUser={GoogleLoginUser} />
+              {/* <Social GoogleLoginUser={GoogleLoginUser} /> */}
 
               <p class="btm-line">
                 {t('login_screen.no_acc')}

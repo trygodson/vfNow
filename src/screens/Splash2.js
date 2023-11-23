@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { getUserData } from '../Functions/Functions';
 import { useTranslation } from 'react-i18next';
 import '../languages/i18n';
-import apiCalls from '../services/ApiLists';
 import { ApiCall } from '../services/ApiCall';
+import API from '../services/ApiLists';
+import { requestForToken } from '../Functions/firebase';
 
 function Splash2() {
   const navigate = useNavigate();
@@ -14,18 +15,41 @@ function Splash2() {
 
   async function RouteFtn() {
     const userData = await getUserData();
+    console.log('user data', userData);
     if (userData) {
       setUser(userData);
       if (window.isNative) {
+        // window.ReactNativeWebView.postMessage(
+        //   JSON.stringify({
+        //     notification: true,
+        //     data: {
+        //       token: window.isNative,
+        //     },
+        //   }),
+        // );
         await ApiCall(
           'Post',
-          apiCalls.UpdateDeviceToken,
+          API.UpdateDeviceToken,
           { device_token: window.isNative, user_id: userData?.id },
           {
-            Authorization: 'Bearer ' + userData?.access_token,
+            Authorization: 'Bearer ' + user?.access_token,
             Accept: 'application/json',
           },
         );
+      } else {
+        // const deviceToken = await requestForToken();
+        // await ApiCall(
+        //   'Post',
+        //   API.UpdateDeviceToken,
+        //   {
+        //     device_token: deviceToken,
+        //     user_id: user?.id,
+        //   },
+        //   {
+        //     Authorization: 'Bearer ' + user?.access_token,
+        //     Accept: 'application/json',
+        //   },
+        // );
       }
       if (userData?.login_as == 'business') {
         navigate('/BusinessHome');

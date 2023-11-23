@@ -38,6 +38,7 @@ export default function GiveVote() {
     var formData = new FormData();
 
     formData.append("user_id", location.state?.user_id);
+    formData.append("logged_user_id", users.id);
 
     ApiCall("Post", API.VisitorVoteUserApi, formData, {
       Authorization: `Bearer ` + users?.access_token,
@@ -92,7 +93,13 @@ export default function GiveVote() {
           </div>
         </div>
         <div class="col-12 mb-3">
-          <button class="btn btn-black w-100 py-2">
+          <button class="btn btn-black w-100 py-2" onClick={() =>
+            navigate('/UserChat', {
+              state: {
+                chatUser: vote,
+              },
+            })
+          }>
             <img
               class="img-fluid me-2"
               src="images/message-ico.svg"

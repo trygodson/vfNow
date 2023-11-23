@@ -21,7 +21,7 @@ function MessageBox({ error, setError, title, ftn, color }) {
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content minh-unset" data-bs-dismiss="modal">
           <div class="alert-bubble-img">
-            <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
+            <img class="img-fluid" src="./images/alert-msg-bubble.png" alt="ico" />
             <div class="cont">
               <h5>{t('alerts.Hi!')}</h5>
               <h5 class={color == 'black' ? 'error-warning' : 'error-msg'}>{title}</h5>

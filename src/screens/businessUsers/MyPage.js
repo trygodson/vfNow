@@ -1,25 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-
 import TopHeader from '../../components/BusinessHeader';
 import AddressUpdate from '../../components/business/AddressUpdate';
 import BusinessFooter from '../../components/BusinessFooter';
 import BusinessCurrentLocation from '../BusinessCurrentLocation';
 import ReactMapGL, { Marker } from 'react-map-gl';
-
 import API from '../../services/ApiLists';
 import { ApiCall } from '../../services/ApiCall';
 import { useTranslation } from 'react-i18next';
 import '../../languages/i18n';
-
-import blackpin from '../../images/black.png';
-
 import call from '../../images/call-ico.svg';
 import tick from '../../images/tick-circle-ico.svg';
 import web from '../../images/web-ico.svg';
 import clock from '../../images/clock-ico.svg';
-
-import { getUserData } from '../../Functions/Functions';
+import { BiChevronRight } from 'react-icons/bi';
+import { getUserData, textSlicer } from '../../Functions/Functions';
 import { Carousel } from 'react-responsive-carousel';
 import StarRatings from 'react-star-ratings';
 import Loader from '../../components/Loader';
@@ -31,7 +26,7 @@ export default function BusinessHome() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-
+  const [selectedItems, setSelectedItems] = useState();
   const [viewport, setViewport] = React.useState();
   const [preview, setPreview] = useState();
   const [loader, setLoader] = useState(false);
@@ -223,16 +218,11 @@ export default function BusinessHome() {
           : ''),
     );
   }
-
-  console.log('=============================');
-  console.log(locations);
-  console.log(
-    !preview?.business_details.latitude && !preview?.business_details.longitude && !preview?.business_details.region,
-  );
-  console.log(preview?.business_details.latitude);
-  console.log(preview?.business_details.longitude);
-  console.log(preview?.business_details.region);
-  console.log('=============================');
+  const handleItemToggle = (item) => {
+    const updatedSelectedItems = selectedItems == item ? null : item;
+    setCategory(updatedSelectedItems?.id ?? '');
+    setSelectedItems(updatedSelectedItems);
+  };
 
   return (
     <>
@@ -543,7 +533,7 @@ export default function BusinessHome() {
                                 : { 'background-color': '#eefbfb', 'border': '2px solid red' }
                             }
                           >
-                            {preview?.business_details?.business_name ? (
+                            {/* {preview?.business_details?.business_name ? (
                               <div class="map-location-contain" style={{ 'right': '36px', 'top': '24px' }}>
                                 <div class="map-location-wrap">
                                   <div class="location-logo">
@@ -591,7 +581,7 @@ export default function BusinessHome() {
                               </div>
                             ) : (
                               ''
-                            )}
+                            )} */}
                             <Marker
                               anchor="center"
                               latitude={
@@ -605,7 +595,103 @@ export default function BusinessHome() {
                                   : 71.5249
                               }
                             >
-                              <img class="img-fluid" src={'images/businessPin.png'} width="20px" height="20px" alt="" />
+                              <div className="position-relative">
+                                {(imagePreview !== '' || name !== '') && (
+                                  <div
+                                    className="position-relative d-flex flex-column  align-items-center"
+                                    style={{
+                                      backgroundColor: 'black',
+                                      width: '185px',
+                                      padding: '7px 10px 15px 20px',
+                                      borderRadius: '5px',
+                                      right: '45%',
+                                      bottom: '3px',
+                                    }}
+                                  >
+                                    <div className="d-flex w-100 align-items-center">
+                                      <img
+                                        src={
+                                          imagePreview
+                                            ? imagePreview
+                                            : preview?.business_details?.avatar
+                                            ? preview?.business_details?.avatar
+                                            : 'images/shop-placeholder.jpg'
+                                        }
+                                        width={'45px'}
+                                        height={'45px'}
+                                        className="mr-1"
+                                        style={{
+                                          height: '45px !important',
+                                          border: '2px solid white',
+                                          borderRadius: '50%',
+                                          objectFit: 'cover',
+                                          marginTop: '-25%',
+                                          aspectRatio: 'auto',
+                                          marginRight: '6px',
+                                        }}
+                                        alt=""
+                                      />
+
+                                      <p
+                                        className="m-0"
+                                        style={{
+                                          color: 'white',
+                                          fontSize: 11,
+                                          textTransform: 'uppercase',
+
+                                          // textAlign: 'center',
+                                          width: '100%',
+                                          fontWeight: 700,
+                                        }}
+                                      >
+                                        {textSlicer(
+                                          preview?.business_details?.business_name
+                                            ? preview?.business_details?.business_name
+                                            : '',
+                                          14,
+                                        )}
+                                      </p>
+                                    </div>
+
+                                    <p
+                                      className="w-100 m-0"
+                                      style={{
+                                        color: 'white',
+                                        fontSize: 11,
+                                        flexWrap: 'wrap',
+                                        textAlign: 'left',
+                                        marginTop: '3px',
+                                        fontWeight: 500,
+                                      }}
+                                    >
+                                      {preview?.business_details.is_only_online == 1 ? (
+                                        preview?.business_details?.website
+                                      ) : (
+                                        <>
+                                          {(preview?.business_details.street_address
+                                            ? preview?.business_details.street_address
+                                            : '') + ' '}
+
+                                          {(preview?.business_details.city ? preview?.business_details.city : '') +
+                                            ' ' +
+                                            (preview?.business_details.region ? preview?.business_details.region : '') +
+                                            ' ' +
+                                            (preview?.business_details.zip_code
+                                              ? preview?.business_details.zip_code
+                                              : '')}
+                                        </>
+                                      )}
+                                    </p>
+                                  </div>
+                                )}
+                                <img
+                                  class="img-fluid"
+                                  src={'/images/businessPin.png'}
+                                  width="20px"
+                                  height="20px"
+                                  alt=""
+                                />
+                              </div>
                             </Marker>
                           </ReactMapGL>
                         )}
@@ -643,34 +729,47 @@ export default function BusinessHome() {
                         <img src={tick} alt="ico" />
                         <p>
                           {categoryField || !preview?.business_details?.category.category_id ? (
-                            <select
-                              value={category}
-                              onChange={(e) => setCategory(e.target.value)}
-                              class="form-control border-0"
+                            <div
+                              // value={category}
+                              // onChange={(e) => setCategory(e.target.value)}
+                              className="form-control border-0"
                               style={{ 'padding': '6px', 'font-size': '13px', 'background-color': '#eefbfb' }}
-                              onMouseOut={(e) => {
-                                ModifyBusiness(user);
-                              }}
+                              // onMouseOut={(e) => {
+                              //   ModifyBusiness(user);
+                              // }}
+                              data-bs-toggle="modal"
+                              data-bs-target="#cat-modal"
                             >
-                              <option value="">{t('Select Category')}</option>
-                              {categorylist?.map((item, index) => {
-                                return (
-                                  <>
-                                    <option class="text-uppercase" value={item.id}>
-                                      {item.name}
-                                    </option>
-                                    {item.sub_categories?.map((itemchild, index) => {
-                                      return (
-                                        <option class="text-uppercase" value={itemchild.id}>
-                                          {itemchild.name}
-                                        </option>
-                                      );
-                                    })}
-                                  </>
-                                );
-                              })}
-                            </select>
+                              {selectedItems ? selectedItems?.name : ''}
+                            </div>
                           ) : (
+                            // <select
+                            //   value={category}
+                            //   onChange={(e) => setCategory(e.target.value)}
+                            //   class="form-control border-0"
+                            //   style={{ 'padding': '6px', 'font-size': '13px', 'background-color': '#eefbfb' }}
+                            //   onMouseOut={(e) => {
+                            //     ModifyBusiness(user);
+                            //   }}
+                            // >
+                            //   <option value="">{t('Select Category')}</option>
+                            //   {categorylist?.map((item, index) => {
+                            //     return (
+                            //       <>
+                            //         <option class="text-uppercase" value={item.id}>
+                            //           {item.name}
+                            //         </option>
+                            //         {item.sub_categories?.map((itemchild, index) => {
+                            //           return (
+                            //             <option class="text-uppercase" value={itemchild.id}>
+                            //               {itemchild.name}
+                            //             </option>
+                            //           );
+                            //         })}
+                            //       </>
+                            //     );
+                            //   })}
+                            // </select>
                             <span>{preview?.business_details?.category.name}</span>
                           )}
                           <a href="javascript:;" onClick={() => setCategoryField(!categoryField)}>
@@ -846,6 +945,61 @@ export default function BusinessHome() {
           {/* <!-- Footer Ends here --> */}
         </div>
       )}
+      <div className="modal bg-blur" id="cat-modal">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content w-100 ">
+            <div className="d-flex flex-column align-items-center">
+              {/* <button type="button" className="btn-close __close " style={{ position: 'relative' }}>
+                Close
+              </button> */}
+              <div style={{ backgroundColor: 'offwhite', maxWidth: '400px', padding: '20px 0px' }}>
+                {categorylist?.map((item, index) => {
+                  return (
+                    <>
+                      <p
+                        key={index}
+                        className="text-uppercase mt-2"
+                        style={{ fontWeight: '500', fontSize: '14px' }}
+                        value={item.id}
+                      >
+                        {item.name}
+                      </p>
+                      {item.sub_categories?.map((itemchild, index) => {
+                        return (
+                          <div
+                            key={itemchild.name}
+                            style={{
+                              borderBottom: '0.5px solid #d3d3d3',
+                              borderTop: '0.5px solid #d3d3d3',
+                              padding: '10px 15px',
+                              marginLeft: '15px',
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              backgroundColor: selectedItems === itemchild ? 'yellow' : 'transparent',
+                            }}
+                            data-bs-dismiss="modal"
+                            onClick={() => {
+                              handleItemToggle(itemchild);
+
+                              ModifyBusiness(user);
+                            }}
+                          >
+                            <p className="text-uppercase m-0 p-0" style={{ fontSize: '14px' }}>
+                              {itemchild.name}
+                            </p>
+                            <BiChevronRight size={17} color="black" />
+                          </div>
+                        );
+                      })}
+                    </>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

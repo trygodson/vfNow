@@ -432,23 +432,10 @@ export default function ElectionDetails() {
         });
     }
   };
-  const [dd, setDd] = useState(true);
-  const performTimeConsumingTask = async () => {
-    return new Promise((resolve) =>
-      setTimeout(async () => {
-        setDd(false);
-      }, 2000),
-    );
-  };
-
-  useEffect(() => {
-    performTimeConsumingTask();
-  }, []);
 
   return (
     <>
       {loader && <Loader />}
-
       <TopHeader title={t('Header.Election_Details')} />
       <>
         <div className="container-fluid">

@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
 import './App.css';
-
 import './styles/custom-style.scss';
-
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import ScrollTop from './components/ScrollTop';
-import OfflineMsg from './components/OfflineMsg';
-
+import OfflineMsg, { EnableLocation } from './components/OfflineMsg';
 import Home from './screens/Home';
 import Scan from './screens/Scan';
 // import LoginMsg from "./screens/loginRegister/LoginMsg";
@@ -29,7 +25,6 @@ import BusinessPreview from './screens/BusinessPreview';
 import BusinessHours from './screens/BusinessHours';
 import Splash from './screens/Splash';
 import Splash2 from './screens/Splash2';
-
 import HomeMapFull from './screens/HomeMapFull';
 import HomeMapCloset from './screens/HomeMapCloset';
 import HappyWinner from './screens/HappyWinner';
@@ -37,7 +32,6 @@ import ShopFeedback from './screens/ShopFeedBack';
 import Search from './screens/Search';
 import GeneralCategory from './screens/generalCategory';
 import ElectionDetail from './screens/ElectionDetail';
-
 import BusinessHome from './screens/businessUsers/BusinessHome';
 import BusinessMap from './components/BusinessMap';
 import MyPage from './screens/businessUsers/MyPage';
@@ -77,6 +71,8 @@ import { getUserData, storeUserLatitude, storeUserLongitude, GetAppTrackFunction
 import SelectElection from './screens/businessUsers/SelectElection';
 import CopyElectionProvider from './context/copyElectionContext';
 import UnknownRoute from './screens/404';
+import BusinessDetailVisitorPreview from './screens/BusinessDetailVisitor';
+// import './messaging_init_in_sw';
 // import SocketProvider from './context/socketContext';
 // import { onMessageListener } from "./Firebase";
 // import { getMessaging, getToken, onMessage } from "firebase/messaging";
@@ -85,53 +81,12 @@ function App() {
   const [ip, setIP] = useState('');
   const [user, setUser] = useState();
   const [error, setError] = React.useState(false);
+  const [locationError, setLocationError] = useState(false);
 
-  const [isTokenFound, setTokenFound] = useState(false);
   // getTokenn(setTokenFound);
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: '', body: '' });
 
-  // useEffect(() => {
-  //   requestPermission();
-  //   const messaging = getMessaging();
-
-  //   onMessage(messaging, (payload) => {
-  //     console.log("Message received. pushhhh notification s ", payload);
-  //     // ...
-  //   });
-  //   // .then((res) => console.log("notification", res))
-  //   // .catch((err) => console.log("err", err));
-  //   getToken(messaging, {
-  //     vapidKey:
-  //       "BCTQUgXc6AHqc17xopC-cd2KsfMsi4p3v5Im9Hoov0ud3Getp9r1n1wBfhIQOGqJJqBDDN_6cpXSe7uCV6N-P-U",
-  //   })
-  //     .then((currentToken) => {
-  //       if (currentToken) {
-  //         console.log("currentToken", currentToken);
-  //         // Send the token to your server and update the UI if necessary
-  //         // ...
-  //       } else {
-  //         requestPermission();
-  //         // Show permission request UI
-  //         console.log(
-  //           "No registration token available. Request permission to generate one."
-  //         );
-  //         // ...
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log("An error occurred while retrieving token. ", err);
-  //       // ...
-  //     });
-  // }, []);
-
-  // function requestPermission() {
-  //   Notification.requestPermission().then((permission) => {
-  //     if (permission === "granted") {
-  //       console.log("Notification permission granted.");
-  //     } else console.log("noooooooo Notification permission granted.");
-  //   });
-  // }
   const getData = async () => {
     const res = await axios.get('https://geolocation-db.com/json/');
 
@@ -140,16 +95,23 @@ function App() {
     }
     setIP(res.data.IPv4);
   };
+  // onMessage(messaging, (payload) => {
+  //   console.log(payload, 'notification');
+  // });
+
+  // requestPermission();
 
   function storeCoordinates(position) {
     storeUserLatitude(position.coords.latitude);
     storeUserLongitude(position.coords.longitude);
-    console.log(position.coords.latitude, position.coords.longitude);
+    setLocationError(false);
+    // console.log(position.coords.latitude, position.coords.longitude);
   }
 
   function errorHandler(e) {
     console.log('error', e);
-    alert('location error');
+    setLocationError(true);
+    // alert('location error');
   }
 
   useEffect(async () => {
@@ -209,6 +171,8 @@ function App() {
 
   return error ? (
     <OfflineMsg error={error} setError={setError} />
+  ) : locationError ? (
+    <EnableLocation />
   ) : (
     <BrowserRouter>
       <CopyElectionProvider>
@@ -230,6 +194,8 @@ function App() {
               />
             }
           /> */}
+            <Route path="/electionDetails/:id" element={<ElectionBusinessDetail />} />
+
             <Route path="/splash" element={<Splash2 />} />
             <Route path="/Scan" element={<Scan />} />
             <Route path="/BusinessMap" element={<BusinessMap />} />
@@ -238,6 +204,7 @@ function App() {
             <Route path="/userRegister" element={<UserRegister />} />
             <Route path="/businessDetailReg" element={<BusinessDetailReg />} />
             <Route path="/businessDetail" element={<BusinessDetail />} />
+            <Route path="/businessDetailVisitor/:id" element={<BusinessDetailVisitorPreview />} />
             <Route path="/businessReg" element={<BusinessReg />} />
             {/* <Route path="/businessReg" element={<BusinessDetailReg />} /> */}
             <Route path="/loadShopPics" element={<LoadShopPics />} />
@@ -266,7 +233,6 @@ function App() {
             <Route path="/election" element={<Election />} />
             <Route path="/selectElection" element={<SelectElection />} />
             <Route path="/electionShare" element={<ElectionShare />} />
-            <Route path="/electionDetails/:id" element={<ElectionBusinessDetail />} />
             <Route path="/electionModify" element={<ElectionModify />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/friendChat" element={<FriendChat />} />
@@ -281,7 +247,6 @@ function App() {
             <Route path="/UserChat" element={<UserChat />} />
             <Route path="/UserVoteHistory" element={<UserVoteHistory />} />
             <Route path="/404" element={<UnknownRoute />} />
-
             <Route path="/GiveVote" element={<GiveVote />} />
             <Route path="/GiveVoteRank" element={<GiveVoteRank />} />
             <Route path="/VoteUser" element={<VoteUser />} />

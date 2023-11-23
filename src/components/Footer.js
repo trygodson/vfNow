@@ -22,7 +22,6 @@ export default function Footer({ user }) {
           <div
             class="modal-content minh-unset"
             data-bs-dismiss="modal"
-            data-bs-dismiss="modal"
           >
             <div class="alert-bubble-img">
               <img
@@ -138,6 +137,7 @@ export default function Footer({ user }) {
               >
                 <span class="ico-blk">
                   <img src={friends} alt="" />
+                  {/* <span class="count">10</span> */}
                 </span>
                 <p>{t("Footer.Friends")}</p>
               </Link>

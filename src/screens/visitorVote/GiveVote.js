@@ -135,7 +135,8 @@ export default function GiveVote() {
           candidate_id={user?.candidate_id}
           election_id={user?.election_id}
           VisitorVoteAdd={() =>
-            VisitorVoteAdd(user?.candidate_id, user?.election_id)
+            //VisitorVoteAdd(user?.candidate_id, user?.election_id)
+            setVoteScreen(false)
           }
         />
       ) : (

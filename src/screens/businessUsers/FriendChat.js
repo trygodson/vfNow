@@ -11,53 +11,54 @@ import { useSocket } from '../../context/socketContext';
 import { io, connect } from 'socket.io-client';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
-import { EVENTS } from '../../services/socketEvents';
+import { EVENTS, SOCKET_URL } from '../../services/socketEvents';
 import Loader from '../../components/Loader';
 
-const socket = io('wss://chat.voteandfun.com:7005/');
+const socket = io(SOCKET_URL);
+
 export default function FriendChat() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
   const [loader, setLoader] = useState(false);
   const [userFriendChatMessage, setUserFriendChatMessage] = useState([]);
+  // const [socket, setSocket] = useState(null);
   const [msg, setMsg] = useState('');
   const [user, setUser] = useState();
   const [chatUsers, setChatUsers] = useState([]);
 
-  socket.emit('connected', {
-    user_id: user?.user_id,
-  });
-
   useEffect(async () => {
     const userData = await getUserData();
     if (userData) {
-      setLoader(true);
+      setLoader(false);
       setUser(userData);
       ChatMessages(userData);
+      ChatReadMessages(userData);
+
+      console.log("==================>");
+      console.log(socket);
+      
+      socket.emit(EVENTS.CONNECTED, {
+        user_id: userData?.user_id.toString(),
+      });
 
       socket.on(EVENTS.ONLINE_USERS, (value) => {
         setLoader(false);
       });
 
-      socket.on(EVENTS.RECIEVE_MESSAGE, (msg) => {
-        // const { senderId, message, type, date, unread, totalUnread } = msg;
-
+      socket.on(EVENTS.RECIEVED_MESSAGE, (msg) => {
+        const { senderId, message, type, date, unread, totalUnread } = msg;
+        console.log(msg, 'receive message');
         if (msg) {
-          console.log(msg, 'receive message');
           let newMsg = {
-            created_at: msg?.date,
-            message: msg?.message,
-            sender_id: msg?.senderId,
+            created_at: date,
+            message: message,
+            sender_id: senderId,
             receiver_id: location?.state?.chatUser?.user_id,
           };
           setUserFriendChatMessage((prev) => [newMsg, ...prev]);
         }
-        // setChatUsers(msg);
-        // setArrivalMessage({
-        //   message: { text: message.text },
-        //   sender: { username: sender.username },
-        // });
+        setChatUsers(message);
       });
     }
 
@@ -66,32 +67,27 @@ export default function FriendChat() {
     };
   }, []);
 
-  // useEffect(() => {
-  // }, [socket]);
+  function ChatReadMessages(user) {
+    var formData = new FormData();
 
-  // useEffect(() => {
-  //   if (socket.connected) {
-  //     socket.on(EVENTS.RECIEVE_MESSAGE, (msg) => {
-  //       // const { senderId, message, type, date, unread, totalUnread } = msg;
+    formData.append('user_id', user?.user_id);
+    formData.append('chat_user_id', location.state?.chatUser?.user_id);
 
-  //       if (msg) {
-  //         console.log(msg, 'receive message');
-  //         let newMsg = {
-  //           created_at: msg?.date,
-  //           message: msg?.message,
-  //           sender_id: msg?.senderId,
-  //           receiver_id: location?.state?.chatUser?.user_id,
-  //         };
-  //         setUserFriendChatMessage((prev) => [...prev, newMsg]);
-  //       }
-  //       // setChatUsers(msg);
-  //       // setArrivalMessage({
-  //       //   message: { text: message.text },
-  //       //   sender: { username: sender.username },
-  //       // });
-  //     });
-  //   }
-  // }, [socket]);
+    ApiCall('Post', API.userReadmessageApi, formData, {
+      Authorization: `Bearer ` + user?.access_token,
+      Accept: 'application/json',
+    })
+      .catch((error) => {
+        setLoader(false);
+        console.log('erorr reponse', error);
+        //   reject(error.response);
+      })
+      .then((resp) => {
+        console.log('MSGS', resp.data);
+        // setLoader(false);
+        // setUserFriendChatMessage(resp.data.data.messages);
+      });
+  }
 
   function ChatMessages(user) {
     var formData = new FormData();
@@ -104,19 +100,15 @@ export default function FriendChat() {
       Accept: 'application/json',
     })
       .catch((error) => {
-        // setLoader(false);
         console.log('erorr reponse', error);
-        //   reject(error.response);
       })
       .then((resp) => {
-        // console.log('setUserFriendChatMessage View', resp.data.data.messages);
-        // setLoader(false);
+        console.log('setUserFriendChatMessage View', resp.data.data.messages);
         setUserFriendChatMessage(resp.data.data.messages);
       });
   }
   function ChatMessageSend(msg) {
     var formData = new FormData();
-
     formData.append('sender_id', user?.user_id);
     formData.append('receiver_id', location?.state?.chatUser?.user_id);
     formData.append('message', msg);
@@ -135,30 +127,28 @@ export default function FriendChat() {
           EVENTS.SEND_MESSAGE,
           JSON.stringify({
             senderId: user?.user_id,
-            receiverId: location?.state?.chatUser?.user_id,
+            receiverId: location.state?.chatUser?.user_id ? location.state?.chatUser?.user_id : 'admin',
             message: resp?.data?.data?.messages[0]?.message,
             type: 'user',
             date: resp?.data?.data?.messages[0]?.created_at,
-            unread: 0,
-            totalUnread: 0,
+            unread: resp?.data?.data?.messages[0]?.unread_chats,
+            totalUnread: resp?.data?.data?.messages[0]?.total_unread_chats,
           }),
         );
 
-        // console.log(
-        //   {
-        //     senderId: user?.user_id,
-        //     receiverId: location?.state?.chatUser?.user_id,
-        //     message: resp.data.data?.messages[0]?.message,
-        //     type: 'user',
-        //     date: resp.data.data?.messages[0]?.created_at,
-        //     unread: 0,
-        //     totalUnread: 0,
-        //   },
-        //   'message',
-        // );
+        console.log('send message');
+        console.log(JSON.stringify({
+          senderId: user?.user_id,
+          receiverId: location.state?.chatUser?.user_id ? location.state?.chatUser?.user_id : 'admin',
+          message: resp?.data?.data?.messages[0]?.message,
+          type: 'user',
+          date: resp?.data?.data?.messages[0]?.created_at,
+          unread: resp?.data?.data?.messages[0]?.unread_chats,
+          totalUnread: resp?.data?.data?.messages[0]?.total_unread_chats,
+        }));
 
         setLoader(false);
-        // ChatMessages(user);
+        ChatMessages(user);
       });
   }
   return (
@@ -186,7 +176,12 @@ export default function FriendChat() {
                   </div>
                   <div class="user-cont">
                     <span class="name text-truncate">{location?.state?.chatUser?.username}</span>
-                    <small class="text-truncate">Last seen Jan 11, 17:09</small>
+                    {location.state?.chatUser?.last_message_time ? (
+                    <small class="text-truncate">
+                      Last seen {moment(location.state?.chatUser?.last_message_time).format('LLL')}
+                    </small>) : (
+                      <small class="text-truncate"></small>
+                    )}
                   </div>
                 </h6>
 
@@ -313,13 +308,11 @@ export default function FriendChat() {
                   setMsg(text.target.value);
                 }}
                 value={msg}
-                onKeyDown={(e) => {
-                  if (e.code === 'Enter') {
-                    ChatMessageSend(msg);
-                    setMsg('');
-                  }
-                }}
               />
+              <img src="images/chat-send.png" width="30" onClick={(e) => {
+                ChatMessageSend(msg);
+                setMsg('');
+              }}/>
             </div>
           </div>
         </div>

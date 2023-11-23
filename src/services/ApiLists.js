@@ -2,6 +2,7 @@
 let baseUrl = 'https://apis.voteandfun.com';
 const apiCalls = {
   UpdateDeviceToken: baseUrl + '/api/device-token/update',
+
   TrackApp: baseUrl + '/api/track/connection',
   VisitorLoginApi: baseUrl + '/api/login/visitor',
   SignInApi: baseUrl + '/api/login/email',

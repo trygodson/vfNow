@@ -14,36 +14,33 @@ import businessthumb from '../images/business-thumb.jpg';
 import { useTranslation } from 'react-i18next';
 import '../languages/i18n';
 
-
 function LoadShopPics() {
-  
   const location = useLocation();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [imagePreview, setImagePreview] = useState(
-    location.state.business_place_images ? location.state.business_place_images : []
+    location.state.business_place_images ? location.state.business_place_images : [],
   );
 
   const [images, setImages] = useState(
-    location.state.business_place_images ? location.state.business_place_images : []
+    location.state.business_place_images ? location.state.business_place_images : [],
   );
 
   const [user, setUser] = useState(location.state.user);
 
-  const [selectedImage, setSelectedImage] = useState(
-    imagePreview.length > 1 ? imagePreview[0].picture : '',
-  );
+  const [selectedImage, setSelectedImage] = useState(imagePreview.length > 1 ? imagePreview[0].picture : '');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [loader, setLoader] = useState(false);
   const [error, setError] = React.useState(false);
-  const [error_title, seterror_title] = useState("");
+  const [error_title, seterror_title] = useState('');
   const [PictureId, setPictureId] = useState(1);
 
+  console.log(images, 'places images');
   function BusinessImagesApi() {
     setLoader(true);
     var formData = new FormData();
-    formData.append("business_id", location.state.business_Data.business_id);
+    formData.append('business_id', location.state.business_Data.business_id);
 
     if (images[0] && images[0].name != undefined) {
       formData.append(`picture1`, images[0].picture ? images[0].picture : images[0]);
@@ -70,18 +67,18 @@ function LoadShopPics() {
       formData.append(`description5`, images[4]?.name ? images[4]?.name : images[4]?.description);
     }
 
-    ApiCall("Post", API.businessimagesApi, formData, {
-      Authorization: "Bearer " + user?.access_token,
-      Accept: "application/json",
+    ApiCall('Post', API.businessimagesApi, formData, {
+      Authorization: 'Bearer ' + user?.access_token,
+      Accept: 'application/json',
     })
       .catch((error) => {
         setLoader(false);
-        console.log("erorr reponse", error);
+        console.log('erorr savemodification', error);
         //   reject(error.response);
       })
       .then((resp) => {
         setLoader(false);
-        console.log("sdsdsd", resp.data);
+        console.log('sdsdsd', resp.data);
         navigate(-1);
         if (resp.data.success) {
         } else {
@@ -159,6 +156,7 @@ function LoadShopPics() {
         backarrow={true}
         homebtn={false}
         title={t('Header.BUSINESS PLACE PICTURES')}
+        backarrowftn={() => navigate(-1)}
       />
 
       {/* <!-- Content Section Starts here --> */}
@@ -205,17 +203,12 @@ function LoadShopPics() {
           )}
         </div>
         <div class="col-12 mt-4 mb-4">
-          <button
-            class="btn btn-black w-100"
-            onClick={() => images?.length > 0 && BusinessImagesApi()}
-          >
-            {t("Buttons.save_modification")}
+          <button class="btn btn-black w-100" onClick={() => images?.length > 0 && BusinessImagesApi()}>
+            {t('Buttons.save_modification')}
           </button>
         </div>
       </section>
-      {error && (
-        <MessageBox error={error} setError={setError} title={error_title} />
-      )}
+      {error && <MessageBox error={error} setError={setError} title={error_title} />}
       {/* <!-- Content Section Ends here --> */}
     </div>
   );

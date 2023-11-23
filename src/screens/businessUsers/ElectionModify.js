@@ -319,6 +319,7 @@ export default function ElectionDetails({
                           />
                         </div>
                         <div class="cont-sec">
+                          <h4 class="text-truncate">{election?.business_name}</h4>
                           <div class="rating-sec">
                             <div class="rating">
                               <StarRatings

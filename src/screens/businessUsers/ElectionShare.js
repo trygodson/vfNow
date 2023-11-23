@@ -283,7 +283,6 @@ export const ShareView = ({ modalElection, shareFunc = () => null, setLoading })
                           data: {
                             name: modalElection?.business_name,
                             link: `www.voteandfun.com/electionDetails/${modalElection?.election_id}`,
-
                             imageBase64: res ?? '',
                           },
                         }),
@@ -523,9 +522,9 @@ export default function ElectionShare() {
                     onClick={() => setModalElection(item)}
                   >
                     <div class="status">
-                      <img class="bg" src="images/start-bg-length.svg" alt="" />
+                      <img class="bg" src="/images/start-bg-length.svg" alt="" />
                       <span class="dark">
-                        <img class="ico" src="images/vote-ico.svg" alt="ico" />
+                        <img class="ico" src="/images/vote-ico.svg" alt="ico" />
                         {t('filter.Started')}
                       </span>
                     </div>
@@ -540,23 +539,23 @@ export default function ElectionShare() {
                     <div class="cont">
                       <h6 class="text-truncate">{item.gift_title}</h6>
                       <p>
-                        <img class="ico" src="images/item-msg-ico.svg" alt="ico" />
+                        <img class="ico" src="/images/item-msg-ico.svg" alt="ico" />
                         <span>{item.gift_delivery_option.option}</span>
                       </p>
                       <p>
-                        <img class="ico" src="images/item-people-ico.svg" alt="ico" />
+                        <img class="ico" src="/images/item-people-ico.svg" alt="ico" />
                         <span>
                           {item.candidates_count} {t('election.Candidates')}
                         </span>
                       </p>
                       <p>
-                        <img class="ico" src="images/item-finger-ico.svg" alt="ico" />
+                        <img class="ico" src="/images/item-finger-ico.svg" alt="ico" />
                         <span>
                           {item.votes_count} {t('businessPage.Total Votes')}
                         </span>
                       </p>
                       <p>
-                        <img class="ico" src="images/item-qr-code-ico.svg" alt="ico" />
+                        <img class="ico" src="/images/item-qr-code-ico.svg" alt="ico" />
                         <span>123 {t('election.Visit at the place')}</span>
                       </p>
                       <p class="btm-tag text-success">{item.election_duration}</p>
@@ -572,7 +571,7 @@ export default function ElectionShare() {
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content modal-lay-wrap">
             <div class="layout-thumb lay-5 lay-7 elect-lay" ref={shareImageRef}>
-              <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
+              <img class="img-fluid" src="/images/layout-4-bg.png" alt="images" />
               <div class="cont">
                 <div class="prod-thumb">
                   <div class="thumb-in">
@@ -581,7 +580,7 @@ export default function ElectionShare() {
                       src={
                         modalElection?.gift_images[0]?.picture
                           ? modalElection?.gift_images[0]?.picture
-                          : 'images/product-img.jpg'
+                          : '/images/product-img.jpg'
                       }
                       alt="ico"
                     />
@@ -590,13 +589,13 @@ export default function ElectionShare() {
                         src={
                           modalElection?.business_details?.avatar
                             ? modalElection?.business_details?.avatar
-                            : 'images/logo-dummy.png'
+                            : '/images/logo-dummy.png'
                         }
                         alt=""
                       />
                     </div>
                     <div class="pls-vote-badge">
-                      <img class="img-fluid" src="images/pls-vote-vertical-badge.png" alt="img" />
+                      <img class="img-fluid" src="/images/pls-vote-vertical-badge.png" alt="img" />
                     </div>
                   </div>
                 </div>

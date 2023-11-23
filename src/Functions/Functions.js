@@ -1,87 +1,80 @@
-import { WebMercatorViewport } from "react-map-gl";
-import API from "../services/ApiLists";
-import { ApiCall } from "../services/ApiCall";
+import { WebMercatorViewport } from 'react-map-gl';
+import API from '../services/ApiLists';
+import { ApiCall } from '../services/ApiCall';
 
 export const getUserData = async () => {
   try {
-    const userData = localStorage.getItem("user");
+    const userData = localStorage.getItem('user');
     return userData != null ? JSON.parse(userData) : null;
   } catch (e) {
-    console.log("errrooo", e);
+    console.log('errrooo', e);
   }
 };
 
 export const storeUserData = async (value) => {
   try {
     const jsonValue = JSON.stringify(value);
-    localStorage.setItem("user", jsonValue);
+    localStorage.setItem('user', jsonValue);
   } catch (e) {
-    console.log("errrooo", e);
+    console.log('errrooo', e);
   }
 };
 
 export const removeUserData = async () => {
   try {
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
   } catch (e) {
-    console.log("errrooo", e);
+    console.log('errrooo', e);
   }
 };
 
 export const storeUserLongitude = async (value) => {
   try {
     const jsonValue = JSON.stringify(value);
-    localStorage.setItem("userLongitude", jsonValue);
+    localStorage.setItem('userLongitude', jsonValue);
   } catch (e) {
-    console.log("errrooo", e);
+    console.log('errrooo', e);
   }
 };
 
 export const storeUserLatitude = async (value) => {
   try {
     const jsonValue = JSON.stringify(value);
-    localStorage.setItem("userLatitude", jsonValue);
+    localStorage.setItem('userLatitude', jsonValue);
   } catch (e) {
-    console.log("errrooo", e);
+    console.log('errrooo', e);
   }
 };
 
 export const getUserLongitude = async () => {
   try {
-    const userData = localStorage.getItem("userLongitude");
+    const userData = localStorage.getItem('userLongitude');
     return userData != null ? JSON.parse(userData) : null;
   } catch (e) {
-    console.log("errrooo", e);
+    console.log('errrooo', e);
   }
 };
 
 export const getUserLatitude = async () => {
   try {
-    const userData = localStorage.getItem("userLatitude");
+    const userData = localStorage.getItem('userLatitude');
     return userData != null ? JSON.parse(userData) : null;
   } catch (e) {
-    console.log("errrooo", e);
+    console.log('errrooo', e);
   }
 };
 
 const applyToArray = (func, array) => func.apply(Math, array);
 
-export const getBoundsForPoints = (
-  points,
-  longitudetest,
-  latitudetest,
-  status
-) => {
+export const getBoundsForPoints = (points, longitudetest, latitudetest, status) => {
   // Calculate corner values of bounds
   // const pointsLong = [];
   // const pointsLat=[];
   //   if (status == "business") {
   const pointsLong = points.map((point) =>
-    point.business_details ? point.business_details.longitude : point.longitude
+    point.business_details ? point.business_details.longitude : point.longitude,
   );
-  const pointsLat = points.map((point) =>
-    point.business_details ? point.business_details.latitude : point.latitude
-  );
+  const pointsLat = points.map((point) => (point.business_details ? point.business_details.latitude : point.latitude));
   // } else {
   //   const pointsLong = points.map((point) => point.business_details.longitude);
   //   const pointsLat = points.map((point) => point.business_details.latitude);
@@ -103,25 +96,29 @@ export const getBoundsForPoints = (
   return { longitude, latitude, zoom };
 };
 
-export const GetAppTrackFunction = async (
-  user_id,
-  section_type,
-  access_token
-) => {
+export const GetAppTrackFunction = async (user_id, section_type, access_token) => {
   var formData = new FormData();
 
-  formData.append("user_id", user_id);
-  formData.append("section", section_type);
+  formData.append('user_id', user_id);
+  formData.append('section', section_type);
 
-  ApiCall("Post", API.TrackApp, formData, {
+  ApiCall('Post', API.TrackApp, formData, {
     Authorization: `Bearer ` + access_token,
-    Accept: "application/json",
+    Accept: 'application/json',
   })
     .catch((error) => {
-      console.log("App track erorr reponse", error);
+      console.log('App track erorr reponse', error);
       //   reject(error.response);
     })
     .then((resp) => {
-      console.log("App track response", resp);
+      console.log('App track response', resp);
     });
+};
+
+export const textSlicer = (data, amount) => {
+  if (data?.length >= amount) {
+    return data ? `${data.slice(0, amount)}...` : '';
+  } else {
+    return data;
+  }
 };
