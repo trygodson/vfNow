@@ -246,7 +246,7 @@ export default function BusinessHome() {
                     src={
                       preview?.business_place_images[0]?.picture
                         ? preview?.business_place_images[0]?.picture
-                        : 'images/business-thumb.jpg'
+                        : './images/business-thumb.jpg'
                     }
                     alt="ico"
                   />
@@ -889,7 +889,9 @@ export default function BusinessHome() {
                   <div class="thumb-in">
                     <img
                       class="prod-img img-fluid"
-                      src={preview?.business_details?.avatar ? preview?.business_details?.avatar : logo}
+                      src={
+                        preview?.business_place_images.length > 0 ? preview?.business_place_images[0]?.picture : logo
+                      }
                       alt="ico"
                     />
                     <div class="business-logo">

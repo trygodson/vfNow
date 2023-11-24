@@ -41,7 +41,7 @@ import {
 } from 'react-share';
 export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null, setLoading }) => {
   const { t } = useTranslation();
-  // console.log(shareImage, 'shareImage');
+  // console.log(modalElection, 'modalElection');
   return (
     <>
       <div class="ss-wrap">
@@ -58,7 +58,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                         facebookStory: true,
                         data: {
                           name: modalElection?.business_name,
-                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`,
+                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`,
                         },
                       }),
                     );
@@ -67,7 +67,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
               ) : (
                 <FacebookShareButton
                   // url={shareImage ?? ''}
-                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`}
+                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`}
                   quote={'Vote and Fun Vote'}
                   hashtag={'#vote&fun'}
                   description={'aiueo'}
@@ -89,7 +89,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                         telegram: true,
                         data: {
                           name: modalElection?.business_name,
-                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`,
+                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`,
                         },
                       }),
                     );
@@ -97,7 +97,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                 />
               ) : (
                 <TelegramShareButton
-                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`}
+                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`}
                   quote={'Vote and Fun Vote'}
                   hashtag={'#vote&fun'}
                   description={'aiueo'}
@@ -119,7 +119,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                         instagram: true,
                         data: {
                           name: modalElection?.business_name,
-                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`,
+                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`,
                         },
                       }),
                     );
@@ -127,7 +127,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                 />
               ) : (
                 <InstapaperShareButton
-                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`}
+                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`}
                   quote={'Vote and Fun Vote'}
                   hashtag={'#vote&fun'}
                   description={'aiueo'}
@@ -149,7 +149,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                         linkedin: true,
                         data: {
                           name: modalElection?.business_name,
-                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`,
+                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`,
                         },
                       }),
                     );
@@ -157,7 +157,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                 />
               ) : (
                 <LinkedinShareButton
-                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`}
+                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`}
                   quote={'Vote and Fun Vote'}
                   hashtag={'#vote&fun'}
                   description={'aiueo'}
@@ -179,7 +179,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                         whatsapp: true,
                         data: {
                           name: modalElection?.business_name,
-                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`,
+                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`,
                         },
                       }),
                     );
@@ -187,7 +187,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                 />
               ) : (
                 <WhatsappShareButton
-                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`}
+                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`}
                   quote={'Vote and Fun Vote'}
                   hashtag={'#vote&fun'}
                   description={'aiueo'}
@@ -209,7 +209,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                         pinterest: true,
                         data: {
                           name: modalElection?.business_name,
-                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`,
+                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`,
                         },
                       }),
                     );
@@ -217,7 +217,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                 />
               ) : (
                 <PinterestShareButton
-                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`}
+                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`}
                   quote={'Vote and Fun Vote'}
                   hashtag={'#vote&fun'}
                   description={'aiueo'}
@@ -246,7 +246,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                         whatsapp: true,
                         data: {
                           name: modalElection?.business_name,
-                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`,
+                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`,
                         },
                       }),
                     );
@@ -254,7 +254,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                 />
               ) : (
                 <WhatsappShareButton
-                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`}
+                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`}
                   quote={'Vote and Fun Vote'}
                   hashtag={'#vote&fun'}
                   description={'aiueo'}
@@ -276,7 +276,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                         telegram: true,
                         data: {
                           name: modalElection?.business_name,
-                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`,
+                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`,
                         },
                       }),
                     );
@@ -284,7 +284,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                 />
               ) : (
                 <TelegramShareButton
-                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`}
+                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`}
                   quote={'Vote and Fun Vote'}
                   hashtag={'#vote&fun'}
                   description={'aiueo'}
@@ -307,7 +307,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                         messenger: true,
                         data: {
                           name: modalElection?.business_name,
-                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`,
+                          link: `www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`,
                         },
                       }),
                     );
@@ -315,7 +315,7 @@ export const BusinessDetailsShareLink = ({ modalElection, shareFunc = () => null
                 />
               ) : (
                 <FacebookMessengerShareButton
-                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.election_id}`}
+                  url={`www.voteandfun.com/businessDetailVisitor/${modalElection?.business_details?.business_id}`}
                   quote={'Vote and Fun Vote'}
                   hashtag={'#vote&fun'}
                   description={'aiueo'}
