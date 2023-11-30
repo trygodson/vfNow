@@ -114,38 +114,40 @@ function App() {
     // alert('location error');
   }
 
-  useEffect(async () => {
-    navigator.geolocation.getCurrentPosition(storeCoordinates, errorHandler, {
-      enableHighAccuracy: true,
-      timeout: 20000,
-      maximumAge: 0,
-    });
+  useEffect(() => {
+    (async function () {
+      navigator.geolocation.getCurrentPosition(storeCoordinates, errorHandler, {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+      });
 
-    //passing getData method to the lifecycle method
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(function (position) {
-    //     console.log("user current location", position);
+      //passing getData method to the lifecycle method
+      // if (navigator.geolocation) {
+      //   navigator.geolocation.getCurrentPosition(function (position) {
+      //     console.log("user current location", position);
 
-    //   });
-    // }
+      //   });
+      // }
 
-    // storeUserLatitude(41.769131);
-    // storeUserLongitude(12.349572);
+      // storeUserLatitude(41.769131);
+      // storeUserLongitude(12.349572);
 
-    const userData = await getUserData();
-    if (userData) {
-      setUser(userData);
-      GetAppTrackFunction(userData?.user_id, 'app', userData?.access_token);
-      // getData();
-    } else {
-      getData();
-    }
-    window.ononline = (event) => {
-      setError(false);
-    };
-    window.onoffline = (event) => {
-      setError(true);
-    };
+      const userData = await getUserData();
+      if (userData) {
+        setUser(userData);
+        GetAppTrackFunction(userData?.user_id, 'app', userData?.access_token);
+        // getData();
+      } else {
+        getData();
+      }
+      window.ononline = (event) => {
+        setError(false);
+      };
+      window.onoffline = (event) => {
+        setError(true);
+      };
+    })();
   }, []);
 
   async function VisitorLogin(ip) {
@@ -162,10 +164,13 @@ function App() {
         //   reject(error.response);
       })
       .then((resp) => {
-        const jsonValue = JSON.stringify(resp.data.data);
-        localStorage.setItem('user', jsonValue);
-        console.log('vistor', resp.data.data);
-        GetAppTrackFunction(resp.data.data?.user_id, 'app', resp.data.data?.access_token);
+        if (resp.data.data.length === 0) {
+        } else {
+          const jsonValue = JSON.stringify(resp.data.data);
+          localStorage.setItem('user', jsonValue);
+          console.log('vistor', resp.data.data);
+          GetAppTrackFunction(resp.data.data?.user_id, 'app', resp.data.data?.access_token);
+        }
       });
   }
 

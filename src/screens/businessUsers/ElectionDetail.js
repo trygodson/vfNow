@@ -1043,8 +1043,22 @@ export default function ElectionDetails() {
               </div>
 
               {/* <!-- Modal body --> */}
-              <div className="modal-body __modal_body">
-                <div className="d-flex __info mb-2">
+              <div className="modal-body __modal_body px-0" style={{ paddingBottom: 0 }}>
+                <div className="mt-3 d-flex flex-column justify-content-center align-items-center __content">
+                  {electionQR?.qr_image && (
+                    <img
+                      className="mb-2 __barcode"
+                      // style={{ backgroundColor: 'white' }}
+                      src={'data:image/png;base64,' + electionQR?.qr_image}
+                      width={100}
+                    />
+                  )}
+                  <p className="text-center __scan">
+                    {t('alerts.Scan the QR Code to collect lots of votes')}... <br />
+                  </p>
+                </div>
+
+                <div className="d-flex __info mb-2 ">
                   <img
                     src={
                       election?.business_details?.avatar
@@ -1058,7 +1072,7 @@ export default function ElectionDetails() {
                     <h3 className="text-uppercase __sname mb-0">{election?.business_name}</h3>
 
                     <div className="rating">
-                      <ReactStars size={25} edit={false} activeColor="#FFD306" count={5} value={election?.ratings} />
+                      <ReactStars size={17} edit={false} activeColor="#FFD306" count={5} value={election?.ratings} />
                     </div>
                   </div>
                 </div>
@@ -1091,7 +1105,7 @@ export default function ElectionDetails() {
                 <p className="__title mb-0 pb-2">{election?.gift_title}</p>
               </div> */}
 
-                <div className="d-flex flex-column __content1 __c1">
+                <div className="d-flex flex-column __content1 __c1 mx-4">
                   <div className="w-100 d-flex" style={{ height: '260px', padding: '0 30px' }}>
                     <div style={{ height: '100%', width: '100%', marginRight: '5px' }}>
                       <img
@@ -1170,7 +1184,7 @@ export default function ElectionDetails() {
                     </div>
                   </div>
                 </div>
-                <div className="d-flex flex-column align-items-center __content __c1 pb-1">
+                <div className="d-flex flex-column align-items-center __content __c1 pb-1 mx-4">
                   <h6 className="small">
                     <b>{election?.election_duration} </b>
                   </h6>
@@ -1178,16 +1192,41 @@ export default function ElectionDetails() {
                     <b>{election?.election_date} </b>
                   </h6>
                 </div>
-                <div className="mt-3 d-flex flex-column justify-content-center align-items-center __content">
-                  <p className="text-center __scan">
-                    {t('alerts.Scan the QR Code to collect lots of votes')}... <br />
-                    ...{t('alerts.and win the gift')} !!!
-                  </p>
-                  {electionQR?.qr_image && <img src={'data:image/png;base64,' + electionQR?.qr_image} width={100} />}
+                <div class="__bottom_b d-flex justify-content-center align-items-center">
+                  <div class="d-flex flex-column align-items-center">
+                    <img
+                      src={'data:image/png;base64,' + electionQR?.qr_image}
+                      class="__barcode mb-2"
+                      style={{ width: '30px', height: '30px', objectFit: 'contain' }}
+                    />
+
+                    <img
+                      height="18px"
+                      src="https://github.com/trygodson/my-website/assets/81831519/cf0df3a1-9535-451a-994d-7bf9737977d0"
+                      class=""
+                    />
+                  </div>
+                  <div class="mx-3">
+                    <img src="/images/vf-pdf-logo.png" class="img-fluid __vflogo" />
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <img
+                      src={'data:image/png;base64,' + electionQR?.qr_image}
+                      class="__barcode mb-2"
+                      style={{ width: '30px', height: '30px', objectFit: 'contain' }}
+                    />
+
+                    <img
+                      height="18px"
+                      src="https://github.com/trygodson/my-website/assets/81831519/af218eb1-b033-4416-b2df-5899accbbdd9"
+                      class=""
+                    />
+                  </div>
                 </div>
-                <div className="mb-2">
+
+                {/* <div className="mb-2">
                   <img src="/images/vf-pdf-logo.png" className="img-fluid __vflogo" width={80} alt="" />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
