@@ -35,9 +35,9 @@ export default function FriendChat() {
       ChatMessages(userData);
       ChatReadMessages(userData);
 
-      console.log("==================>");
+      console.log('==================>');
       console.log(socket);
-      
+
       socket.emit(EVENTS.CONNECTED, {
         user_id: userData?.user_id.toString(),
       });
@@ -137,15 +137,17 @@ export default function FriendChat() {
         );
 
         console.log('send message');
-        console.log(JSON.stringify({
-          senderId: user?.user_id,
-          receiverId: location.state?.chatUser?.user_id ? location.state?.chatUser?.user_id : 'admin',
-          message: resp?.data?.data?.messages[0]?.message,
-          type: 'user',
-          date: resp?.data?.data?.messages[0]?.created_at,
-          unread: resp?.data?.data?.messages[0]?.unread_chats,
-          totalUnread: resp?.data?.data?.messages[0]?.total_unread_chats,
-        }));
+        console.log(
+          JSON.stringify({
+            senderId: user?.user_id,
+            receiverId: location.state?.chatUser?.user_id ? location.state?.chatUser?.user_id : 'admin',
+            message: resp?.data?.data?.messages[0]?.message,
+            type: 'user',
+            date: resp?.data?.data?.messages[0]?.created_at,
+            unread: resp?.data?.data?.messages[0]?.unread_chats,
+            totalUnread: resp?.data?.data?.messages[0]?.total_unread_chats,
+          }),
+        );
 
         setLoader(false);
         ChatMessages(user);
@@ -177,9 +179,10 @@ export default function FriendChat() {
                   <div class="user-cont">
                     <span class="name text-truncate">{location?.state?.chatUser?.username}</span>
                     {location.state?.chatUser?.last_message_time ? (
-                    <small class="text-truncate">
-                      Last seen {moment(location.state?.chatUser?.last_message_time).format('LLL')}
-                    </small>) : (
+                      <small class="text-truncate">
+                        Last seen {moment(location.state?.chatUser?.last_message_time).format('LLL')}
+                      </small>
+                    ) : (
                       <small class="text-truncate"></small>
                     )}
                   </div>
@@ -294,8 +297,8 @@ export default function FriendChat() {
             </div>
           </div> */}
           </ScrollToBottom>
-          <div class="type-area">
-            <div class="type-inside">
+          <div className="type-area" style={{ marginBottom: '30px' }}>
+            <div className="type-inside">
               <button class="btn btn-emoti">
                 <img src="images/smilie-ico.svg" alt="ico" />
               </button>
@@ -309,10 +312,14 @@ export default function FriendChat() {
                 }}
                 value={msg}
               />
-              <img src="images/chat-send.png" width="30" onClick={(e) => {
-                ChatMessageSend(msg);
-                setMsg('');
-              }}/>
+              <img
+                src="images/chat-send.png"
+                width="30"
+                onClick={(e) => {
+                  ChatMessageSend(msg);
+                  setMsg('');
+                }}
+              />
             </div>
           </div>
         </div>
