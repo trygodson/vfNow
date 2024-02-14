@@ -182,7 +182,7 @@ export default function UserProfileElections() {
                             facebookStory: true,
                             data: {
                               name: userProfile?.username,
-                              link: `Vote and Fun Vote ${user?.name}`,
+                              link: `www.voteandfun.com/GiveVote/${user?.name}`,
                               imageBase64: res ?? '',
                             },
                           }),
@@ -218,7 +218,7 @@ export default function UserProfileElections() {
                             telegram: true,
                             data: {
                               name: userProfile?.username,
-                              link: `Vote and Fun Vote ${user?.name}`,
+                              link: `www.voteandfun.com/GiveVote/${user?.name}`,
                               imageBase64: res ?? '',
                             },
                           }),
@@ -254,7 +254,7 @@ export default function UserProfileElections() {
                             instagram: true,
                             data: {
                               name: userProfile?.username,
-                              link: `Vote and Fun Vote ${user?.name}`,
+                              link: `www.voteandfun.com/GiveVote/${user?.name}`,
                               imageBase64: res ?? '',
                             },
                           }),
@@ -291,7 +291,7 @@ export default function UserProfileElections() {
                             linkedin: true,
                             data: {
                               name: userProfile?.username,
-                              link: `Vote and Fun Vote ${user?.name}`,
+                              link: `www.voteandfun.com/GiveVote/${user?.name}`,
                               imageBase64: res ?? '',
                             },
                           }),
@@ -327,7 +327,7 @@ export default function UserProfileElections() {
                             whatsapp: true,
                             data: {
                               name: userProfile?.username,
-                              link: `Vote and Fun Vote ${user?.name}`,
+                              link: `www.voteandfun.com/GiveVote/${user?.name}`,
                               imageBase64: res ?? '',
                             },
                           }),
@@ -363,7 +363,7 @@ export default function UserProfileElections() {
                             pinterest: true,
                             data: {
                               name: userProfile?.username,
-                              link: `Vote and Fun Vote ${user?.name}`,
+                              link: `www.voteandfun.com/GiveVote/${user?.name}`,
                               imageBase64: res ?? '',
                             },
                           }),
@@ -406,7 +406,7 @@ export default function UserProfileElections() {
                             whatsapp: true,
                             data: {
                               name: userProfile?.username,
-                              link: `Vote and Fun Vote ${user?.name}`,
+                              link: `www.voteandfun.com/GiveVote/${user?.name}`,
                               imageBase64: res ?? '',
                             },
                           }),
@@ -442,7 +442,7 @@ export default function UserProfileElections() {
                             telegram: true,
                             data: {
                               name: userProfile?.username,
-                              link: `Vote and Fun Vote ${user?.name}`,
+                              link: `www.voteandfun.com/GiveVote/${user?.name}`,
                               imageBase64: res ?? '',
                             },
                           }),
@@ -479,7 +479,7 @@ export default function UserProfileElections() {
                             messenger: true,
                             data: {
                               name: userProfile?.username,
-                              link: `Vote and Fun Vote ${user?.name}`,
+                              link: `www.voteandfun.com/GiveVote/${user?.name}`,
                               imageBase64: res ?? '',
                             },
                           }),
@@ -508,7 +508,7 @@ export default function UserProfileElections() {
           <div class="ss-encl">
             <div class="ss-row">
               <div class="ss-blk">
-                <img class="vf-ico" src="images/btn-vote-fun-ico.png" alt="ico" />
+                <img class="vf-ico" src="./images/btn-vote-fun-ico.png" alt="ico" />
                 <span>A SINGLE FRIEND</span>
               </div>
             </div>
