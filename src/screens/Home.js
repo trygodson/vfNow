@@ -4,7 +4,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../languages/i18n';
 
-import Loader from '../components/Loader';
+import Loader, { CustomModal } from '../components/Loader';
 import API from '../services/ApiLists';
 import { ApiCall } from '../services/ApiCall';
 
@@ -59,8 +59,8 @@ function Home() {
   const [loader, setLoader] = useState(false);
   const [search, setSearch] = useState('');
   const [type, setType] = useState('election');
-  const [showLanguage, setShowLanguage] = useState(false);
   const [ip, setIP] = useState('');
+  const [showLanguage, setShowLanguage] = useState(false);
   const [currentLanguage, setLanguage] = useState('en');
   const [searchHistory, setSearchHistory] = useState([]);
 
@@ -340,6 +340,9 @@ function Home() {
         setLoader(false);
       });
   }
+  const [privacyModal, setPrivacyModal] = useState(false);
+  const [helpModal, setHelpModal] = useState(false);
+  const [helpModalOne, setHelpModalOne] = useState(false);
 
   return (
     <div>
@@ -383,7 +386,7 @@ function Home() {
               }}
               class="btn btn-home"
             >
-              <img class="img-fluid" src="images/home-ico.svg" alt="" />
+              <img class="img-fluid" src="./images/home-ico.svg" alt="" />
             </button>
           )}
 
@@ -457,13 +460,13 @@ function Home() {
                   </li>
 
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#how-it-modal">
+                    <a class="dropdown-item" onClick={() => setHelpModal(true)}>
                       <span class="d-flex align-items-center">{t('Menus.Help')}</span>
                       <img class="arrow" src="images/arrow_back_ios-24px.svg" />
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#how-it-modal-1">
+                    <a class="dropdown-item" onClick={() => setHelpModalOne(true)}>
                       <span class="d-flex align-items-center">{t('Menus.Third-Party Licenses')}</span>
                       <img class="arrow" src="images/arrow_back_ios-24px.svg" />
                     </a>
@@ -668,14 +671,14 @@ function Home() {
           )}
 
           <div class="skew-snippet-wrap">
-            <div class="skew-snip" data-bs-toggle="modal" data-bs-target="#privacy-modal">
+            <div class="skew-snip" onClick={() => setPrivacyModal(true)}>
               <img class="img-fluid w-100" src={redSkew} alt="" />
               <div class="cont">
                 <img class="ico" src={privacy} alt="ico" />
                 <h6> {t('Home.Privacy')}</h6>
               </div>
             </div>
-            <div class="skew-snip" data-bs-toggle="modal" data-bs-target="#how-it-modal">
+            <div class="skew-snip" onClick={() => setHelpModal(true)}>
               <img class="img-fluid w-100" src={yellowSkew} alt="" />
               <div class="cont">
                 <img class="ico big" src={ques} alt="ico" />
@@ -952,135 +955,153 @@ function Home() {
         <Footer user={user && user} />
         {/* <!-- Footer Ends here --> */}
       </div>
-
-      <div class="modal bg-blur" id="privacy-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="privacy-wrapper">
-              <div class="container">
-                <div class="col-12 privacy-sec">
-                  <img src="images/privacy1-img.png" alt="Privacy" class="img-fluid mt-5" />
-                  <h3>{t('privacy.Vote and Fun privacy is very simple!!!')}</h3>
-                  <p>
-                    {t('privacy.We use only your')} <strong>{t('privacy.email - password')}</strong>
-                    {t('privacy.to recognice you, your')} <strong>{t('privacy.position')}</strong>
-                    {t(
-                      'privacy.to help you to find the closest FREE GIFT! ...and ofcourse we do not share this with anybody!!!',
-                    )}
-                    <br />
-                    <br />
-                    {t('privacy.if you win a FREE GIFT that can be shipped to you, it may')} <br />
-                    {t('privacy.required to provide an')}
-                    <strong> {t('privacy.address.')}</strong>
-                  </p>
-                  <h4>{t('privacy.END!!!')}</h4>
-                  <h4>{t('privacy.NO OTHER SENSITIVE DATA ARE SAVED SHARED OR USED!!!')}</h4>
-                  <h6 class="text-center">
-                    {t('privacy.We do not monitor your phone, computer, tablet, etc. We do not monitor your life!!!')}
-                  </h6>
-                </div>
-                <div class="privacy-main-img">
+      <CustomModal topClassName="privacy-wrapper" open={privacyModal} setOpen={setPrivacyModal}>
+        <div class="container">
+          <div class="col-12 privacy-sec">
+            <img src="./images/privacy1-img.png" alt="Privacy" class="img-fluid mt-5" />
+            <h3>{t('privacy.Vote and Fun privacy is very simple!!!')}</h3>
+            <p>
+              {t('privacy.We use only your')} <strong>{t('privacy.email - password')}</strong>
+              {t('privacy.to recognice you, your')} <strong>{t('privacy.position')}</strong>
+              {t(
+                'privacy.to help you to find the closest FREE GIFT! ...and ofcourse we do not share this with anybody!!!',
+              )}
+              <br />
+              <br />
+              {t('privacy.if you win a FREE GIFT that can be shipped to you, it may')} <br />
+              {t('privacy.required to provide an')}
+              <strong> {t('privacy.address.')}</strong>
+            </p>
+            <h4>{t('privacy.END!!!')}</h4>
+            <h4>{t('privacy.NO OTHER SENSITIVE DATA ARE SAVED SHARED OR USED!!!')}</h4>
+            <h6 class="text-center">
+              {t('privacy.We do not monitor your phone, computer, tablet, etc. We do not monitor your life!!!')}
+            </h6>
+          </div>
+          {/* <div class="privacy-main-img">
                   <img src="images/privacy2-img.png" alt="Privacy" class="img-fluid privacy-badge" />
                   <button class="btn btn-close-x p-0 mb-5">
                     <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
                   </button>
-                </div>
-              </div>
-            </div>
-          </div>
+                </div> */}
         </div>
-      </div>
-
-      <div class="modal bg-blur" id="how-it-modal">
+      </CustomModal>
+      {/* <div class="modal bg-blur" id="privacy-modal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="privacy-wrapper">
-              <div class="container">
-                <div class="col-12 privacy-sec">
-                  <img src="images/how-does-badge.svg" alt="How Does It Work" class="img-fluid mt-5 mb-2" />
-                  {!howDoesitWork ? (
-                    <>
-                      <div class="cont-hiw">
-                        <div class="numeric">1</div>
-                        <div class="cont-rgt">
-                          <h5>{t('does_work.Choose your gift')}</h5>
-                          <p>
-                            {t('does_work.find something')}
-                            <strong> {t('does_work.HERE')}</strong>
-                            <img class="img-fluid" src="images/location-ico.svg" alt="ico" />
-                          </p>
-                        </div>
-                      </div>
-                      <div class="cont-hiw">
-                        <div class="numeric">2</div>
-                        <div class="cont-rgt">
-                          <h5>{t('does_work.JOIN AS CANDIDATE')}</h5>
-                          <p>
-                            {t('does_work.click on')}
-                            <img class="img-fluid border" src="images/join-candidate-b-ico.svg" alt="ico" />
-                          </p>
-                        </div>
-                      </div>
-                      <div class="cont-hiw">
-                        <div class="numeric">3</div>
-                        <div class="cont-rgt">
-                          <h5>{t('does_work.COLLECT VOTEs FROM OTHERs')}</h5>
-                          <p>
-                            {t('does_work.click on')}
-                            <img class="img-fluid border" src="images/ask-vote-b-ico.svg" alt="ico" />
-                            {t('does_work.to share the link of your page and ask people to vote you!!!')}
-                          </p>
-                        </div>
-                      </div>
-                      <div class="cont-hiw">
-                        <div class="numeric">4</div>
-                        <div class="cont-rgt">
-                          <h5>{t('does_work.COLLECT VOTEs FROM THE BUSINESS PLACE')}</h5>
-                          <p class="img-right">
-                            {t(
-                              'does_work.go to the business place and scan the QR-Code at there, to receive much more votes!!!',
-                            )}
-                            <img class="img-fluid" src="images/scan-btn-ico.svg" alt="ico" />
-                          </p>
-                        </div>
-                      </div>
-                      <div class="cont-hiw">
-                        <div class="numeric">5</div>
-                        <div class="cont-rgt">
-                          <h5>{t('does_work.WIN')}</h5>
-                          <p class="img-right">
-                            {t(
-                              'does_work.Collect more votes than other candidate to win and receive your free gift!!!',
-                            )}
-                          </p>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <video
-                      src={'http://54.255.52.195/uploads/business/video/10add839cf2e83a907eafb542eef9458d8f3f890.mp4'}
-                      controls="controls"
-                      width={'95%'}
-                      class="mt-5 m-2"
-                      autoplay="true"
-                    />
-                  )}
-                </div>
-                <div class="static-btm">
-                  <button class="btn btn-close-x p-0 static" onClick={() => sethowDoesitWork(false)}>
-                    <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-                  </button>
-                  {!howDoesitWork && (
-                    <button onClick={() => sethowDoesitWork(!howDoesitWork)} className="bg-transparent border-0">
-                      <p>{t('does_work.CONTINUE and WATCH THE VIDEO')}</p>
-                    </button>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+
+      <CustomModal topClassName="privacy-wrapper" showClose={false} open={helpModal} setOpen={setHelpModal}>
+        <div class="container">
+          <div class="col-12 privacy-sec">
+            <img src="./images/how-does-badge.svg" alt="How Does It Work" className="img-fluid mt-5 mb-2" />
+            {!howDoesitWork ? (
+              <>
+                <div class="cont-hiw">
+                  <div class="numeric">1</div>
+                  <div class="cont-rgt">
+                    <h5>{t('does_work.Choose your gift')}</h5>
+                    <p>
+                      {t('does_work.find something')}
+                      <strong> {t('does_work.HERE')}</strong>
+                      <img class="img-fluid" src="./images/location-ico.svg" alt="ico" />
+                    </p>
+                  </div>
+                </div>
+                <div class="cont-hiw">
+                  <div class="numeric">2</div>
+                  <div class="cont-rgt">
+                    <h5>{t('does_work.JOIN AS CANDIDATE')}</h5>
+                    <p>
+                      {t('does_work.click on')}
+                      <img class="img-fluid border" src="./images/join-candidate-b-ico.svg" alt="ico" />
+                    </p>
+                  </div>
+                </div>
+                <div class="cont-hiw">
+                  <div class="numeric">3</div>
+                  <div class="cont-rgt">
+                    <h5>{t('does_work.COLLECT VOTEs FROM OTHERs')}</h5>
+                    <p>
+                      {t('does_work.click on')}
+                      <img class="img-fluid border" src="./images/ask-vote-b-ico.svg" alt="ico" />
+                      {t('does_work.to share the link of your page and ask people to vote you!!!')}
+                    </p>
+                  </div>
+                </div>
+                <div class="cont-hiw">
+                  <div class="numeric">4</div>
+                  <div class="cont-rgt">
+                    <h5>{t('does_work.COLLECT VOTEs FROM THE BUSINESS PLACE')}</h5>
+                    <p class="img-right">
+                      {t(
+                        'does_work.go to the business place and scan the QR-Code at there, to receive much more votes!!!',
+                      )}
+                      <img class="img-fluid" src="images/scan-btn-ico.svg" alt="ico" />
+                    </p>
+                  </div>
+                </div>
+                <div class="cont-hiw">
+                  <div class="numeric">5</div>
+                  <div class="cont-rgt">
+                    <h5>{t('does_work.WIN')}</h5>
+                    <p class="img-right">
+                      {t('does_work.Collect more votes than other candidate to win and receive your free gift!!!')}
+                    </p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              // <video
+              //   src={'http://54.255.52.195/uploads/business/video/10add839cf2e83a907eafb542eef9458d8f3f890.mp4'}
+              //   controls="controls"
+              //   width={'95%'}
+              //   class="mt-5 m-2"
+              //   autoplay="true"
+              // />
+
+              <iframe
+                width="100%"
+                height="250"
+                style={{ justifySelf: 'center', marginTop: '10vh' }}
+                src="https://www.youtube.com/embed/lPDvilomOY8?si=VJu--6cMExdJLg4n&amp;controls=0"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            )}
+          </div>
+          <div class="static-btm">
+            <button
+              class="btn btn-close-x p-0 static"
+              onClick={() => {
+                sethowDoesitWork(false);
+                setHelpModal(false);
+              }}
+            >
+              <img class="img-fluid" src="images/close-x.svg" alt="ico" />
+            </button>
+            {!howDoesitWork && (
+              <button onClick={() => sethowDoesitWork(!howDoesitWork)} className="bg-transparent border-0">
+                <p>{t('does_work.CONTINUE and WATCH THE VIDEO')}</p>
+              </button>
+            )}
+          </div>
+        </div>
+      </CustomModal>
+      {/* <div class="modal bg-blur" id="how-it-modal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="privacy-wrapper">
+            </div>
+          </div>
+        </div>
+      </div> */}
       {/* <!-- Wrapper Ends here -->
 
     <!-- Modal Wraps Starts here -->
@@ -1125,25 +1146,20 @@ function Home() {
       </div>
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="how-it-modal-1">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="privacy-wrapper">
-              <div class="container">
-                <div class="col-12 privacy-sec">
-                  <img src="images/third-party-skew-bg.svg" alt="How Does It Work" class="img-fluid mt-2 mb-2" />
-                  <p class="fs-12">{t('alerts.thirdParty')}</p>
-                </div>
-                <div class="static-btm">
-                  <button class="btn btn-close-x p-0 static">
-                    <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-                  </button>
-                </div>
-              </div>
-            </div>
+
+      <CustomModal topClassName="privacy-wrapper" open={helpModalOne} setOpen={setHelpModalOne}>
+        <div class="container">
+          <div class="col-12 privacy-sec">
+            <img src="./images/third-party-skew-bg.svg" alt="How Does It Work" class="img-fluid mt-2 mb-2" />
+            <p class="fs-12">{t('alerts.thirdParty')}</p>
           </div>
+          {/* <div class="static-btm">
+            <button class="btn btn-close-x p-0 static">
+              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+            </button>
+          </div> */}
         </div>
-      </div>
+      </CustomModal>
     </div>
   );
 }

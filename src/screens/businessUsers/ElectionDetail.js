@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, Link, useLocation, useParams } from 'react-router-dom';
 import TopHeader from '../../components/BusinessHeader';
 import BusinessFooter from '../../components/BusinessFooter';
-import Loader from '../../components/Loader';
+import Loader, { CustomModal } from '../../components/Loader';
 import MessageBox from '../../components/MessageBox';
 import ImageView from '../../components/ImageView';
 import ProgressBar from '../../components/ProgressBar';
@@ -22,6 +22,7 @@ import { useCopyElectionContext } from '../../context/copyElectionContext';
 import CustomCircularProgressBar from '../../components/CircularProgressBar';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { PdfExportFormat } from '../../components/ElectionPdf';
+import { ProgressNetworkBars } from '../../components/business/progressNetworkbars';
 
 export default function ElectionDetails() {
   const ref = useRef();
@@ -68,6 +69,20 @@ export default function ElectionDetails() {
 
   const [selectedModalPicture, setSelectedModalPicture] = useState();
   const { setCopyElection } = useCopyElectionContext();
+
+  const [tcModal, setTcModal] = useState(false);
+  const [pdfModal, setPdfModal] = useState(false);
+  const [giftFreeModalOne, setGiftFreeModalOne] = useState(false);
+  const [giftFreeModalTwo, setGiftFreeModalTwo] = useState(false);
+  const [giftFreeModalThree, setGiftFreeModalThree] = useState(false);
+  const [giftScanModal, setGiftScanModal] = useState(false);
+  const [confirmShipmentModal, setConfirmShipmentModal] = useState(false);
+  const [message8, setMessage8] = useState(false);
+  const [message9, setMessage9] = useState(false);
+  const [message10, setMessage10] = useState(false);
+  const [message13, setMessage13] = useState(false);
+  const [msgFeed, setMsgFeed] = useState(false);
+  const [share8Modal, setShare8Modal] = useState(false);
 
   useEffect(() => {
     if (election?.gift_images && election?.gift_images.length > 0) {
@@ -292,7 +307,13 @@ export default function ElectionDetails() {
 
   function Closeftn() {
     return (
-      <button class="btn btn-close-x p-0 mb-5" data-bs-dismiss="modal" onClick={() => setscanShow(false)}>
+      <button
+        class="btn btn-close-x p-0 mb-5"
+        onClick={() => {
+          setscanShow(false);
+          setGiftScanModal(false);
+        }}
+      >
         <img class="img-fluid" src="images/close-x.svg" alt="ico" />
       </button>
     );
@@ -444,7 +465,6 @@ export default function ElectionDetails() {
   useEffect(() => {
     performTimeConsumingTask();
   }, []);
-
   return (
     <>
       {loader && <Loader />}
@@ -669,7 +689,12 @@ export default function ElectionDetails() {
                     <div className="cont">
                       <img className="ico" src="/images/candidate-logo.png" alt="ico" />
                       <hr />
-                      <img className="chart-img img-fluid" src="/images/bar-chat.png" alt="ico" />
+                      <ProgressNetworkBars
+                        number={preview?.performance?.better_than}
+                        height="150px"
+                        // number={preview?.performance?.vf_value}
+                      />
+                      {/* <img className="chart-img img-fluid" src="/images/bar-chat.png" alt="ico" /> */}
                       <hr />
                       <span className="yellow">{t('businessPage.Better than')}</span>
                       <h5>{preview?.performance?.better_than} %</h5>
@@ -730,8 +755,9 @@ export default function ElectionDetails() {
                 <button
                   className={`btn btn-yellow  btn-clip mt-0 ${election?.election_status == 'Ended' && 'btn-white'}`}
                   disabled={election?.election_status == 'Ended' ? true : false}
-                  data-bs-toggle={'modal'}
-                  data-bs-target={'#share8-modal'}
+                  // data-bs-toggle={'modal'}
+                  // data-bs-target={'#share8-modal'}
+                  onClick={() => share8Modal(true)}
                 >
                   <span>{t('Buttons.SHARE')}</span>
                   <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
@@ -781,8 +807,9 @@ export default function ElectionDetails() {
                     {election?.gift_delivery_option.option == 'On-line delivery' && (
                       <button
                         className="btn btn-yellow btn-clip mt-0"
-                        data-bs-toggle="modal"
-                        data-bs-target="#gift-free-3"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#gift-free-3"
+                        onClick={() => setGiftFreeModalThree(true)}
                       >
                         <span>{t('Buttons.GIVE FREE GIFT')}</span>
                         <span className="txt-ico">
@@ -797,8 +824,9 @@ export default function ElectionDetails() {
                     {election?.gift_delivery_option.option == 'Shipped' && (
                       <button
                         className="btn btn-yellow btn-clip mt-0"
-                        data-bs-toggle="modal"
-                        data-bs-target="#gift-free-2"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#gift-free-2"
+                        onClick={() => setGiftFreeModalTwo(true)}
                       >
                         <span>{t('Buttons.GIVE FREE GIFT')}</span>
                         <span className="txt-ico">
@@ -813,8 +841,9 @@ export default function ElectionDetails() {
                     {election?.gift_delivery_option.option == 'Self collection at the shop' && (
                       <button
                         className="btn btn-yellow btn-clip mt-0"
-                        data-bs-toggle="modal"
-                        data-bs-target="#gift-free-1"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#gift-free-1"
+                        onClick={() => setGiftFreeModalOne(true)}
                       >
                         <span>{t('Buttons.GIVE FREE GIFT')}</span>
                         <span className="txt-ico">
@@ -831,8 +860,9 @@ export default function ElectionDetails() {
                 {feedback?.length > 0 ? (
                   <button
                     className="btn btn-yellow btn-clip mt-0"
-                    data-bs-toggle="modal"
-                    data-bs-target="#messages-feed-10"
+                    // data-bs-toggle="modal"
+                    // data-bs-target="#messages-feed-10"
+                    onClick={() => setMessage10(true)}
                   >
                     <span>{t('Buttons.Reply to Feedback')}</span>
                     <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
@@ -952,8 +982,7 @@ export default function ElectionDetails() {
               <button
                 className={`btn btn-yellow btn-clip ${election?.election_status == 'Ended' && 'btn-white'}`}
                 disabled={election?.election_status == 'Ended' ? true : false}
-                data-bs-toggle="modal"
-                data-bs-target="#tc-modal"
+                onClick={() => setTcModal(true)}
               >
                 <span>{t('Buttons.CONTACT ALL CANDIDATE')}</span>
                 <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
@@ -961,8 +990,9 @@ export default function ElectionDetails() {
               <button
                 className={`btn btn-yellow btn-clip mt-0 ${election?.election_status == 'Ended' && 'btn-white'}`}
                 disabled={election?.election_status == 'Ended' ? true : false}
-                data-bs-toggle="modal"
-                data-bs-target="#pdfModal"
+                // data-bs-toggle="modal"
+                // data-bs-target="#pdfModal"
+                onClick={() => setPdfModal(true)}
               >
                 <span>{t('Buttons.ELECTION QR-CODE')}</span>
                 <img className="arrow" src="/images/arrow-ico.svg" alt="ico" />
@@ -980,60 +1010,62 @@ export default function ElectionDetails() {
         <!-- Footer Starts here --> */}
 
         <BusinessFooter />
-        <div className="modal bg-blur" id="tc-modal">
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              {ischatmsgSend && (
-                <div className="alert-bubble-img rect-pop mt-4">
-                  <img className="img-fluid" src="/images/rectangle-popup-1.svg" alt="ico" />
-                  <div className="cont">
-                    <h6 className="text-center">{t('alerts.Hey')}!</h6>
-                    <img className="finger-ico img-fluid mb-2" src="/images/alert-finger-ico.png" alt="ico" />
-                    <p className="dark-txt mb-2">
-                      {t('alerts.You are going to')} <strong>{t('alerts.write to all your candidate')}</strong>{' '}
-                      {t('alerts.Please be professionale and respectfull')}
-                    </p>
-                    <p className="dark-txt mb-2">
-                      <strong>{t('alerts.Are you sure to proceesd?')}</strong>
-                    </p>
-                    <p>
-                      <button className="btn btn-black fs-12 py-1 px-5" onClick={() => setIsChatmsgSend(false)}>
-                        {t('alerts.YES')}
-                      </button>
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              <div className="bottom-input">
-                <div className={`type-area ${ischatmsgSend ? 'opacity-25' : 'opacity-1'} `}>
-                  <div className="type-inside">
-                    <button className="btn btn-emoti">
-                      <img src="/images/smilie-ico.svg" alt="ico" />
-                    </button>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Say something..."
-                      onChange={(text) => setChatmsgSend(text.target.value)}
-                      value={chatmsgSend}
-                      required
-                      onKeyDown={(e) => {
-                        if (e.code === 'Enter') {
-                          userchatSendCandidateApiftn();
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-                <button className="btn btn-close-x p-0">
-                  <img className="img-fluid" src="/images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-                </button>
+        <CustomModal topClassName="" showClose={false} open={tcModal} setOpen={setTcModal}>
+          {ischatmsgSend && (
+            <div className="alert-bubble-img rect-pop mt-4">
+              <img className="img-fluid" src="/images/rectangle-popup-1.svg" alt="ico" />
+              <div className="cont">
+                <h6 className="text-center">{t('alerts.Hey')}!</h6>
+                <img className="finger-ico img-fluid mb-2" src="/images/alert-finger-ico.png" alt="ico" />
+                <p className="dark-txt mb-2">
+                  {t('alerts.You are going to')} <strong>{t('alerts.write to all your candidate')}</strong>{' '}
+                  {t('alerts.Please be professionale and respectfull')}
+                </p>
+                <p className="dark-txt mb-2">
+                  <strong>{t('alerts.Are you sure to proceesd?')}</strong>
+                </p>
+                <p>
+                  <button className="btn btn-black fs-12 py-1 px-5" onClick={() => setIsChatmsgSend(false)}>
+                    {t('alerts.YES')}
+                  </button>
+                </p>
               </div>
             </div>
+          )}
+
+          <div className="bottom-input">
+            <div className={`type-area ${ischatmsgSend ? 'opacity-25' : 'opacity-1'} `}>
+              <div className="type-inside">
+                <button className="btn btn-emoti">
+                  <img src="/images/smilie-ico.svg" alt="ico" />
+                </button>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Say something..."
+                  onChange={(text) => setChatmsgSend(text.target.value)}
+                  value={chatmsgSend}
+                  required
+                  onKeyDown={(e) => {
+                    if (e.code === 'Enter') {
+                      userchatSendCandidateApiftn();
+                    }
+                  }}
+                />
+              </div>
+            </div>
+            <button className="btn btn-close-x p-0">
+              <img className="img-fluid" src="/images/close-x.svg" alt="ico" onClick={() => setTcModal(false)} />
+            </button>
           </div>
-        </div>
-        <div className="modal py-5" id="pdfModal">
+        </CustomModal>
+        {/* <div className="modal bg-blur" id="tc-modal">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+            </div>
+          </div>
+        </div> */}
+        <CustomModal topClassName="" showClose={false} open={pdfModal} setOpen={setPdfModal}>
           <div ref={ref} className="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollabl">
             <div className="modal-content rounded-0 position-relative">
               {/* <!-- Modal Header --> */}
@@ -1289,568 +1321,557 @@ export default function ElectionDetails() {
               )}
             </ReactToPdf> */}
           </div>
-        </div>
+        </CustomModal>
 
-        <div className="modal bg-blur" id="gift-free-1">
-          <div className="modal-dialog modal-dialog-centered" data-bs-dismiss="modal">
-            <div className="modal-content">
-              <div className="free-gift-info mt-4">
-                <img className="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
-                <h6 className="text-center text-danger">
-                  {t('alerts.IMPORTANT')}
-                  <br />
-                  {t('alerts.Gift are free!!!')}
-                </h6>
-                <div className="edge-fade mt-4">
-                  {t('alerts.This gift shall be given')}
-                  <span>
-                    <img src="/images/at-the-shop-ico.svg" alt="" />
-                    {t('election.At the place')}
-                  </span>
-                </div>
-                <hr className="divider" />
-                <p className="fs-16">{t('election.WINNER can be recognized scanning his QR-Code')}</p>
-                <p className="fs-16">
-                  <strong>{t('election.Ask winner to show the QR-CODE')}</strong>
-                </p>
-              </div>
-              <div className="bottom-input px-3">
-                <button
-                  className="btn btn-black mb-4 w-100 py-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#gift-scan"
-                  onClick={() => setscanShow(true)}
-                >
-                  {t('election.SCAN QR-CODE')}
-                </button>
-              </div>
+        <CustomModal topClassName="" showClose={false} open={giftFreeModalOne} setOpen={setGiftFreeModalOne}>
+          <div className="free-gift-info mt-4">
+            <img className="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
+            <h6 className="text-center text-danger">
+              {t('alerts.IMPORTANT')}
+              <br />
+              {t('alerts.Gift are free!!!')}
+            </h6>
+            <div className="edge-fade mt-4">
+              {t('alerts.This gift shall be given')}
+              <span>
+                <img src="/images/at-the-shop-ico.svg" alt="" />
+                {t('election.At the place')}
+              </span>
             </div>
+            <hr className="divider" />
+            <p className="fs-16">{t('election.WINNER can be recognized scanning his QR-Code')}</p>
+            <p className="fs-16">
+              <strong>{t('election.Ask winner to show the QR-CODE')}</strong>
+            </p>
           </div>
-        </div>
+          <div className="bottom-input px-3">
+            <button
+              className="btn btn-black mb-4 w-100 py-2"
+              // data-bs-toggle="modal"
+              // data-bs-target="#gift-scan"
+              onClick={() => {
+                setGiftFreeModalOne(false);
+                setGiftScanModal(true);
+                setscanShow(true);
+              }}
+            >
+              {t('election.SCAN QR-CODE')}
+            </button>
+          </div>
+        </CustomModal>
 
-        <div className="modal bg-blur" id="gift-scan">
+        <CustomModal topClassName="" showClose={false} open={giftScanModal} setOpen={setGiftScanModal}>
+          <div className="container-fluid scanner-qr-code p-0">
+            {loader && <Loader />}
+            {scanShow && (
+              <QrReader
+                constraints={{ facingMode: 'environment' }}
+                onResult={(result, error) => {
+                  Scanner(result, error);
+                  console.log('test');
+                }}
+                containerStyle={{ height: '100%' }}
+                videoStyle={{ height: 800 }}
+                ViewFinder={() => Closeftn()}
+              />
+            )}
+
+            {Textftn()}
+          </div>
+        </CustomModal>
+        {/* <div className="modal bg-blur" id="gift-scan">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
-              <div className="container-fluid scanner-qr-code p-0">
-                {loader && <Loader />}
-                {scanShow && (
-                  <QrReader
-                    constraints={{ facingMode: 'environment' }}
-                    onResult={(result, error) => {
-                      Scanner(result, error);
-                      console.log('test');
-                    }}
-                    containerStyle={{ height: '100%' }}
-                    videoStyle={{ height: 800 }}
-                    ViewFinder={() => Closeftn()}
+            </div>
+          </div>
+        </div> */}
+
+        <CustomModal topClassName="minh-unset" showClose={false} open={giftshow} setOpen={setgiftshow}>
+          <div className="gift-rib min-mt z9">
+            <a href="javascript:;" className="gift-ribbon-wrap">
+              <img className="img-fluid" src="/images/gift-ribbon.png" alt="images" />
+              <div className="gift-img">
+                <div className="img-wrap">
+                  <img
+                    src={election?.gift_images[0] ? election?.gift_images[0]?.picture : 'images/product-img.jpg'}
+                    alt="ProductName"
                   />
-                )}
-
-                {Textftn()}
+                  <span className="img-count">
+                    <img className="ico" src="/images/camera-ico.svg" alt="" />1
+                  </span>
+                </div>
+                <span className="title text-truncate">{election?.gift_title}</span>
+                <span className="gift-title text-truncate text-center">{t('alerts.GIVE THE FREE GIFT')}</span>
               </div>
+            </a>
+          </div>
+          <div className="winner-sec modal-pop">
+            <img className="img-fluid top-light" src="/images/light-top.svg" alt="image" />
+            <div className="winner-img">
+              <img src={winner?.avatar ? winner?.avatar : '/images/avatar-big-1.png'} alt="username" />
+            </div>
+            <div className="winner-badge">
+              <div className="badge-cont">
+                <h6 className="px-5 text-truncate">{winner?.name}</h6>
+                <p>{t('election.The Winner')}r</p>
+                <span className="win-place">01</span>
+              </div>
+              <img className="img-fluid" src="/images/winner-badge.svg" alt="image" />
+            </div>
+            <h6 className="confirm">{t('alerts.Confirm that you gave the gift')}</h6>
+            <div className="px-3 mt-4 mb-4 z9">
+              <button
+                className="btn btn-black w-100 mb-4"
+                // data-bs-toggle="modal"
+                // data-bs-target="#confirm-shipment"
+                onClick={() => {
+                  setgiftshow(false);
+                  setConfirmShipmentModal(true);
+                }}
+              >
+                <small>{t('user_register.CONFIRM')}</small>
+              </button>
+              <button
+                className="btn btn-white w-100"
+                onClick={() => {
+                  setgiftshow(false);
+                  setMessage8(true);
+                }}
+              >
+                <small>{t('user_register.WINNER REFUSED THE GIFT')}</small>
+              </button>
             </div>
           </div>
-        </div>
-        {giftshow && (
-          <div
-            className="modal bg-blur show"
-            role="dialog"
-            aria-hidden="true"
-            style={{
-              display: giftshow ? 'block' : 'none',
-              backgroundColor: 'rgba(222, 223, 222 , 0.9)',
-              marginTop: 60,
-              transition: 'all 5s ease-in',
-              height: 'auto',
-            }}
-          >
-            {/* <div className="modal bg-blur" id="free-gift-received-1"> */}
-            <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content minh-unset" data-bs-dismiss="modal" onClick={() => setgiftshow(false)}>
-                <div className="gift-rib min-mt z9">
-                  <a href="javascript:;" className="gift-ribbon-wrap">
-                    <img className="img-fluid" src="/images/gift-ribbon.png" alt="images" />
-                    <div className="gift-img">
-                      <div className="img-wrap">
-                        <img
-                          src={election?.gift_images[0] ? election?.gift_images[0]?.picture : 'images/product-img.jpg'}
-                          alt="ProductName"
-                        />
-                        <span className="img-count">
-                          <img className="ico" src="/images/camera-ico.svg" alt="" />1
-                        </span>
-                      </div>
-                      <span className="title text-truncate">{election?.gift_title}</span>
-                      <span className="gift-title text-truncate text-center">{t('alerts.GIVE THE FREE GIFT')}</span>
-                    </div>
-                  </a>
-                </div>
-                <div className="winner-sec modal-pop">
-                  <img className="img-fluid top-light" src="/images/light-top.svg" alt="image" />
-                  <div className="winner-img">
-                    <img src={winner?.avatar ? winner?.avatar : '/images/avatar-big-1.png'} alt="username" />
-                  </div>
-                  <div className="winner-badge">
-                    <div className="badge-cont">
-                      <h6 className="px-5 text-truncate">{winner?.name}</h6>
-                      <p>{t('election.The Winner')}r</p>
-                      <span className="win-place">01</span>
-                    </div>
-                    <img className="img-fluid" src="/images/winner-badge.svg" alt="image" />
-                  </div>
-                  <h6 className="confirm">{t('alerts.Confirm that you gave the gift')}</h6>
-                  <div className="px-3 mt-4 mb-4 z9">
-                    <button
-                      className="btn btn-black w-100 mb-4"
-                      data-bs-toggle="modal"
-                      data-bs-target="#confirm-shipment"
-                    >
-                      <small>{t('user_register.CONFIRM')}</small>
-                    </button>
-                    <button className="btn btn-white w-100" data-bs-toggle="modal" data-bs-target="#messages-8">
-                      <small>{t('user_register.WINNER REFUSED THE GIFT')}</small>
-                    </button>
-                  </div>
-                </div>
-              </div>
+        </CustomModal>
+
+        <CustomModal
+          topClassName="minh-unset"
+          showClose={true}
+          open={confirmShipmentModal}
+          setOpen={setConfirmShipmentModal}
+        >
+          <div class="alert-bubble-img">
+            <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
+            <div class="cont">
+              <h5 class="dark mt-4"> {t('alerts.THANK YOU!!!')}</h5>
+              <p class="dark-txt fs-14">
+                {t('alerts.See you at the')} <br />
+                {t('alerts.next gift!!!')}
+              </p>
+
+              <p class="fs-14">{t('alerts.Remember to check the feedback')}</p>
             </div>
           </div>
-        )}
-
-        <div className="modal bg-blur" id="confirm-shipment">
+        </CustomModal>
+        {/* <div className="modal bg-blur" id="confirm-shipment">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content minh-unset" data-bs-dismiss="modal">
-              <div class="alert-bubble-img">
-                <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
-                <div class="cont">
-                  <h5 class="dark mt-4"> {t('alerts.THANK YOU!!!')}</h5>
-                  <p class="dark-txt fs-14">
-                    {t('alerts.See you at the')} <br />
-                    {t('alerts.next gift!!!')}
-                  </p>
-
-                  <p class="fs-14">{t('alerts.Remember to check the feedback')}</p>
-                </div>
-              </div>
             </div>
           </div>
-        </div>
+        </div> */}
+
+        <CustomModal topClassName="minh-unset" showClose={true} open={message8} setOpen={setMessage8}>
+          <div class="alert-bubble-img min-mt">
+            <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
+            <div class="cont">
+              <h5>{t('alerts.OH NO')}!!!</h5>
+              <p class="dark-txt fs-14 mb-2">{t('alerts.This is not good! Please explain that gift is free')}</p>
+              <p class="fs-14">{t('alerts.Try again to give the gift')}...</p>
+            </div>
+          </div>
+          <div class="button-btm-sec">
+            <button
+              // data-bs-toggle="modal"
+              // data-bs-target="#messages-8"
+              onClick={() => setMessage8(true)}
+              class="btn btn-black text-uppercase w-100 mb-4"
+            >
+              <small>{t('Buttons.TRY AGAIN')}</small>
+            </button>
+            <button
+              class="btn btn-white text-uppercase w-100 mb-4"
+              // data-bs-toggle="modal"
+              // data-bs-target="#messages-9"
+
+              onClick={() => {
+                setMessage8(false);
+                setMessage9(true);
+              }}
+            >
+              <small>{t('user_register.WINNER REFUSED THE GIFT')}</small>
+            </button>
+          </div>
+        </CustomModal>
 
         {/* <!-- Modal Popup Starts here --> */}
-        <div class="modal bg-blur" id="messages-8">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content minh-unset" data-bs-dismiss="modal">
-              <div class="alert-bubble-img min-mt">
-                <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
-                <div class="cont">
-                  <h5>{t('alerts.OH NO')}!!!</h5>
-                  <p class="dark-txt fs-14 mb-2">{t('alerts.This is not good! Please explain that gift is free')}</p>
-                  <p class="fs-14">{t('alerts.Try again to give the gift')}...</p>
-                </div>
-              </div>
-              <div class="button-btm-sec">
-                <button
-                  data-bs-toggle="modal"
-                  data-bs-target="#messages-8"
-                  class="btn btn-black text-uppercase w-100 mb-4"
-                >
-                  <small>{t('Buttons.TRY AGAIN')}</small>
-                </button>
-                <button
-                  class="btn btn-white text-uppercase w-100 mb-4"
-                  data-bs-toggle="modal"
-                  data-bs-target="#messages-9"
-                >
-                  <small>{t('user_register.WINNER REFUSED THE GIFT')}</small>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
         {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-        <div class="modal bg-blur" id="messages-9">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content minh-unset" data-bs-dismiss="modal">
-              <div class="alert-bubble-img">
-                <img class="img-fluid" src="/images/alert-bubble-msg-height.png" alt="ico" />
-                <div class="cont">
-                  <h5>{t('alerts.THANK YOU!!!')}</h5>
-                  <p class="dark-txt fs-14 mb-2">{t('alerts.For your trying')}!!!</p>
-                  <p class="fs-14">
-                    {t('alerts.Do not give up')} !!!
-                    <br />
-                    {t('alerts.Try to improve description and pictures and put it back')}
-                    ...
-                  </p>
-                </div>
-              </div>
+
+        <CustomModal topClassName="minh-unset" showClose={true} open={message9} setOpen={setMessage9}>
+          <div class="alert-bubble-img">
+            <img class="img-fluid" src="/images/alert-bubble-msg-height.png" alt="ico" />
+            <div class="cont">
+              <h5>{t('alerts.THANK YOU!!!')}</h5>
+              <p class="dark-txt fs-14 mb-2">{t('alerts.For your trying')}!!!</p>
+              <p class="fs-14">
+                {t('alerts.Do not give up')} !!!
+                <br />
+                {t('alerts.Try to improve description and pictures and put it back')}
+                ...
+              </p>
             </div>
           </div>
-        </div>
+        </CustomModal>
+        {/* <div class="modal bg-blur" id="messages-9">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content minh-unset" data-bs-dismiss="modal">
+            </div>
+          </div>
+        </div> */}
         {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-        <div class="modal bg-blur" id="messages-10">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content minh-unset" data-bs-dismiss="modal">
-              <div class="alert-bubble-img mt-3">
-                <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
-                <div class="cont">
-                  <h5 class="mt-2">{t('alerts.OPS!!!')}</h5>
-                  <p class="dark-txt fs-14 mb-2">{t('alerts.Something went wrong')}</p>
-                  <p class="fs-14 mb-2">{t('alerts.Seems that is not the winner')}...</p>
-                  <p class="dark-txt fs-14">{t('alerts.Try again')}</p>
-                </div>
-              </div>
-              <div class="px-3 mt-4">
-                <button class="btn btn-black w-100 my-3 py-2">
-                  <small>{t('Buttons.TRY AGAIN')}</small>
-                </button>
-                <button class="btn btn-black w-100 my-3 py-2">
-                  <small>{t('Buttons.ADD AS FRIEND')}</small>
-                </button>
-                <button class="btn btn-white w-100 mt-3 mb-4 py-2">
-                  <small>{t('Buttons.CONTANCT FOR ASSISTANCE')}</small>
-                </button>
-              </div>
+
+        <CustomModal topClassName="minh-unset" showClose={true} open={message10} setOpen={setMessage10}>
+          <div class="alert-bubble-img mt-3">
+            <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
+            <div class="cont">
+              <h5 class="mt-2">{t('alerts.OPS!!!')}</h5>
+              <p class="dark-txt fs-14 mb-2">{t('alerts.Something went wrong')}</p>
+              <p class="fs-14 mb-2">{t('alerts.Seems that is not the winner')}...</p>
+              <p class="dark-txt fs-14">{t('alerts.Try again')}</p>
             </div>
           </div>
-        </div>
-
-        <div class="modal bg-blur" id="gift-free-2">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="free-gift-info mt-4">
-                <img class="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
-                <h6 class="text-center text-danger">
-                  {t('alerts.IMPORTANT')}
-                  <br />
-                  {t('alerts.Gift are free!!!')}
-                </h6>
-                <div class="edge-fade mt-4">
-                  {t('alerts.This gift shall be given')}
-                  <span>
-                    <img src="/images/ship-ico-big.svg" alt="" />
-                    {t('election.Shipped')}
-                  </span>
-                </div>
-                <hr class="divider mb-2" />
-                <div class="ship-address mb-4">
-                  <h6>{t('alerts.GIFT SHALL BE SHIPPED TO')}:</h6>
-                  {giftAddress ? (
-                    <>
-                      <p>{giftAddress?.ship_to}</p>
-                      <p>{giftAddress?.city}</p>
-                      <p>{giftAddress?.street_address}</p>
-                      <p>{giftAddress?.zip_code}</p>
-                      <p>{giftAddress?.number}</p>
-                    </>
-                  ) : (
-                    <p>{t('alerts.Ask user to add adress')}</p>
-                  )}
-                </div>
-                <p class="fs-16 mb-2">{t('alerts.Please confirm gift has been shipped')}.</p>
-                <p class="fs-16">
-                  <strong>{t('alerts.Add track reference and confirm')}</strong>
-                </p>
-                <form action="#" class="register-form mb-4">
-                  <div class="form-group bg p-0 mb-2">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Add shipping company"
-                      onChange={(text) => setGiftlink(text.target.value)}
-                      required
-                    />
-                  </div>
-                  <div class="form-group bg p-0">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Add track number"
-                      onChange={(text) => setGiftTrack(text.target.value)}
-                      required
-                    />
-                  </div>
-                </form>
-                <button
-                  class="btn btn-black mt-3 mb-4 w-100 py-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#confirm-shipment"
-                  onClick={() => BusinessGiftShippedConfirmedFtn(user)}
-                >
-                  {t('Buttons.CONFIRM SHIPMENT')}
-                </button>
-              </div>
-            </div>
+          <div class="px-3 mt-4">
+            <button class="btn btn-black w-100 my-3 py-2">
+              <small>{t('Buttons.TRY AGAIN')}</small>
+            </button>
+            <button class="btn btn-black w-100 my-3 py-2">
+              <small>{t('Buttons.ADD AS FRIEND')}</small>
+            </button>
+            <button class="btn btn-white w-100 mt-3 mb-4 py-2">
+              <small>{t('Buttons.CONTANCT FOR ASSISTANCE')}</small>
+            </button>
           </div>
-        </div>
+        </CustomModal>
 
-        <div class="modal bg-blur" id="gift-free-3">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="free-gift-info mt-4">
-                <img class="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
-                <h6 class="text-center text-danger">
-                  {t('alerts.IMPORTANT')}
-                  <br />
-                  {t('alerts.Gift are free!!!')}
-                </h6>
-                <div class="edge-fade mt-4">
-                  {t('alerts.This gift shall be given')}
-                  <span>
-                    <img src="/images/ship-msg-ico-big.svg" alt="" />
-                    {t('filter.On-line delivery')}
-                  </span>
-                </div>
-                <hr class="divider mb-4" />
-                <p class="fs-16 mb-2">{t('alerts.Please confirm gift has been shipped')}.</p>
-                <p class="fs-16">
-                  <strong>{t('alerts.Add track reference and confirm')}</strong>
-                </p>
-                <form action="#" class="register-form mb-4 mt-4">
-                  <div class="form-group text-start px-4">
-                    <div class="form-check mb-2 d-inline-block w-100">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="ship-opt"
-                        checked={isgiftOnlineAddress == 0 ? true : false}
-                        onChange={() => {
-                          issetgiftOnlineAddress(0);
-                        }}
-                      />
-                      <label class="form-check-label" for="ship-opt1">
-                        {t('alerts.Send gift by email')}
-                      </label>
-                    </div>
-                    <div class="form-check mb-2 d-inline-block w-100">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="ship-opt"
-                        checked={isgiftOnlineAddress == 1 ? true : false}
-                        onChange={() => {
-                          issetgiftOnlineAddress(1);
-                        }}
-                      />
-                      <label class="form-check-label" for="ship-opt2">
-                        {t('alerts.Provide link for downloading')}
-                      </label>
-                    </div>
-                  </div>
-                  <div class="form-group bg p-0 mt-4">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Paste link here..."
-                      onChange={(text) => setgiftOnlineAddress(text.target.value)}
-                      required
-                    />
-                  </div>
-                </form>
-                <button
-                  class="btn btn-black mt-3 mb-4 w-100 py-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#confirm-shipment"
-                  onClick={() => BusinessGiftOnlineFtn(user)}
-                >
-                  {t('Buttons.CONFIRM SHIPMENT')}
-                </button>
-              </div>
+        <CustomModal topClassName="" showClose={false} open={giftFreeModalTwo} setOpen={setGiftFreeModalTwo}>
+          <div class="free-gift-info mt-4">
+            <img class="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
+            <h6 class="text-center text-danger">
+              {t('alerts.IMPORTANT')}
+              <br />
+              {t('alerts.Gift are free!!!')}
+            </h6>
+            <div class="edge-fade mt-4">
+              {t('alerts.This gift shall be given')}
+              <span>
+                <img src="/images/ship-ico-big.svg" alt="" />
+                {t('election.Shipped')}
+              </span>
             </div>
+            <hr class="divider mb-2" />
+            <div class="ship-address mb-4">
+              <h6>{t('alerts.GIFT SHALL BE SHIPPED TO')}:</h6>
+              {giftAddress ? (
+                <>
+                  <p>{giftAddress?.ship_to}</p>
+                  <p>{giftAddress?.city}</p>
+                  <p>{giftAddress?.street_address}</p>
+                  <p>{giftAddress?.zip_code}</p>
+                  <p>{giftAddress?.number}</p>
+                </>
+              ) : (
+                <p>{t('alerts.Ask user to add adress')}</p>
+              )}
+            </div>
+            <p class="fs-16 mb-2">{t('alerts.Please confirm gift has been shipped')}.</p>
+            <p class="fs-16">
+              <strong>{t('alerts.Add track reference and confirm')}</strong>
+            </p>
+            <form action="#" class="register-form mb-4">
+              <div class="form-group bg p-0 mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Add shipping company"
+                  onChange={(text) => setGiftlink(text.target.value)}
+                  required
+                />
+              </div>
+              <div class="form-group bg p-0">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Add track number"
+                  onChange={(text) => setGiftTrack(text.target.value)}
+                  required
+                />
+              </div>
+            </form>
+            <button
+              class="btn btn-black mt-3 mb-4 w-100 py-2"
+              // data-bs-toggle="modal"
+              // data-bs-target="#confirm-shipment"
+              onClick={() => {
+                setGiftFreeModalTwo(false);
+                setConfirmShipmentModal(true);
+                BusinessGiftShippedConfirmedFtn(user);
+              }}
+            >
+              {t('Buttons.CONFIRM SHIPMENT')}
+            </button>
           </div>
-        </div>
+        </CustomModal>
 
-        <div class="modal bg-blur" id="messages-feed-10">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="product-wrap px-3 mt-3x zIndex">
-                <div class=" mb-3">
-                  {/* <img class="ico" src="images/fun-ico.svg" alt="" />*/}
-                  <h3>{t('Header.feedback')}</h3>
+        <CustomModal topClassName="" showClose={false} open={giftFreeModalThree} setOpen={setGiftFreeModalThree}>
+          <div class="free-gift-info mt-4">
+            <img class="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
+            <h6 class="text-center text-danger">
+              {t('alerts.IMPORTANT')}
+              <br />
+              {t('alerts.Gift are free!!!')}
+            </h6>
+            <div class="edge-fade mt-4">
+              {t('alerts.This gift shall be given')}
+              <span>
+                <img src="/images/ship-msg-ico-big.svg" alt="" />
+                {t('filter.On-line delivery')}
+              </span>
+            </div>
+            <hr class="divider mb-4" />
+            <p class="fs-16 mb-2">{t('alerts.Please confirm gift has been shipped')}.</p>
+            <p class="fs-16">
+              <strong>{t('alerts.Add track reference and confirm')}</strong>
+            </p>
+            <form action="#" class="register-form mb-4 mt-4">
+              <div class="form-group text-start px-4">
+                <div class="form-check mb-2 d-inline-block w-100">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="ship-opt"
+                    checked={isgiftOnlineAddress == 0 ? true : false}
+                    onChange={() => {
+                      issetgiftOnlineAddress(0);
+                    }}
+                  />
+                  <label class="form-check-label" for="ship-opt1">
+                    {t('alerts.Send gift by email')}
+                  </label>
                 </div>
-                <div class="feedback-wrap">
-                  {userfeedback?.feedbacks?.map((item, index) => {
-                    return (
-                      <div class="f-row" key={index}>
-                        <div class="fr-head">
-                          <div class="avatar">
-                            <img src={item.avatar ? item.avatar : '/images/avatar-big-1.png'} alt="username" />
-                          </div>
-                          <div class="avatar-detail">
-                            <h6>{item.username}</h6>
-                            <div class="rating-sec">
-                              {item.ratings}
-                              <div class="rating">
-                                <StarRatings
-                                  rating={item.ratings}
-                                  starRatedColor="#FFD306"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="20px"
-                                  starSpacing="2px"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                <div class="form-check mb-2 d-inline-block w-100">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="ship-opt"
+                    checked={isgiftOnlineAddress == 1 ? true : false}
+                    onChange={() => {
+                      issetgiftOnlineAddress(1);
+                    }}
+                  />
+                  <label class="form-check-label" for="ship-opt2">
+                    {t('alerts.Provide link for downloading')}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group bg p-0 mt-4">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Paste link here..."
+                  onChange={(text) => setgiftOnlineAddress(text.target.value)}
+                  required
+                />
+              </div>
+            </form>
+            <button
+              class="btn btn-black mt-3 mb-4 w-100 py-2"
+              // data-bs-toggle="modal"
+              // data-bs-target="#confirm-shipment"
+              onClick={() => {
+                setGiftFreeModalThree(false);
+                setConfirmShipmentModal(true);
+                BusinessGiftOnlineFtn(user);
+              }}
+            >
+              {t('Buttons.CONFIRM SHIPMENT')}
+            </button>
+          </div>
+        </CustomModal>
 
-                        <p class="cont">{item.review}</p>
-                      </div>
-                    );
-                  })}
-
-                  <div class="f-row mb-0">
+        <CustomModal topClassName="" showClose={true} open={msgFeed} setOpen={setMsgFeed}>
+          <div class="product-wrap px-3 mt-3x zIndex">
+            <div class=" mb-3">
+              {/* <img class="ico" src="images/fun-ico.svg" alt="" />*/}
+              <h3>{t('Header.feedback')}</h3>
+            </div>
+            <div class="feedback-wrap">
+              {userfeedback?.feedbacks?.map((item, index) => {
+                return (
+                  <div class="f-row" key={index}>
                     <div class="fr-head">
                       <div class="avatar">
-                        <img
-                          src={userfeedback?.avatar ? userfeedback?.avatar : '/images/logo-dummy.png'}
-                          alt="username"
-                        />
+                        <img src={item.avatar ? item.avatar : '/images/avatar-big-1.png'} alt="username" />
                       </div>
                       <div class="avatar-detail">
-                        <h6>{userfeedback?.business_name}</h6>
-                        <a href="javascript:;" class="reply">
-                          {t('Buttons.Reply')}
-                        </a>
+                        <h6>{item.username}</h6>
+                        <div class="rating-sec">
+                          {item.ratings}
+                          <div class="rating">
+                            <StarRatings
+                              rating={item.ratings}
+                              starRatedColor="#FFD306"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="20px"
+                              starSpacing="2px"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <p class="cont text-yellow">{userfeedbackReply ? userfeedbackReply : '...say something nice'}</p>
+
+                    <p class="cont">{item.review}</p>
+                  </div>
+                );
+              })}
+
+              <div class="f-row mb-0">
+                <div class="fr-head">
+                  <div class="avatar">
+                    <img src={userfeedback?.avatar ? userfeedback?.avatar : '/images/logo-dummy.png'} alt="username" />
+                  </div>
+                  <div class="avatar-detail">
+                    <h6>{userfeedback?.business_name}</h6>
+                    <a href="javascript:;" class="reply">
+                      {t('Buttons.Reply')}
+                    </a>
                   </div>
                 </div>
-              </div>
-              <div class="bottom-input">
-                {!isUserFeedbackReply && (
-                  <>
-                    <div class="type-area">
-                      <div class="type-inside">
-                        <button class="btn btn-emoti">
-                          <img src="/images/smilie-ico.svg" alt="ico" />
-                        </button>
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder={t('placeHolders.Say something')}
-                          onChange={(text) => setUserFeedbackReply(text.target.value)}
-                          required
-                          onKeyDown={(e) => {
-                            if (e.code === 'Enter') {
-                              SetisUserFeedbackReply(true);
-                            }
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <button class="btn btn-close-x p-0">
-                      <img class="img-fluid" src="/images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-                    </button>
-                  </>
-                )}
-
-                {isUserFeedbackReply && (
-                  <>
-                    <div class="free-gift-info mt-2">
-                      <img class="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
-                      <h6 class="text-center text-danger"> {t('alerts.IMPORTANT')}</h6>
-                      <p class="fs-14 text-danger">
-                        {t(
-                          'alerts.Please make sure your feedback is not offensive and correct. Once confirmed, it will not be possible to modify it.',
-                        )}
-                      </p>
-                    </div>
-                    <div class="bottom-input px-4">
-                      <button
-                        class="btn btn-black w-100"
-                        data-bs-toggle="modal"
-                        data-bs-target="#messages-13"
-                        onClick={() => replyFeedbackapiFtn(user, userfeedback?.feedbacks[0].feedback_id)}
-                      >
-                        <small> {t('user_register.Confirm Feedback')}</small>
-                      </button>
-                      <button class="btn btn-close-x p-0">
-                        <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-                      </button>
-                    </div>
-                  </>
-                )}
+                <p class="cont text-yellow">{userfeedbackReply ? userfeedbackReply : '...say something nice'}</p>
               </div>
             </div>
           </div>
-        </div>
+          <div class="bottom-input">
+            {!isUserFeedbackReply && (
+              <>
+                <div class="type-area">
+                  <div class="type-inside">
+                    <button class="btn btn-emoti">
+                      <img src="/images/smilie-ico.svg" alt="ico" />
+                    </button>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder={t('placeHolders.Say something')}
+                      onChange={(text) => setUserFeedbackReply(text.target.value)}
+                      required
+                      onKeyDown={(e) => {
+                        if (e.code === 'Enter') {
+                          SetisUserFeedbackReply(true);
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+                <button class="btn btn-close-x p-0">
+                  <img class="img-fluid" src="/images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+                </button>
+              </>
+            )}
 
-        <div class="modal bg-blur" id="messages-13">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content minh-unset" data-bs-dismiss="modal">
-              <div class="alert-bubble-img">
-                <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
-                <div class="cont">
-                  <h5>{t('alerts.THANK YOU!!!')}</h5>
-                  <p class="dark-txt fs-14 mb-2">
-                    {t('alerts.See you at the')} <br />
-                    {t('alerts.next gift!!!')}
+            {isUserFeedbackReply && (
+              <>
+                <div class="free-gift-info mt-2">
+                  <img class="finger-ico img-fluid mb-2 mt-3" src="/images/alert-finger-ico.png" alt="ico" />
+                  <h6 class="text-center text-danger"> {t('alerts.IMPORTANT')}</h6>
+                  <p class="fs-14 text-danger">
+                    {t(
+                      'alerts.Please make sure your feedback is not offensive and correct. Once confirmed, it will not be possible to modify it.',
+                    )}
                   </p>
                 </div>
-              </div>
+                <div class="bottom-input px-4">
+                  <button
+                    class="btn btn-black w-100"
+                    // data-bs-toggle="modal"
+                    // data-bs-target="#messages-13"
+                    onClick={() => {
+                      setMsgFeed(false);
+                      setMessage13(true);
+                      replyFeedbackapiFtn(user, userfeedback?.feedbacks[0].feedback_id);
+                    }}
+                  >
+                    <small> {t('user_register.Confirm Feedback')}</small>
+                  </button>
+                  <button class="btn btn-close-x p-0">
+                    <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </CustomModal>
+
+        <CustomModal topClassName="minh-unset" showClose={true} open={message13} setOpen={setMessage13}>
+          <div class="alert-bubble-img">
+            <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
+            <div class="cont">
+              <h5>{t('alerts.THANK YOU!!!')}</h5>
+              <p class="dark-txt fs-14 mb-2">
+                {t('alerts.See you at the')} <br />
+                {t('alerts.next gift!!!')}
+              </p>
             </div>
           </div>
-        </div>
+        </CustomModal>
         {error && <MessageBox error={error} setError={setError} title={error_title} />}
       </>
-
-      <div class="modal bg-blur" id="share8-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-5 lay-7 elect-lay" ref={shareImageRef}>
-              <img class="img-fluid" src="/images/layout-4-bg.png" alt="images" />
-              <div class="cont">
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <img
-                      class="prod-img img-fluid"
-                      src={
-                        election?.gift_images[0]?.picture
-                          ? election?.gift_images[0]?.picture
-                          : '/images/product-img.jpg'
-                      }
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={
-                          election?.business_details?.avatar
-                            ? election?.business_details?.avatar
-                            : '/images/logo-dummy.png'
-                        }
-                        alt=""
-                      />
-                    </div>
-                    <div class="pls-vote-badge">
-                      <img class="img-fluid" src="/images/pls-vote-vertical-badge.png" alt="img" />
-                    </div>
-                  </div>
+      <CustomModal topClassName="modal-lay-wrap" showClose={false} open={share8Modal} setOpen={setShare8Modal}>
+        <div class="layout-thumb lay-5 lay-7 elect-lay" ref={shareImageRef}>
+          <img class="img-fluid" src="/images/layout-4-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <img
+                  class="prod-img img-fluid"
+                  src={
+                    election?.gift_images[0]?.picture ? election?.gift_images[0]?.picture : '/images/product-img.jpg'
+                  }
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img
+                    src={
+                      election?.business_details?.avatar ? election?.business_details?.avatar : '/images/logo-dummy.png'
+                    }
+                    alt=""
+                  />
                 </div>
-                <button class="btn btn-black border">
-                  {t('Buttons.CLICK TO')}
-                  <br />
-                  {t('Buttons.ENTER')}
-                </button>
+                <div class="pls-vote-badge">
+                  <img class="img-fluid" src="/images/pls-vote-vertical-badge.png" alt="img" />
+                </div>
               </div>
             </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView
-              modalElection={election}
-              // shareImage={shareimage}
-              shareFunc={shareImageToBase64}
-              setLoading={setLoader}
-            />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="/images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+            <button class="btn btn-black border">
+              {t('Buttons.CLICK TO')}
+              <br />
+              {t('Buttons.ENTER')}
             </button>
           </div>
         </div>
-      </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView
+          modalElection={election}
+          // shareImage={shareimage}
+          shareFunc={shareImageToBase64}
+          setLoading={setLoader}
+        />
+
+        <button class="btn btn-close-x">
+          <img class="img-fluid" src="/images/close-x.svg" alt="ico" onClick={() => setShare8Modal(false)} />
+        </button>
+      </CustomModal>
     </>
   );
 }

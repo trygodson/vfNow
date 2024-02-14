@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import TopHeader from '../../components/BusinessHeader';
 import BusinessFooter from '../../components/BusinessFooter';
-import Loader from '../../components/Loader';
+import Loader, { CustomModal } from '../../components/Loader';
 import MessageBox from '../../components/MessageBox';
 import ElectionModify from './ElectionModify';
 import { useTranslation } from 'react-i18next';
@@ -35,6 +35,8 @@ export default function EditElection() {
   const [error, setError] = React.useState(false);
   const [error_title, seterror_title] = useState('');
 
+  const [tcModal, setTcModal] = useState(false);
+  const [elecDurationModal, setElecDurationModal] = useState(false);
   const fileArray = [];
   const onFilesChange = async (event) => {
     if (event.target.files.length > 5) {
@@ -576,58 +578,54 @@ export default function EditElection() {
 
       <BusinessFooter />
       {/* <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="tc-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="performace-modal btm-fix-btn">
-              <h5>{t('alerts.TERMS and CONDITIONS')}</h5>
-              <p>{t('alerts.TERMS_Text')}</p>
-              <button class="btn btn-close-x p-0">
-                <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-              </button>
-            </div>
-          </div>
+      <CustomModal topClassName="performace-modal btm-fix-btn" showClose={true} open={tcModal} setOpen={setTcModal}>
+        <div class="performace-modal btm-fix-btn">
+          <h5>{t('alerts.TERMS and CONDITIONS')}</h5>
+          <p>{t('alerts.TERMS_Text')}</p>
+          <button class="btn btn-close-x p-0">
+            <img class="img-fluid" src="./images/close-x.svg" alt="ico" onClick={() => setTcModal(false)} />
+          </button>
         </div>
-      </div>
+      </CustomModal>
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="elec-duration-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="performace-modal btm-fix-btn">
-              <h5>
-                <h3>{t('election.Election duration')}</h3>
-                <br />
-                {t('businessPage.How does it work?')}
-              </h5>
-              <p>{t('election.An election consists of two phases')}</p>
-              <p>
-                <strong>- {t('election.Candidate phase')}</strong>
-              </p>
-              <p>
-                <strong>- {t('election.Election phase')}</strong>
-              </p>
-              <p>
-                {t('election.During')} <strong>{t('election.Candidate phase')}</strong>
-                {t(
-                  'election.users can see your free gift and decide to partecipate as Candidate. However, no vote can be received during this phase',
-                )}{' '}
-                .
-              </p>
-              <p>
-                {t('election.During')} <strong>{t('election.Election phase')}</strong>{' '}
-                {t('election.candidate can receive vote. While other user can still became candidate and/or give vote')}
-              </p>
-              <p class="text-center">
-                <img class="img-fluid my-3" src="images/election-duration-diagram.svg" alt="ico" />
-              </p>
-              <button class="btn btn-close-x p-0">
-                <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <CustomModal
+        topClassName="performace-modal btm-fix-btn"
+        showClose={true}
+        open={elecDurationModal}
+        setOpen={setElecDurationModal}
+      >
+        <h5>
+          <h3>{t('election.Election duration')}</h3>
+          <br />
+          {t('businessPage.How does it work?')}
+        </h5>
+        <p>{t('election.An election consists of two phases')}</p>
+        <p>
+          <strong>- {t('election.Candidate phase')}</strong>
+        </p>
+        <p>
+          <strong>- {t('election.Election phase')}</strong>
+        </p>
+        <p>
+          {t('election.During')} <strong>{t('election.Candidate phase')}</strong>
+          {t(
+            'election.users can see your free gift and decide to partecipate as Candidate. However, no vote can be received during this phase',
+          )}{' '}
+          .
+        </p>
+        <p>
+          {t('election.During')} <strong>{t('election.Election phase')}</strong>{' '}
+          {t('election.candidate can receive vote. While other user can still became candidate and/or give vote')}
+        </p>
+        <p class="text-center">
+          <img class="img-fluid my-3" src="images/election-duration-diagram.svg" alt="ico" />
+        </p>
+        <button class="btn btn-close-x p-0">
+          <img class="img-fluid" src="./images/close-x.svg" alt="ico" onClick={() => setElecDurationModal(false)} />
+        </button>
+      </CustomModal>
       {error && <MessageBox error={error} setError={setError} title={error_title} />}
     </div>
   );

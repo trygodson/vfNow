@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import TopHeader from '../components/TopHeader';
-import Loader from '../components/Loader';
+import Loader, { CustomModal } from '../components/Loader';
 import Footer from '../components/Footer';
 import GeneralBusiness from '../components/GeneralBusiness';
 import ImageView from '../components/ImageView';
@@ -223,6 +223,7 @@ export default function BusinessPreview() {
         ElectionDetail(user);
       });
   }
+  const [loginModal, setLoginModal] = useState(false);
 
   return (
     <div class="container-fluid">
@@ -430,8 +431,9 @@ export default function BusinessPreview() {
                             {election?.join_status == false ? (
                               user?.login_as == 'visitor' ? (
                                 <button
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#login-message"
+                                  onClick={() => setLoginModal(true)}
+                                  // data-bs-toggle="modal"
+                                  // data-bs-target="#login-message"
                                   class="bg-transparent border-0 link"
                                 >
                                   <img src="images/join-candidate-ico.svg" alt="ico" />
@@ -794,7 +796,12 @@ export default function BusinessPreview() {
               {election?.election_status == 'Not Started' ||
                 (election?.election_status == 'Started' &&
                   (user?.login_as == 'visitor' ? (
-                    <button data-bs-toggle="modal" data-bs-target="#login-message" class="btn btn-yellow w-100">
+                    <button
+                      onClick={() => setLoginModal(true)}
+                      // data-bs-toggle="modal"
+                      //  data-bs-target="#login-message"
+                      class="btn btn-yellow w-100"
+                    >
                       <img class="img-fluid text-uppercase me-2" src="images/join-candidate-ico.svg" alt="ico" />
                       {t('Buttons.Join as Candidate')}
                     </button>
@@ -838,27 +845,30 @@ export default function BusinessPreview() {
         </div>
         {/* <!-- This Gift Section Ends here --> */}
       </section>
-      <div class="modal reg-modal bg-blur" id="login-message">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content minh-unset" data-bs-dismiss="modal">
-            <div class="alert-bubble-img">
-              <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
-              <div class="cont py-3">
-                <h5>
-                  {t('alerts.Hi!')} <br />
-                  {t('alerts.you are still visitor')}
-                </h5>
-                <h5 class="dark">{t('alerts.Click to log-in!!!')}</h5>
-              </div>
-            </div>
-            <div class="button-btm-sec">
-              <Link class="btn btn-yellow text-uppercase w-100" to={'/login'}>
-                {t('Buttons.Log-in')}
-              </Link>
-            </div>
+
+      <CustomModal topClassName="minh-unset" showClose={false} open={loginModal} setOpen={setLoginModal}>
+        <div class="alert-bubble-img">
+          <img class="img-fluid" src="/images/alert-msg-bubble.png" alt="ico" />
+          <div class="cont py-3">
+            <h5>
+              {t('alerts.Hi!')} <br />
+              {t('alerts.you are still visitor')}
+            </h5>
+            <h5 class="dark">{t('alerts.Click to log-in!!!')}</h5>
           </div>
         </div>
-      </div>
+        <div class="button-btm-sec">
+          <Link class="btn btn-yellow text-uppercase w-100" to={'/login'}>
+            {t('Buttons.Log-in')}
+          </Link>
+        </div>
+      </CustomModal>
+      {/* <div class="modal reg-modal bg-blur" id="login-message">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content minh-unset" data-bs-dismiss="modal">
+          </div>
+        </div>
+      </div> */}
       {/* <!-- Content Section Ends here --> */}
       {/* <!-- Footer Starts here --> */}
       <Footer user={user && user} />

@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import logo from "../images/logo-black.png";
-import badge from "../images/free-badge-ico.svg";
-import { useTranslation } from "react-i18next";
-import "../languages/i18n";
+import logo from '../images/logo-black.png';
+import badge from '../images/free-badge-ico.svg';
+import { useTranslation } from 'react-i18next';
+import '../languages/i18n';
 
 function Splash() {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ function Splash() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/splash");
+      navigate('/splash');
     }, 3000);
     return () => clearTimeout(timer);
   }, []);

@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import ReactMapGL, { Marker } from 'react-map-gl';
-
+import ReactMapGL, { Marker, ScaleControl } from 'react-map-gl';
 import logo from '../../images/logo-dummy.png';
 import share from '../../images/share-ico.svg';
 import performanceBG from '../../images/performance-bg.png';
 import performancecircle from '../../images/performance-circle.png';
 import CircleCo from '../../images/radius.png';
 import BusinessFooter from '../../components/BusinessFooter';
-import Loader from '../../components/Loader';
+import Loader, { CustomModal } from '../../components/Loader';
 import PerformanceGif from '../../images/perfomance.gif';
 import { useTranslation } from 'react-i18next';
 import '../../languages/i18n';
@@ -22,7 +21,8 @@ import { BusinessDetailsShareLink } from './BusinessDetailsShareLink';
 
 export default function BusinessHome() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const howItModalRef = useRef(null);
+  const { t, i18n } = useTranslation();
   const [QRcode, setQRcode] = useState();
   const [preview, setPreview] = useState();
   const [user, setUser] = useState();
@@ -39,13 +39,19 @@ export default function BusinessHome() {
     longitude: 69.3451,
     zoom: 12,
   });
-
   const [viewport2, setViewport2] = React.useState({
     latitude: 30.3753,
     longitude: 69.3451,
-    zoom: 12,
+    zoom: 11,
   });
-
+  const [showLanguage, setShowLanguage] = useState(false);
+  const [currentLanguage, setLanguage] = useState('en');
+  const [openShareModal, setOpenShareModal] = useState(false);
+  const [helpModal, setHelpModal] = useState(false);
+  const [helpModalOne, setHelpModalOne] = useState(false);
+  const [qrModal, setQrModal] = useState(false);
+  const [inforModal, setInforModal] = useState(false);
+  const [incompleteBusiness, setIncompleteBusiness] = useState(preview?.business_incomplete ? true : false);
   useEffect(async () => {
     const userData = await getUserData();
     if (userData) {
@@ -56,6 +62,38 @@ export default function BusinessHome() {
       BusinessView(userData, 'own');
     }
   }, []);
+
+  useEffect(() => {
+    return () => {
+      // const myElement = howItModalRef.current;
+      // // Check if the element is available
+      // if (myElement) {
+      //   console.log(myElement, 'how it modal');
+      //   // Manipulate the element or add/remove classes
+      //   myElement.classList.add('back');
+      // }
+      //   $rootScope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
+      //     // Select open modal(s)
+      //     var $openModalSelector = $(".modal.fade.in");
+      //     if( ($openModalSelector.data('bs.modal') || {}).isShown == true){
+      //         // Close open modal(s)
+      //         $openModalSelector.modal("hide");
+      //         // Prevent page transition
+      //         event.preventDefault();
+      //     }
+      // });
+    };
+  }, []);
+
+  const changeLanguage = (value) => {
+    i18n
+      .changeLanguage(value)
+      .then((v) => {
+        console.log(v(), 'i18n');
+        setLanguage(value);
+      })
+      .catch((err) => console.log(err, '--i18n error--'));
+  };
 
   function BusinessView(user, status) {
     //setLoader(true);
@@ -119,6 +157,7 @@ export default function BusinessHome() {
         // storeUserData(resp.data.data);
         // console.log("previewresp", resp.data.data);
         setPreview(resp.data.data);
+        setIncompleteBusiness(resp.data.data?.business_incomplete ? true : false);
         setBusinesData(resp.data.data?.business_data);
         setViewport({
           latitude: parseFloat(resp.data.data?.business_details?.latitude),
@@ -135,7 +174,7 @@ export default function BusinessHome() {
       });
   }
 
-  console.log('business_Data', preview);
+  // console.log('business_Data', preview);
   return (
     <div class="container-fluid">
       {loader && <Loader />}
@@ -194,19 +233,27 @@ export default function BusinessHome() {
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="javascript:;">
-                          <span class="d-flex align-items-center">{t('Menus.Language')}</span>
+                        <button
+                          class="dropdown-item bg-transparent"
+                          onClick={() => {
+                            setShowLanguage(!showLanguage);
+                            setMenuShow(false);
+                          }}
+                        >
+                          <span class="d-flex align-items-center">
+                            {t('Menus.Language')} ({currentLanguage})
+                          </span>
                           <img class="arrow" src="images/arrow_back_ios-24px.svg" />
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#how-it-modal">
+                        <a class="dropdown-item" onClick={() => setHelpModal(true)}>
                           <span class="d-flex align-items-center">{t('Menus.Help')}</span>
                           <img class="arrow" src="images/arrow_back_ios-24px.svg" />
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#how-it-modal-1">
+                        <a class="dropdown-item" data-bs-target="#how-it-modal-1" onClick={() => setHelpModalOne(true)}>
                           <span class="d-flex align-items-center">{t('Menus.Third-party licenses')}</span>
                           <img class="arrow" src="images/arrow_back_ios-24px.svg" />
                         </a>
@@ -222,6 +269,46 @@ export default function BusinessHome() {
                           <span class="d-flex align-items-center">{t('Menus.Log-out')}</span>
                           <img class="arrow" src="images/arrow_back_ios-24px.svg" />
                         </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+              {showLanguage && (
+                <div class="filter-sidebar head-dd main-menu show">
+                  <div class="filter-hdr">
+                    <div class="head">
+                      <button class="btn close" onClick={() => setShowLanguage(!showLanguage)}>
+                        <img src="./images/close-ico.svg" alt="" />
+                      </button>
+                      <h4>{t('Menus.SELECT LANGUAGE')}</h4>
+                    </div>
+                  </div>
+                  <div class="filter-cont">
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button
+                          class="dropdown-item bg-transparent w-full"
+                          onClick={() => {
+                            changeLanguage('en');
+                            setShowLanguage(false);
+                          }}
+                        >
+                          <span class="d-flex align-items-center">{t('Menus.English')}</span>
+                          <img class="arrow" src="./images/arrow_back_ios-24px.svg" />
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          class="dropdown-item bg-transparent w-full"
+                          onClick={() => {
+                            changeLanguage('hi');
+                            setShowLanguage(false);
+                          }}
+                        >
+                          <span class="d-flex align-items-center">{t('Menus.italian')}</span>
+                          <img class="arrow" src="./images/arrow_back_ios-24px.svg" />
+                        </button>
                       </li>
                     </ul>
                   </div>
@@ -275,7 +362,13 @@ export default function BusinessHome() {
                       </span>
                     </div>
                     <div className="share">
-                      <div className="link" data-bs-toggle={'modal'} data-bs-target={'#share-modal'}>
+                      <div
+                        className="link"
+                        // data-bs-target={'#share-modal'}
+                        onClick={() => {
+                          setOpenShareModal(true);
+                        }}
+                      >
                         <img className="img-fluid" src={share} alt="" />
                       </div>
                     </div>
@@ -301,7 +394,12 @@ export default function BusinessHome() {
               {!isMapstate ? (
                 <div style={{ width: '100%', height: '100%' }}>
                   <div class="per-cont dd" style={{ width: '100%', height: '100%', position: 'absolute' }}>
-                    <button class="btn btn-empty" data-bs-toggle="modal" data-bs-target="#info-modal">
+                    <button
+                      class="btn btn-empty"
+                      onClick={() => {
+                        setInforModal(true);
+                      }}
+                    >
                       <img class="img-fluid" src="./images/info-green.png" alt="ico" />
                     </button>
                     <div class="cont-circle c1">
@@ -324,7 +422,7 @@ export default function BusinessHome() {
                       <CustomCircularProgressBar percentage={preview?.performance?.started_progress} />
 
                       <div class="cont">
-                        <img class="ico" src="images/grid-elect-ico.svg" alt="ico" />
+                        <img class="ico" src="./images/grid-elect-ico.svg" alt="ico" />
                         <span class="count"> {preview?.performance?.elections_started}</span>
                         <p>
                           {t('businessPage.ELECTIONs')}
@@ -332,7 +430,7 @@ export default function BusinessHome() {
                           {t('businessPage.STARTED')}
                         </p>
                       </div>
-                      <img class="img-fluid tail-ico" src="images/tail-ico-1.png" alt="ico" />
+                      <img class="img-fluid tail-ico" src="./images/tail-ico-1.png" alt="ico" />
                     </div>
                     <div class="cont-circle c3">
                       {/* <img class="img-fluid" src="images/performance-circle-2.png" alt="" /> */}
@@ -347,7 +445,7 @@ export default function BusinessHome() {
                           {t('businessPage.ENDED')}
                         </p>
                       </div>
-                      <img class="img-fluid tail-ico" src="images/tail-ico-2.png" alt="ico" />
+                      <img class="img-fluid tail-ico" src="./images/tail-ico-2.png" alt="ico" />
                     </div>
                     <div
                       class="big-circle business-circle"
@@ -374,7 +472,8 @@ export default function BusinessHome() {
                         {/* <img class="chart-img img-fluid" src="images/bar-chat.png" alt="ico" /> */}
                         <hr />
                         <span class="yellow">{t('businessPage.Better than')}</span>
-                        <h5>{Mapstate?.better_than_region} %</h5>
+                        <h5>{preview?.performance?.better_than} %</h5>
+                        {/* <h5>{Mapstate?.better_than_region} %</h5> */}
                         <span class="yellow"> {t('businessPage.Of Shops')} </span>
                       </div>
                     </div>
@@ -383,7 +482,7 @@ export default function BusinessHome() {
                       <CustomCircularProgressBar percentage={preview?.performance?.votes_progress} />
 
                       <div class="cont">
-                        <img class="ico" src="images/vote-btn-ico.png" alt="ico" />
+                        <img class="ico" src="./images/vote-btn-ico.png" alt="ico" />
                         <span class="count">{preview?.performance?.total_votes}</span>
                         <p>
                           {t('businessPage.TOTAL')}
@@ -398,7 +497,7 @@ export default function BusinessHome() {
                       <CustomCircularProgressBar percentage={preview?.performance?.candidates_progress} />
 
                       <div class="cont">
-                        <img class="ico" src="images/my-acc-ico.svg" alt="ico" />
+                        <img class="ico" src="./images/my-acc-ico.svg" alt="ico" />
                         <span class="count">{preview?.performance?.total_candidates}</span>
                         <p>
                           {t('businessPage.TOTAL')}
@@ -406,7 +505,7 @@ export default function BusinessHome() {
                           {t('businessPage.CANDIDATE')}
                         </p>
                       </div>
-                      <img class="img-fluid tail-ico" src="images/tail-ico-4.png" alt="ico" />
+                      <img class="img-fluid tail-ico" src="./images/tail-ico-4.png" alt="ico" />
                     </div>
                   </div>
                 </div>
@@ -473,7 +572,7 @@ export default function BusinessHome() {
                   {preview?.business_details?.latitude && preview?.business_details?.longitude && (
                     <div className="map-sec-category" style={{ 'height': '240px' }}>
                       <ReactMapGL
-                        touchAction="pan-y"
+                        // touchAction="pan-y"
                         mapStyle="mapbox://styles/mapbox/streets-v12"
                         mapboxApiAccessToken="pk.eyJ1IjoieGFpbmlraGFuMjAiLCJhIjoiY2tkdmswZjU5MXU4YjJ3cGJkYmpleGhnciJ9.Hn_L5hXdjR4zALA01O_aqQ"
                         {...viewport2}
@@ -487,7 +586,7 @@ export default function BusinessHome() {
                         style={{ margin: '0 auto' }}
                       >
                         <Marker
-                          anchor="top"
+                          anchor="center"
                           latitude={
                             preview?.business_details?.latitude
                               ? parseFloat(preview?.business_details?.latitude)
@@ -498,9 +597,9 @@ export default function BusinessHome() {
                               ? parseFloat(preview?.business_details?.longitude)
                               : 71.5249
                           }
-                          className="business-pin-marker"
+                          // className="business-pin-marker"
                         >
-                          <button
+                          {/* <button
                             class="btn btn-link"
                             style={{
                               backgroundImage: `url(${CircleCo})`,
@@ -521,25 +620,25 @@ export default function BusinessHome() {
                               alt=""
                               style={{}}
                             />
-                          </button>
-                          {/* <button class="btn btn-link">
+                          </button> */}
+                          <button class="btn btn-link" style={{ position: 'relative' }}>
                             <img
                               class="img-fluid"
-                              src={'images/businessPin.png'}
+                              src={'./images/businessPin.png'}
                               width="20px"
                               height="20px"
                               alt=""
-                              style={{ 'position': 'absolute' }}
+                              style={{ 'position': 'absolute', left: '0%', bottom: '95%' }}
                             />
                             <img
                               class="img-fluid"
-                              src={'images/radius.png'}
-                              width="260px"
-                              height="260px"
+                              src={'./images/radius.png'}
+                              width="230px"
+                              height="230px"
                               alt=""
-                              style={{ 'position': 'relative', 'right': '45%', 'bottom': '100px' }}
+                              style={{ 'position': 'relative', 'right': '52%', 'bottom': '120px' }}
                             />
-                          </button> */}
+                          </button>
                         </Marker>
                       </ReactMapGL>
                     </div>
@@ -669,17 +768,14 @@ export default function BusinessHome() {
       <BusinessFooter />
       {/* <!-- Footer Ends here --> */}
       {/* <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="info-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="performace-modal">
-              <h5>
-                {t('businessPage.PERFORMANCE')}
-                <br />
-                {t('businessPage.How does it work?')}
-              </h5>
-              <img src={PerformanceGif} width={'100%'} style={{ marginBottom: '20px' }} />
-              {/* {visible === 1 ? (
+      <CustomModal showClose={false} open={inforModal} setOpen={setInforModal}>
+        <h5>
+          {t('businessPage.PERFORMANCE')}
+          <br />
+          {t('businessPage.How does it work?')}
+        </h5>
+        <img src={PerformanceGif} width={'100%'} style={{ marginBottom: '20px' }} />
+        {/* {visible === 1 ? (
                 <div class="it-work performance-1">
                   <div class="thumb-sec">
                     <img class="thumb" src="images/election-skeleton.png" alt="Thumb" />
@@ -789,60 +885,100 @@ export default function BusinessHome() {
               ) : (
                 ''
               )} */}
-              <p>
-                {t(
-                  "businessPage.Your VF VALUE will be compared with the other Business' VF VALUEs and based on it, will be set the preliminary position of your pages.",
-                )}
+        <p>
+          {t(
+            "businessPage.Your VF VALUE will be compared with the other Business' VF VALUEs and based on it, will be set the preliminary position of your pages.",
+          )}
 
-                <strong>
-                  {t(
-                    'businessPage.Remeber! Higher is your page position, higher is the visibility and clients you will have!!!',
-                  )}
-                </strong>
-              </p>
-              <p>
-                {t('businessPage.VF VALUE is calculated on the five factors you can see at your Performance Page.')}
-              </p>
-              <p>
-                {t(
-                  'businessPage.Make sure to keep your VF VALUE the highest possible!!! To do so you can: ADD NEW ELECTION, SHARE ELECTION, GIVE GIFT ...or if you need some help, you can also PURCHASE VF CREDITS.',
-                )}
-              </p>
-              <p class="mb-1">{t("businessPage.Whatever you decide, let's have fun!")}</p>
-              <p class="text-end">{t('businessPage.and ofcourse you more CLIENTs')}</p>
-              <button class="btn btn-close-x p-0" onClick={() => setVisible(1)}>
-                <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+          <strong>
+            {t(
+              'businessPage.Remeber! Higher is your page position, higher is the visibility and clients you will have!!!',
+            )}
+          </strong>
+        </p>
+        <p>{t('businessPage.VF VALUE is calculated on the five factors you can see at your Performance Page.')}</p>
+        <p>
+          {t(
+            'businessPage.Make sure to keep your VF VALUE the highest possible!!! To do so you can: ADD NEW ELECTION, SHARE ELECTION, GIVE GIFT ...or if you need some help, you can also PURCHASE VF CREDITS.',
+          )}
+        </p>
+        <p class="mb-1">{t("businessPage.Whatever you decide, let's have fun!")}</p>
+        <p class="text-end">{t('businessPage.and ofcourse you more CLIENTs')}</p>
+        <button
+          class="btn btn-close-x p-0"
+          onClick={() => {
+            setInforModal(false);
+            setVisible(1);
+          }}
+        >
+          <img class="img-fluid" src="./images/close-x.svg" alt="ico" />
+        </button>
+      </CustomModal>
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="qr-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content minh-unset" data-bs-dismiss="modal">
-            <div class="alert-bubble-img qr-wrap">
-              <div class="avatar-img business">
-                <img src={QRcode?.avatar ? QRcode?.avatar : 'images/logo-dummy.png'} alt="Username" />
-              </div>
-              <h5>{QRcode?.business_name}</h5>
-              <div class="qr-img m-auto mt-5">
-                <img src={'data:image/png;base64,' + QRcode?.qr_image} />
-              </div>
-            </div>
+      <CustomModal topClassName="minh-unset" showClose={true} open={qrModal} setOpen={setQrModal}>
+        <div class="alert-bubble-img qr-wrap">
+          <div class="avatar-img business">
+            <img src={QRcode?.avatar ? QRcode?.avatar : 'images/logo-dummy.png'} alt="Username" />
+          </div>
+          <h5>{QRcode?.business_name}</h5>
+          <div class="qr-img m-auto mt-5">
+            <img src={'data:image/png;base64,' + QRcode?.qr_image} />
           </div>
         </div>
-      </div>
+      </CustomModal>
+      {/* <div class="modal bg-blur" id="qr-modal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content minh-unset" data-bs-dismiss="modal">
+          </div>
+        </div>
+      </div> */}
       {/* <!-- Modal Popup Ends here --> */}
 
-      <div class="modal bg-blur" id="how-it-modal">
-        <div class="modal-dialog modal-dialog-centered">
+      <CustomModal open={helpModal} setOpen={setHelpModal}>
+        <div class="privacy-wrapper" style={{ height: '90vh' }}>
+          <div class="container">
+            <div class="col-12 privacy-sec">
+              <img src="images/help-skew-img.svg" alt="How Does It Work" class="img-fluid mt-2 mb-2" />
+              <div>
+                <iframe
+                  width="100%"
+                  height="250"
+                  src="https://www.youtube.com/embed/lPDvilomOY8?si=VJu--6cMExdJLg4n&amp;controls=0"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <p class="fs-12">{t('alerts.help')}</p>
+            </div>
+            {/* <div class="static-btm">
+              <button class="btn btn-close-x p-0 static">
+                <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+              </button>
+            </div> */}
+          </div>
+        </div>
+      </CustomModal>
+      {/* <div class="modal bg-blur" id="how-it-modal" tabindex="-1">
+        <div data-bs-dismiss="modal" class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="privacy-wrapper">
               <div class="container">
                 <div class="col-12 privacy-sec">
                   <img src="images/help-skew-img.svg" alt="How Does It Work" class="img-fluid mt-2 mb-2" />
+                  <div>
+                    <iframe
+                      width="100%"
+                      height="250"
+                      src="https://www.youtube.com/embed/lPDvilomOY8?si=VJu--6cMExdJLg4n&amp;controls=0"
+                      title="YouTube video player"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
                   <p class="fs-12">{t('alerts.help')}</p>
                 </div>
                 <div class="static-btm">
@@ -854,32 +990,68 @@ export default function BusinessHome() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="how-it-modal-1">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="privacy-wrapper">
-              <div class="container">
-                <div class="col-12 privacy-sec">
-                  <img src="images/third-party-skew-bg.svg" alt="How Does It Work" class="img-fluid mt-2 mb-2" />
-                  <p class="fs-12">{t('alerts.thirdParty')}</p>
-                </div>
-                <div class="static-btm">
-                  <button class="btn btn-close-x p-0 static">
-                    <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-                  </button>
-                </div>
-              </div>
+
+      <CustomModal open={helpModalOne} setOpen={setHelpModalOne}>
+        <div class="privacy-wrapper" style={{ height: '90vh' }}>
+          <div class="container">
+            <div class="col-12 privacy-sec">
+              <img src="images/third-party-skew-bg.svg" alt="How Does It Work" class="img-fluid mt-2 mb-2" />
+              <p class="fs-12">{t('alerts.thirdParty')}</p>
+            </div>
+            <div class="static-btm">
+              {/* <button class="btn btn-close-x p-0 static">
+                <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+              </button> */}
             </div>
           </div>
         </div>
-      </div>
+      </CustomModal>
+      {/* <div class="modal bg-blur" id="how-it-modal-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+          </div>
+        </div>
+      </div> */}
 
       {/* Share Business Link Modal */}
+      <CustomModal open={openShareModal} setOpen={setOpenShareModal}>
+        <div class="layout-thumb lay-5 lay-7 elect-lay">
+          <img class="img-fluid" src="/images/layout-4-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <img
+                  class="prod-img img-fluid"
+                  src={preview?.business_place_images.length > 0 ? preview?.business_place_images[0]?.picture : logo}
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img src={preview?.business_details?.avatar ? preview?.business_details?.avatar : logo} alt="" />
+                </div>
+                {/* <div class="pls-vote-badge">
+                      <img class="img-fluid" src="/images/pls-vote-vertical-badge.png" alt="img" />
+                    </div> */}
+              </div>
+            </div>
+            <button class="btn btn-black border">
+              {t('Buttons.CLICK TO')}
+              <br />
+              {t('Buttons.ENTER')}
+            </button>
+          </div>
+        </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <BusinessDetailsShareLink
+          modalElection={preview}
+          // shareImage={shareimage}
 
-      <div class="modal bg-blur" id="share-modal">
+          setLoading={setLoader}
+        />
+      </CustomModal>
+      {/* <div class="modal bg-blur" id="share-modal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content modal-lay-wrap">
             <div class="layout-thumb lay-5 lay-7 elect-lay">
@@ -897,9 +1069,7 @@ export default function BusinessHome() {
                     <div class="business-logo">
                       <img src={preview?.business_details?.avatar ? preview?.business_details?.avatar : logo} alt="" />
                     </div>
-                    {/* <div class="pls-vote-badge">
-                      <img class="img-fluid" src="/images/pls-vote-vertical-badge.png" alt="img" />
-                    </div> */}
+                   
                   </div>
                 </div>
                 <button class="btn btn-black border">
@@ -922,53 +1092,54 @@ export default function BusinessHome() {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {preview?.business_incomplete && (
-        <div
-          class="modal bg-blur show"
-          style={{
-            display: preview?.business_incomplete ? 'block' : 'none',
-            backgroundColor: 'rgba(222, 223, 222 , 0.9)',
-          }}
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content minh-unset" data-bs-dismiss="modal">
-              <div class="alert-bubble-img">
-                <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
-                <div class="cont">
-                  <h5 style={{ 'color': '#fff', 'font-size': '16px', 'margin-top': '8px' }}>{t('alerts.Hi!')}</h5>
-                  <p
-                    style={{
-                      'color': '#080708',
-                      'font-size': '14px',
-                      'padding': '0px',
-                      'margin-left': '-12px',
-                      'margin-top': '20px',
-                    }}
-                  >
-                    {t("alerts.let's update your incomplete business details")}
-                  </p>
-                  <p
-                    style={{ 'cursor': 'pointer' }}
-                    onClick={() => {
-                      setIsOpen(false);
-                      //navigate("/myPage");
-                      navigate('/myPage', {
-                        state: {
-                          business_Data: BusinesData,
-                        },
-                      });
-                    }}
-                  >
-                    {t('alerts.click here')}
-                  </p>
-                </div>
-              </div>
-            </div>
+      <CustomModal open={incompleteBusiness} setOpen={setIncompleteBusiness}>
+        <div class="alert-bubble-img">
+          <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
+          <div class="cont">
+            <h5 style={{ 'color': '#fff', 'font-size': '16px', 'margin-top': '8px' }}>{t('alerts.Hi!')}</h5>
+            <p
+              style={{
+                'color': '#080708',
+                'font-size': '14px',
+                'padding': '0px',
+                'margin-left': '-12px',
+                'margin-top': '20px',
+              }}
+            >
+              {t("alerts.let's update your incomplete business details")}
+            </p>
+            <p
+              style={{ 'cursor': 'pointer' }}
+              onClick={() => {
+                setIsOpen(false);
+                //navigate("/myPage");
+                navigate('/myPage', {
+                  state: {
+                    business_Data: BusinesData,
+                  },
+                });
+              }}
+            >
+              {t('alerts.click here')}
+            </p>
           </div>
         </div>
-      )}
+      </CustomModal>
+      {/* <div
+           class="modal bg-blur show"
+           style={{
+             display: preview?.business_incomplete ? 'block' : 'none',
+             backgroundColor: 'rgba(222, 223, 222 , 0.9)',
+           }}
+         >
+           <div class="modal-dialog modal-dialog-centered">
+             <div class="modal-content minh-unset" data-bs-dismiss="modal">
+             </div>
+        </div>
+       </div>
+     */}
     </div>
   );
 }

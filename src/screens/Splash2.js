@@ -61,7 +61,7 @@ function Splash2() {
     }
   }
   return (
-    <div class="splash-wrap container-fluid" onClick={() => RouteFtn()}>
+    <div class="splash-wrap container-fluid d-flex justify-content-center" onClick={() => RouteFtn()}>
       <img src={'gifs/VFnormal.gif'} alt="loading..." />
     </div>
   );

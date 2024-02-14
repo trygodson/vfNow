@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { toPng } from 'html-to-image';
 import Footer from '../../components/Footer';
 import TopHeader from '../../components/TopHeader';
-import Loader from '../../components/Loader';
+import Loader, { CustomModal } from '../../components/Loader';
 import { useTranslation } from 'react-i18next';
 import '../../languages/i18n';
 import {
@@ -47,8 +47,8 @@ export default function UserProfileElections() {
   const ref9 = useRef(null);
   const ref10 = useRef(null);
   const onButtonClick = useCallback(
-    (ref) => {
-      if (ref.current === null) {
+    (dref) => {
+      if (dref.current === null) {
         return;
       } else {
         if (window?.isNative) {
@@ -521,6 +521,17 @@ export default function UserProfileElections() {
     );
   };
 
+  const [layOne, setLayOne] = useState(false);
+  const [layTwo, setLayTwo] = useState(false);
+  const [layThree, setLayThree] = useState(false);
+  const [layFour, setLayFour] = useState(false);
+  const [layFive, setLayFive] = useState(false);
+  const [laySix, setLaySix] = useState(false);
+  const [laySeven, setLaySeven] = useState(false);
+  const [layEight, setLayEight] = useState(false);
+  const [layNine, setLayNine] = useState(false);
+  const [layTen, setLayTen] = useState(false);
+
   return (
     <div>
       {loader && <Loader />}
@@ -548,8 +559,14 @@ export default function UserProfileElections() {
             </div>
             <div class="layout-wrap-encl">
               <div class="layout-wrap">
-                <div class="layout-thumb" data-bs-toggle="modal" data-bs-target="#lay1-modal" ref={ref}>
-                  <img class="img-fluid" src="images/layout-1-bg.png" alt="images" />
+                <div
+                  class="layout-thumb"
+                  // data-bs-toggle="modal"
+                  // data-bs-target="#lay1-modal"
+                  onClick={() => setLayOne(true)}
+                  ref={ref}
+                >
+                  <img class="img-fluid" src="./images/layout-1-bg.png" alt="images" />
                   <div class="cont">
                     <div class="avatar">
                       {/* <img
@@ -601,7 +618,7 @@ export default function UserProfileElections() {
                     </button>
                   </div>
                 </div>
-                <div class="layout-thumb lay-2" data-bs-toggle="modal" data-bs-target="#lay2-modal" ref={ref2}>
+                <div class="layout-thumb lay-2" onClick={() => setLayTwo(true)} ref={ref2}>
                   <img class="img-fluid" src="images/layout-2-bg.png" alt="images" />
                   <div class="cont">
                     <div class="avatar av-1">
@@ -669,8 +686,8 @@ export default function UserProfileElections() {
                     </button>
                   </div>
                 </div>
-                <div class="layout-thumb lay-3" data-bs-toggle="modal" data-bs-target="#lay3-modal" ref={ref3}>
-                  <img class="img-fluid" src="images/layout-3-bg.png" alt="images" />
+                <div class="layout-thumb lay-3" onClick={() => setLayThree(true)} ref={ref3}>
+                  <img class="img-fluid" src="./images/layout-3-bg.png" alt="images" />
                   <div class="cont">
                     <div class="avatar">
                       <img
@@ -710,7 +727,7 @@ export default function UserProfileElections() {
                     </button>
                   </div>
                 </div>
-                <div class="layout-thumb lay-4" data-bs-toggle="modal" data-bs-target="#lay4-modal" ref={ref4}>
+                <div class="layout-thumb lay-4" onClick={() => setLayFour(true)} ref={ref4}>
                   <img class="lamp-img" src="images/lamp-light.png" alt="ico" />
                   <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
                   <div class="cont">
@@ -747,7 +764,7 @@ export default function UserProfileElections() {
                     </button>
                   </div>
                 </div>
-                <div class="layout-thumb lay-5" data-bs-toggle="modal" data-bs-target="#lay5-modal" ref={ref5}>
+                <div class="layout-thumb lay-5" onClick={() => setLayFive(true)} ref={ref5}>
                   <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
                   <div class="cont">
                     <div class="prod-thumb">
@@ -783,7 +800,7 @@ export default function UserProfileElections() {
                     </button>
                   </div>
                 </div>
-                <div class="layout-thumb lay-6" data-bs-toggle="modal" data-bs-target="#lay6-modal" ref={ref6}>
+                <div class="layout-thumb lay-6" onClick={() => setLaySix(true)} ref={ref6}>
                   <img class="img-fluid" src="images/layout-6-bg.png" alt="images" />
                   <div class="cont">
                     <div class="prod-thumb">
@@ -820,7 +837,7 @@ export default function UserProfileElections() {
                     </button>
                   </div>
                 </div>
-                <div class="layout-thumb lay-5 lay-7" data-bs-toggle="modal" data-bs-target="#lay7-modal" ref={ref7}>
+                <div class="layout-thumb lay-5 lay-7" onClick={() => setLaySeven(true)} ref={ref7}>
                   <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
                   <div class="cont">
                     <div class="prod-thumb">
@@ -852,7 +869,7 @@ export default function UserProfileElections() {
                     </button>
                   </div>
                 </div>
-                <div class="layout-thumb lay-8" data-bs-toggle="modal" data-bs-target="#lay8-modal" ref={ref8}>
+                <div class="layout-thumb lay-8" onClick={() => setLayEight(true)} ref={ref8}>
                   <img class="img-fluid" src="images/layout-8-bg.png" alt="images" />
                   <div class="cont">
                     <div class="prod-thumb">
@@ -882,7 +899,7 @@ export default function UserProfileElections() {
                     </button>
                   </div>
                 </div>
-                <div class="layout-thumb lay-9" data-bs-toggle="modal" data-bs-target="#lay9-modal" ref={ref9}>
+                <div class="layout-thumb lay-9" onClick={() => setLayNine(true)} ref={ref9}>
                   <img class="img-fluid" src="images/layout-9-bg.png" alt="images" />
                   <div class="cont">
                     <div class="prod-thumb">
@@ -1048,7 +1065,7 @@ export default function UserProfileElections() {
                     </button>
                   </div>
                 </div>
-                <div class="layout-thumb lay-10" data-bs-toggle="modal" data-bs-target="#lay10-modal" ref={ref10}>
+                <div class="layout-thumb lay-10" onClick={() => setLayTen(true)} ref={ref10}>
                   <img class="img-fluid" src="images/layout-10-bg.png" alt="images" />
                   <div class="cont">
                     <span class="vote-txt">
@@ -1089,672 +1106,597 @@ export default function UserProfileElections() {
       </div>
 
       {/* <!-- Modal1 Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay1-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb" ref={shareImageRef}>
-              <img class="img-fluid" src="images/layout-1-bg.png" alt="images" />
-              <div class="cont">
-                <div class="avatar">
+      <CustomModal topClassName="modal-lay-wrap" open={layOne} setOpen={setLayOne}>
+        <div class="layout-thumb" ref={shareImageRef}>
+          <img class="img-fluid" src="./images/layout-1-bg.png" alt="images" />
+          <div class="cont">
+            <div class="avatar">
+              <img
+                src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                alt="username"
+              />
+            </div>
+            <div class="avatar-cont">
+              <span class="name text-truncate">{userProfile?.username}</span>
+              <img class="logo img-fluid" src="images/vote-fun-logo.png" alt="Vote & Fun" />
+            </div>
+            <div class="prod-thumb mb-3">
+              <div class="thumb-in">
+                <div class="status start">
+                  <img class="img-fluid" src="images/started-yellow-bg-small.svg" alt="image" />
+                  <span>
+                    <img class="ico" src="images/vote-ico.svg" alt="ico" />
+                    {userProfile?.election_status}
+                  </span>
+                </div>
+                <img
+                  class="prod-img img-fluid"
+                  src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                  alt="ico"
+                />
+                <div class="business-logo">
                   <img
-                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                    alt="username"
+                    src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
+                    alt=""
                   />
                 </div>
-                <div class="avatar-cont">
-                  <span class="name text-truncate">{userProfile?.username}</span>
-                  <img class="logo img-fluid" src="images/vote-fun-logo.png" alt="Vote & Fun" />
-                </div>
-                <div class="prod-thumb mb-3">
-                  <div class="thumb-in">
-                    <div class="status start">
-                      <img class="img-fluid" src="images/started-yellow-bg-small.svg" alt="image" />
-                      <span>
-                        <img class="ico" src="images/vote-ico.svg" alt="ico" />
-                        {userProfile?.election_status}
-                      </span>
-                    </div>
-                    <img
-                      class="prod-img img-fluid"
-                      src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <button
-                  class="btn btn-yellow"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref) : onButtonClick(ref))}
-                >
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
               </div>
             </div>
-            <h6>{t('vote.Create a story or a post!')} </h6>
-            <ShareView shareFunc={() => onButtonClick(ref)} setLoading={setLoader} />
+            <button
+              class="btn btn-yellow"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref) : onButtonClick(ref))}
+            >
+              {t('vote.Vote')} {userProfile?.username}
+            </button>
+          </div>
+        </div>
+        <h6>{t('vote.Create a story or a post!')} </h6>
+        <ShareView shareFunc={() => onButtonClick(ref)} setLoading={setLoader} />
+      </CustomModal>
+      {/* <div class="modal bg-blur" id="lay1-modal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content modal-lay-wrap">
             <button class="btn btn-close-x">
               <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay2-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-2">
-              <img class="img-fluid" src="images/layout-2-bg.png" alt="images" />
-              <div class="cont">
-                <div class="avatar av-1">
-                  <img
-                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                    alt="username"
-                  />
-                </div>
-                <div class="avatar av-2">
-                  <img
-                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                    alt="username"
-                  />
-                </div>
-                <div class="avatar av-3">
-                  <img
-                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                    alt="username"
-                  />
-                </div>
-                <div class="avatar av-4">
-                  <img
-                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                    alt="username"
-                  />
-                </div>
-                <div class="avatar av-5">
-                  <img
-                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                    alt="username"
-                  />
-                </div>
-                <div class="business-logo">
-                  <img
-                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                    alt="logo"
-                  />
-                </div>
-                <div class="business-logo bl-1">
-                  <img
-                    src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
-                    alt="logo"
-                  />
-                </div>
-                <div class="business-logo bl-2">
-                  <img
-                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                    alt="logo"
-                  />
-                </div>
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <img
-                      class="prod-img img-fluid"
-                      src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                      alt="ico"
-                    />
-                  </div>
-                </div>
-                <div class="vf-logo">
-                  <img src="images/vote-fun-logo-100.png" alt="logo" />
-                </div>
-                <button
-                  class="btn btn-yellow"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref2) : onButtonClick(ref2))}
-                >
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
+
+      <CustomModal topClassName="modal-lay-wrap" open={layTwo} setOpen={setLayTwo}>
+        <div class="layout-thumb lay-2">
+          <img class="img-fluid" src="images/layout-2-bg.png" alt="images" />
+          <div class="cont">
+            <div class="avatar av-1">
+              <img
+                src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                alt="username"
+              />
+            </div>
+            <div class="avatar av-2">
+              <img
+                src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                alt="username"
+              />
+            </div>
+            <div class="avatar av-3">
+              <img
+                src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                alt="username"
+              />
+            </div>
+            <div class="avatar av-4">
+              <img
+                src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                alt="username"
+              />
+            </div>
+            <div class="avatar av-5">
+              <img
+                src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                alt="username"
+              />
+            </div>
+            <div class="business-logo">
+              <img src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'} alt="logo" />
+            </div>
+            <div class="business-logo bl-1">
+              <img
+                src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
+                alt="logo"
+              />
+            </div>
+            <div class="business-logo bl-2">
+              <img src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'} alt="logo" />
+            </div>
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <img
+                  class="prod-img img-fluid"
+                  src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                  alt="ico"
+                />
               </div>
             </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            {/*             <ShareView
+            <div class="vf-logo">
+              <img src="images/vote-fun-logo-100.png" alt="logo" />
+            </div>
+            <button
+              class="btn btn-yellow"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref2) : onButtonClick(ref2))}
+            >
+              {t('vote.Vote')} {userProfile?.username}
+            </button>
+          </div>
+        </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        {/*             <ShareView
               shareFunc={onButtonClick}
               setLoading={setLoader}
             />
- */}
+        */}
 
-            <ShareView shareFunc={() => onButtonClick(ref2)} setLoading={setLoader} />
+        <ShareView shareFunc={() => onButtonClick(ref2)} setLoading={setLoader} />
+      </CustomModal>
+      {/* <div class="modal bg-blur" id="lay2-modal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content modal-lay-wrap">
             <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+              <img class="img-fluid" src="./images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay3-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-3">
-              <img class="img-fluid" src="images/layout-3-bg.png" alt="images" />
-              <div class="cont">
-                <div class="avatar">
-                  <img
-                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                    alt="username"
-                  />
-                </div>
-                <div class="avatar-cont">
-                  <img class="logo img-fluid" src="images/vote-fun-logo-100.png" alt="Vote & Fun" />
-                  <span class="name">{t('vote.can you please vote me?')}</span>
-                </div>
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <div class="status start">
-                      <img class="img-fluid" src="images/started-yellow-bg-small.svg" alt="image" />
-                      <span>
-                        <img class="ico" src="images/vote-ico.svg" alt="ico" />
-                        {t('vote.Started')}
-                      </span>
-                    </div>
-                    <img
-                      class="prod-img img-fluid"
-                      src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <button
-                  class="btn btn-yellow"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref3) : onButtonClick(ref3))}
-                >
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
-              </div>
+
+      <CustomModal topClassName="modal-lay-wrap" open={layThree} setOpen={setLayThree}>
+        <div class="layout-thumb lay-3">
+          <img class="img-fluid" src="images/layout-3-bg.png" alt="images" />
+          <div class="cont">
+            <div class="avatar">
+              <img
+                src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                alt="username"
+              />
             </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={() => onButtonClick(ref3)} setLoading={setLoader} />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Modal Popup Ends here -->
-    <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay4-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-4">
-              <img class="lamp-img" src="images/lamp-light.png" alt="ico" />
-              <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
-              <div class="cont">
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <div class="status start">
-                      <img class="img-fluid w-100" src="images/started-yellow-bg-small.svg" alt="image" />
-                      <span>
-                        <img class="ico" src="images/vote-ico.svg" alt="ico" />
-                        {t('vote.Started')}
-                      </span>
-                    </div>
-                    <img
-                      class="prod-img img-fluid"
-                      src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <button
-                  class="btn btn-yellow btn-with-avatar"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref4) : onButtonClick(ref4))}
-                >
-                  <div class="avatar">
-                    <img
-                      src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                      alt="username"
-                    />
-                  </div>
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
-              </div>
+            <div class="avatar-cont">
+              <img class="logo img-fluid" src="images/vote-fun-logo-100.png" alt="Vote & Fun" />
+              <span class="name">{t('vote.can you please vote me?')}</span>
             </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={() => onButtonClick(ref4)} setLoading={setLoader} />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Modal Popup Ends here -->
-    <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay5-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-5">
-              <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
-              <div class="cont">
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <div class="status start">
-                      <img class="img-fluid w-100" src="images/yellow-start-bg.svg" alt="image" />
-                      <span>
-                        <img class="ico" src="images/vote-ico.svg" alt="ico" />
-                        {t('vote.Started')}
-                      </span>
-                    </div>
-                    <img
-                      class="prod-img img-fluid"
-                      src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <button
-                  class="btn btn-yellow btn-with-avatar"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref5) : onButtonClick(ref5))}
-                >
-                  <div class="avatar edge">
-                    <img
-                      src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                      alt="username"
-                    />
-                  </div>
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
-              </div>
-            </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={() => onButtonClick(ref5)} setLoading={setLoader} />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Modal Popup Ends here -->
-    <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay6-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-6">
-              <img class="img-fluid w-100" src="images/layout-6-bg.png" alt="images" />
-              <div class="cont">
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <div class="status start">
-                      <img class="img-fluid" src="images/started-yellow-bg-small.svg" alt="image" />
-                      <span>
-                        <img class="ico" src="images/vote-ico.svg" alt="ico" />
-                        {t('vote.Started')}
-                      </span>
-                    </div>
-                    <img
-                      class="prod-img img-fluid"
-                      src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <span class="vote-txt"> {t('vote.please give me a vote')}</span>
-                <button
-                  class="btn btn-yellow btn-with-avatar"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref6) : onButtonClick(ref6))}
-                >
-                  <div class="avatar edge">
-                    <img
-                      src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                      alt="username"
-                    />
-                  </div>
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
-              </div>
-            </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={() => onButtonClick(ref6)} setLoading={setLoader} />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Modal Popup Ends here -->
-    <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay7-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-5 lay-7">
-              <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
-              <div class="cont">
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <img
-                      class="prod-img img-fluid"
-                      src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
-                        alt=""
-                      />
-                    </div>
-                    <div class="pls-vote-badge">
-                      <img class="img-fluid" src="images/pls-vote-vertical-badge.png" alt="img" />
-                    </div>
-                  </div>
-                </div>
-                <button
-                  class="btn btn-yellow btn-with-avatar"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref7) : onButtonClick(ref7))}
-                >
-                  <div class="avatar edge">
-                    <img
-                      src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                      alt="username"
-                    />
-                  </div>
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
-              </div>
-            </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={() => onButtonClick(ref7)} setLoading={setLoader} />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Modal Popup Ends here -->
-    <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay8-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-8">
-              <img class="img-fluid" src="images/layout-8-bg.png" alt="images" />
-              <div class="cont">
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <img
-                      class="prod-img img-fluid"
-                      src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                  <div class="avatar">
-                    <img
-                      src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                      alt="username"
-                    />
-                  </div>
-                </div>
-                <button
-                  class="btn btn-black"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref8) : onButtonClick(ref8))}
-                >
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
-              </div>
-            </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={() => onButtonClick(ref8)} setLoading={setLoader} />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Modal Popup Ends here -->
-    <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay9-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-9">
-              <img class="img-fluid" src="images/layout-9-bg.png" alt="images" />
-              <div class="cont">
-                <div class="prod-thumb">
-                  <div class="bs-logo-wrap">
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
-                        alt=""
-                      />
-                    </div>
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt=""
-                      />
-                    </div>
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
-                        alt=""
-                      />
-                    </div>
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt=""
-                      />
-                    </div>
-                    <div class="business-logo">
-                      <img
-                        src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                  <div class="thumb-wrap">
-                    <div class="thumb-in">
-                      <img
-                        class="prod-img img-fluid"
-                        src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                        alt="ico"
-                      />
-                    </div>
-                    <div class="thumb-in">
-                      <img
-                        class="prod-img img-fluid"
-                        src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                        alt="ico"
-                      />
-                    </div>
-                    <div class="thumb-in">
-                      <img
-                        class="prod-img img-fluid"
-                        src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                        alt="ico"
-                      />
-                    </div>
-                    <div class="thumb-in">
-                      <img
-                        class="prod-img img-fluid"
-                        src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                        alt="ico"
-                      />
-                    </div>
-                    <div class="thumb-in">
-                      <img
-                        class="prod-img img-fluid"
-                        src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                        alt="ico"
-                      />
-                    </div>
-                    <div class="thumb-in">
-                      <img
-                        class="prod-img img-fluid"
-                        src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                        alt="ico"
-                      />
-                    </div>
-                    <div class="thumb-in">
-                      <img
-                        class="prod-img img-fluid"
-                        src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                        alt="ico"
-                      />
-                    </div>
-                    <div class="thumb-in">
-                      <img
-                        class="prod-img img-fluid"
-                        src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
-                        alt="ico"
-                      />
-                    </div>
-                  </div>
-                  <div class="avatar-encl">
-                    <div class="avatar">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt="username"
-                      />
-                    </div>
-                    <div class="avatar">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt="username"
-                      />
-                    </div>
-                    <div class="avatar">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt="username"
-                      />
-                    </div>
-                    <div class="avatar">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt="username"
-                      />
-                    </div>
-                    <div class="avatar">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt="username"
-                      />
-                    </div>
-                    <div class="avatar">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt="username"
-                      />
-                    </div>
-                    <div class="avatar">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt="username"
-                      />
-                    </div>
-                    <div class="avatar">
-                      <img
-                        src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
-                        alt="username"
-                      />
-                    </div>
-                  </div>
-                  <span class="vote-txt">
-                    Plese give me
-                    <br />a vote!!!
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <div class="status start">
+                  <img class="img-fluid" src="images/started-yellow-bg-small.svg" alt="image" />
+                  <span>
+                    <img class="ico" src="images/vote-ico.svg" alt="ico" />
+                    {t('vote.Started')}
                   </span>
                 </div>
-                <button
-                  class="btn btn-black"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref9) : onButtonClick(ref9))}
-                >
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
+                <img
+                  class="prod-img img-fluid"
+                  src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img
+                    src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={() => onButtonClick(ref9)} setLoading={setLoader} />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+            <button
+              class="btn btn-yellow"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref3) : onButtonClick(ref3))}
+            >
+              {t('vote.Vote')} {userProfile?.username}
             </button>
           </div>
         </div>
-      </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView shareFunc={() => onButtonClick(ref3)} setLoading={setLoader} />
+      </CustomModal>
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay10-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-10">
-              <img class="img-fluid" src="images/layout-10-bg.png" alt="images" />
-              <div class="cont">
-                <span class="vote-txt">
-                  {t('vote.CAN YOU')}
-                  <br />
-                  {t('vote.VOTE')}
-                  <br />
-                  {t('vote.FOR ME?')}
-                </span>
+
+      <CustomModal topClassName="modal-lay-wrap" open={layFour} setOpen={setLayFour}>
+        <div class="layout-thumb lay-4">
+          <img class="lamp-img" src="images/lamp-light.png" alt="ico" />
+          <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <div class="status start">
+                  <img class="img-fluid w-100" src="images/started-yellow-bg-small.svg" alt="image" />
+                  <span>
+                    <img class="ico" src="images/vote-ico.svg" alt="ico" />
+                    {t('vote.Started')}
+                  </span>
+                </div>
+                <img
+                  class="prod-img img-fluid"
+                  src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'} alt="" />
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-yellow btn-with-avatar"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref4) : onButtonClick(ref4))}
+            >
+              <div class="avatar">
+                <img
+                  src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                  alt="username"
+                />
+              </div>
+              {t('vote.Vote')} {userProfile?.username}
+            </button>
+          </div>
+        </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView shareFunc={() => onButtonClick(ref4)} setLoading={setLoader} />
+      </CustomModal>
+      {/* <!-- Modal Popup Ends here -->
+    <!-- Modal Popup Starts here --> */}
+
+      <CustomModal topClassName="modal-lay-wrap" open={layFive} setOpen={setLayFive}>
+        <div class="layout-thumb lay-5">
+          <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <div class="status start">
+                  <img class="img-fluid w-100" src="images/yellow-start-bg.svg" alt="image" />
+                  <span>
+                    <img class="ico" src="images/vote-ico.svg" alt="ico" />
+                    {t('vote.Started')}
+                  </span>
+                </div>
+                <img
+                  class="prod-img img-fluid"
+                  src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img
+                    src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-yellow btn-with-avatar"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref5) : onButtonClick(ref5))}
+            >
+              <div class="avatar edge">
+                <img
+                  src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                  alt="username"
+                />
+              </div>
+              {t('vote.Vote')} {userProfile?.username}
+            </button>
+          </div>
+        </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView shareFunc={() => onButtonClick(ref5)} setLoading={setLoader} />
+      </CustomModal>
+      {/* <!-- Modal Popup Ends here -->
+    <!-- Modal Popup Starts here --> */}
+
+      <CustomModal topClassName="modal-lay-wrap" open={laySix} setOpen={setLaySix}>
+        <div class="layout-thumb lay-6">
+          <img class="img-fluid w-100" src="images/layout-6-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <div class="status start">
+                  <img class="img-fluid" src="images/started-yellow-bg-small.svg" alt="image" />
+                  <span>
+                    <img class="ico" src="images/vote-ico.svg" alt="ico" />
+                    {t('vote.Started')}
+                  </span>
+                </div>
+                <img
+                  class="prod-img img-fluid"
+                  src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'} alt="" />
+                </div>
+              </div>
+            </div>
+            <span class="vote-txt"> {t('vote.please give me a vote')}</span>
+            <button
+              class="btn btn-yellow btn-with-avatar"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref6) : onButtonClick(ref6))}
+            >
+              <div class="avatar edge">
+                <img
+                  src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                  alt="username"
+                />
+              </div>
+              {t('vote.Vote')} {userProfile?.username}
+            </button>
+          </div>
+        </div>
+      </CustomModal>
+      {/* <!-- Modal Popup Ends here -->
+    <!-- Modal Popup Starts here --> */}
+
+      <CustomModal topClassName="modal-lay-wrap" open={laySeven} setOpen={setLaySeven}>
+        <div class="layout-thumb lay-5 lay-7">
+          <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <img
+                  class="prod-img img-fluid"
+                  src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img
+                    src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
+                    alt=""
+                  />
+                </div>
+                <div class="pls-vote-badge">
+                  <img class="img-fluid" src="images/pls-vote-vertical-badge.png" alt="img" />
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-yellow btn-with-avatar"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref7) : onButtonClick(ref7))}
+            >
+              <div class="avatar edge">
+                <img
+                  src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                  alt="username"
+                />
+              </div>
+              {t('vote.Vote')} {userProfile?.username}
+            </button>
+          </div>
+        </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView shareFunc={() => onButtonClick(ref7)} setLoading={setLoader} />
+      </CustomModal>
+      {/* <!-- Modal Popup Ends here -->
+    <!-- Modal Popup Starts here --> */}
+      <CustomModal topClassName="modal-lay-wrap" open={layEight} setOpen={setLayEight}>
+        <div class="layout-thumb lay-8">
+          <img class="img-fluid" src="images/layout-8-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <img
+                  class="prod-img img-fluid"
+                  src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'} alt="" />
+                </div>
+              </div>
+              <div class="avatar">
+                <img
+                  src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                  alt="username"
+                />
+              </div>
+            </div>
+            <button
+              class="btn btn-black"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref8) : onButtonClick(ref8))}
+            >
+              {t('vote.Vote')} {userProfile?.username}
+            </button>
+          </div>
+        </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView shareFunc={() => onButtonClick(ref8)} setLoading={setLoader} />
+      </CustomModal>
+      {/* <!-- Modal Popup Ends here -->
+    <!-- Modal Popup Starts here --> */}
+
+      <CustomModal topClassName="modal-lay-wrap" open={layNine} setOpen={setLayNine}>
+        <div class="layout-thumb lay-9">
+          <img class="img-fluid" src="images/layout-9-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="bs-logo-wrap">
+                <div class="business-logo">
+                  <img
+                    src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
+                    alt=""
+                  />
+                </div>
+                <div class="business-logo">
+                  <img src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'} alt="" />
+                </div>
+                <div class="business-logo">
+                  <img
+                    src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
+                    alt=""
+                  />
+                </div>
+                <div class="business-logo">
+                  <img src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'} alt="" />
+                </div>
+                <div class="business-logo">
+                  <img
+                    src={userProfile?.business_avatar ? userProfile.business_avatar : 'images/logo-dummy.png'}
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div class="thumb-wrap">
+                <div class="thumb-in">
+                  <img
+                    class="prod-img img-fluid"
+                    src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                    alt="ico"
+                  />
+                </div>
+                <div class="thumb-in">
+                  <img
+                    class="prod-img img-fluid"
+                    src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                    alt="ico"
+                  />
+                </div>
+                <div class="thumb-in">
+                  <img
+                    class="prod-img img-fluid"
+                    src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                    alt="ico"
+                  />
+                </div>
+                <div class="thumb-in">
+                  <img
+                    class="prod-img img-fluid"
+                    src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                    alt="ico"
+                  />
+                </div>
+                <div class="thumb-in">
+                  <img
+                    class="prod-img img-fluid"
+                    src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                    alt="ico"
+                  />
+                </div>
+                <div class="thumb-in">
+                  <img
+                    class="prod-img img-fluid"
+                    src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                    alt="ico"
+                  />
+                </div>
+                <div class="thumb-in">
+                  <img
+                    class="prod-img img-fluid"
+                    src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                    alt="ico"
+                  />
+                </div>
+                <div class="thumb-in">
+                  <img
+                    class="prod-img img-fluid"
+                    src={SelectedGiftImage ? SelectedGiftImage : 'images/product-img.jpg'}
+                    alt="ico"
+                  />
+                </div>
+              </div>
+              <div class="avatar-encl">
                 <div class="avatar">
                   <img
                     src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
                     alt="username"
                   />
                 </div>
-                <button
-                  class="btn btn-black"
-                  onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref10) : onButtonClick(ref10))}
-                >
-                  {t('vote.Vote')} {userProfile?.username}
-                </button>
+                <div class="avatar">
+                  <img
+                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                    alt="username"
+                  />
+                </div>
+                <div class="avatar">
+                  <img
+                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                    alt="username"
+                  />
+                </div>
+                <div class="avatar">
+                  <img
+                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                    alt="username"
+                  />
+                </div>
+                <div class="avatar">
+                  <img
+                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                    alt="username"
+                  />
+                </div>
+                <div class="avatar">
+                  <img
+                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                    alt="username"
+                  />
+                </div>
+                <div class="avatar">
+                  <img
+                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                    alt="username"
+                  />
+                </div>
+                <div class="avatar">
+                  <img
+                    src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                    alt="username"
+                  />
+                </div>
               </div>
+              <span class="vote-txt">
+                Plese give me
+                <br />a vote!!!
+              </span>
             </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView shareFunc={() => onButtonClick(ref10)} setLoading={setLoader} />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+            <button
+              class="btn btn-black"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref9) : onButtonClick(ref9))}
+            >
+              {t('vote.Vote')} {userProfile?.username}
             </button>
           </div>
         </div>
-      </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView shareFunc={() => onButtonClick(ref9)} setLoading={setLoader} />
+      </CustomModal>
+      {/* <!-- Modal Popup Ends here -->
+    <!-- Modal Popup Starts here --> */}
+
+      <CustomModal topClassName="modal-lay-wrap" open={layTen} setOpen={setLayTen}>
+        <div class="layout-thumb lay-10">
+          <img class="img-fluid" src="images/layout-10-bg.png" alt="images" />
+          <div class="cont">
+            <span class="vote-txt">
+              {t('vote.CAN YOU')}
+              <br />
+              {t('vote.VOTE')}
+              <br />
+              {t('vote.FOR ME?')}
+            </span>
+            <div class="avatar">
+              <img
+                src={userProfile?.user_avatar ? userProfile?.user_avatar : 'images/avatar-big-1.png'}
+                alt="username"
+              />
+            </div>
+            <button
+              class="btn btn-black"
+              onClick={() => (window?.isNative ? onMobileShareVoteImageClick(ref10) : onButtonClick(ref10))}
+            >
+              {t('vote.Vote')} {userProfile?.username}
+            </button>
+          </div>
+        </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView shareFunc={() => onButtonClick(ref10)} setLoading={setLoader} />
+      </CustomModal>
     </div>
   );
 }

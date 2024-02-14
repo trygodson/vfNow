@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link, useParams } from 'react-router-dom';
 import TopHeader from '../components/TopHeader';
-import Loader from '../components/Loader';
+import Loader, { CustomModal } from '../components/Loader';
 import Footer from '../components/Footer';
 import MessageBox from '../components/MessageBox';
 import GeneralBusiness from '../components/GeneralBusiness';
@@ -107,6 +107,7 @@ export default function BusinessPreview() {
         // console.log("previewresp", resp.data.data);
       });
   }
+  const [loginModal, setLoginModal] = useState(false);
   return (
     <div class="container-fluid">
       <TopHeader title={t('Header.business_detail')} />
@@ -176,27 +177,29 @@ export default function BusinessPreview() {
         {/* <!-- This Gift Section Ends here --> */}
       </section>
       {/* <!-- Content Section Ends here --> */}
-      <div class="modal reg-modal bg-blur" id="login-message">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content minh-unset" data-bs-dismiss="modal">
-            <div class="alert-bubble-img">
-              <img class="img-fluid" src="./images/alert-msg-bubble.png" alt="ico" />
-              <div class="cont py-3">
-                <h5>
-                  {t('alerts.Hi!')} <br />
-                  {t('alerts.you are still visitor')}
-                </h5>
-                <h5 class="dark">{t('alerts.Click to log-in!!!')}</h5>
-              </div>
-            </div>
-            <div class="button-btm-sec">
-              <Link class="btn btn-yellow text-uppercase w-100" to={'/login'}>
-                {t('Buttons.Log-in')}
-              </Link>
-            </div>
+      <CustomModal topClassName="minh-unset" showClose={false} open={loginModal} setOpen={setLoginModal}>
+        <div class="alert-bubble-img">
+          <img class="img-fluid" src="./images/alert-msg-bubble.png" alt="ico" />
+          <div class="cont py-3">
+            <h5>
+              {t('alerts.Hi!')} <br />
+              {t('alerts.you are still visitor')}
+            </h5>
+            <h5 class="dark">{t('alerts.Click to log-in!!!')}</h5>
           </div>
         </div>
-      </div>
+        <div class="button-btm-sec">
+          <Link class="btn btn-yellow text-uppercase w-100" to={'/login'}>
+            {t('Buttons.Log-in')}
+          </Link>
+        </div>
+      </CustomModal>
+      {/* <div class="modal reg-modal bg-blur" id="login-message">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content " data-bs-dismiss="modal">
+          </div>
+        </div>
+      </div> */}
       {/* <!-- Footer Starts here --> */}
       {error && <MessageBox error={error} setError={setError} title={error_title} />}
       <Footer user={user && user} />

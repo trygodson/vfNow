@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TopHeader from '../../components/BusinessHeader';
 import BusinessFooter from '../../components/BusinessFooter';
-import Loader from '../../components/Loader';
+import Loader, { CustomModal } from '../../components/Loader';
 import MessageBox from '../../components/MessageBox';
 import ElectionModify from './ElectionModify';
 import { useTranslation } from 'react-i18next';
@@ -197,7 +197,7 @@ export default function NewElection() {
     }
     formData.append('gift_title', gitfName);
     formData.append('gift_description', gitfDes);
-    formData.append('gift_value', `${giftValue}`);
+    formData.append('gift_value', giftValue);
     formData.append('currency', user?.currency);
     formData.append('age_limitation', ageLimit ? 1 : 0);
 
@@ -239,6 +239,7 @@ export default function NewElection() {
 
         setElections(resp.data);
         if (resp.data.success) {
+          UpdateElectionGiftImages(resp.data.data.election_id);
           setelectionUpdate(true);
           setUpdate(true);
         } else {
@@ -247,6 +248,32 @@ export default function NewElection() {
         }
       });
   }
+
+  function UpdateElectionGiftImages(electionId) {
+    var formData = new FormData();
+    formData.append('election_id', electionId);
+
+    images.map((image, index) => {
+      if (image && image.name != undefined) {
+        formData.append(`picture`, image);
+        formData.append(`order`, index + 1);
+      }
+
+      ApiCall('Post', API.updateelectiongiftimageApi, formData, {
+        Authorization: 'Bearer ' + user?.access_token,
+        Accept: 'application/json',
+      })
+        .catch((error) => {
+          setLoader(false);
+          console.log('erorr reponse', error);
+        })
+        .then((resp) => {
+          setLoader(false);
+          console.log('sdsdsd', resp.data);
+        });
+    });
+  }
+
   function UpdateElection() {
     setLoader(true);
     var formData = new FormData();
@@ -266,7 +293,7 @@ export default function NewElection() {
     // category2 !== '' && category2 !== null && formData.append('category2', category2);
     formData.append('gift_title', gitfName);
     formData.append('gift_description', gitfDes);
-    formData.append('gift_value', `${giftValue}`);
+    formData.append('gift_value', giftValue);
     formData.append('currency', user?.currency);
     formData.append('age_limitation', ageLimit ? 1 : 0);
 
@@ -312,7 +339,8 @@ export default function NewElection() {
         }
       });
   }
-
+  const [tcModal, setTcModal] = useState(false);
+  const [electionDurationModal, setElectionDurationModal] = useState(false);
   return (
     <div className="container-fluid">
       {loader && <Loader />}
@@ -394,6 +422,11 @@ export default function NewElection() {
                     {t('election.Select Election phase duration')}
                   </option>
                   {/* <option value="0">{t('election.Now')}</option> */}
+                  <option value="1h">1 hour</option>
+                  <option value="3h">3 hours</option>
+                  <option value="6h">6 hours</option>
+                  <option value="1">1 day</option>
+                  <option value="3">3 {t('election.days')}</option>
                   <option value="7">7 {t('election.days')}</option>
                   <option value="10">10 {t('election.days')}</option>
                   <option value="14">14 {t('election.days')}</option>
@@ -736,58 +769,55 @@ export default function NewElection() {
 
       <BusinessFooter />
       {/* <!-- Modal Popup Starts here --> */}
-      <div className="modal bg-blur" id="tc-modal">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="performace-modal btm-fix-btn">
-              <h5>{t('alerts.TERMS and CONDITIONS')}</h5>
-              <p>{t('alerts.TERMS_Text')}</p>
-              <button className="btn btn-close-x p-0">
-                <img className="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-              </button>
-            </div>
-          </div>
+      <CustomModal topClassName="" showClose={true} open={tcModal} setOpen={setTcModal}>
+        <div className="performace-modal btm-fix-btn">
+          <h5>{t('alerts.TERMS and CONDITIONS')}</h5>
+          <p>{t('alerts.TERMS_Text')}</p>
+          <button className="btn btn-close-x p-0">
+            <img className="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+          </button>
         </div>
-      </div>
+      </CustomModal>
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-      <div className="modal bg-blur" id="elec-duration-modal">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="performace-modal btm-fix-btn">
-              <h5>
-                <h3>{t('election.Election duration')}</h3>
-                <br />
-                {t('businessPage.How does it work?')}
-              </h5>
-              <p>{t('election.An election consists of two phases')}</p>
-              <p>
-                <strong>- {t('election.Candidate phase')}</strong>
-              </p>
-              <p>
-                <strong>- {t('election.Election phase')}</strong>
-              </p>
-              <p>
-                {t('election.During')} <strong>{t('election.Candidate phase')}</strong>
-                {t(
-                  'election.users can see your free gift and decide to partecipate as Candidate. However, no vote can be received during this phase',
-                )}{' '}
-                .
-              </p>
-              <p>
-                {t('election.During')} <strong>{t('election.Election phase')}</strong>{' '}
-                {t('election.candidate can receive vote. While other user can still became candidate and/or give vote')}
-              </p>
-              <p className="text-center">
-                <img className="img-fluid my-3" src="images/election-duration-diagram.svg" alt="ico" />
-              </p>
-              <button className="btn btn-close-x p-0">
-                <img className="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-              </button>
-            </div>
-          </div>
+      <CustomModal topClassName="" showClose={false} open={electionDurationModal} setOpen={setElectionDurationModal}>
+        <div className="performace-modal btm-fix-btn">
+          <h5>
+            <h3>{t('election.Election duration')}</h3>
+            <br />
+            {t('businessPage.How does it work?')}
+          </h5>
+          <p>{t('election.An election consists of two phases')}</p>
+          <p>
+            <strong>- {t('election.Candidate phase')}</strong>
+          </p>
+          <p>
+            <strong>- {t('election.Election phase')}</strong>
+          </p>
+          <p>
+            {t('election.During')} <strong>{t('election.Candidate phase')}</strong>
+            {t(
+              'election.users can see your free gift and decide to partecipate as Candidate. However, no vote can be received during this phase',
+            )}{' '}
+            .
+          </p>
+          <p>
+            {t('election.During')} <strong>{t('election.Election phase')}</strong>{' '}
+            {t('election.candidate can receive vote. While other user can still became candidate and/or give vote')}
+          </p>
+          <p className="text-center">
+            <img className="img-fluid my-3" src="./images/election-duration-diagram.svg" alt="ico" />
+          </p>
+          <button className="btn btn-close-x p-0">
+            <img
+              className="img-fluid"
+              src="./images/close-x.svg"
+              alt="ico"
+              onClick={() => setElectionDurationModal(false)}
+            />
+          </button>
         </div>
-      </div>
+      </CustomModal>
       {error && <MessageBox error={error} setError={setError} title={error_title} />}
     </div>
   );

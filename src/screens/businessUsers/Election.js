@@ -28,10 +28,25 @@ export default function Election() {
 
   useEffect(async () => {
     const userData = await getUserData();
+
+    // function dismissAllModals() {
+    //   // Select all modal elements
+    //   var modals = document.querySelectorAll('.modal');
+
+    //   // Iterate through each modal and hide it
+    //   modals.forEach(function (modal) {
+    //     var bootstrapModal = new window.bootstrap.Modal(modal);
+    //     bootstrapModal.hide();
+    //   });
+    // }
     if (userData) {
       setLoader(true);
       setUser(userData);
       CategoryList(userData);
+    }
+    if (document.querySelectorAll('.modal').length > 0) {
+      // dismissAllModals();
+      console.log(window.bootstrap, '---- window.bootstrap---');
     }
   }, []);
 

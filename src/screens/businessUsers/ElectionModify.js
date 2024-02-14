@@ -4,7 +4,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import TopHeader from '../../components/BusinessHeader';
 import ImageView from '../../components/ImageView';
 import GeneralBusiness from '../../components/GeneralBusiness';
-import Loader from '../../components/Loader';
+import Loader, { CustomModal } from '../../components/Loader';
 import { toPng } from 'html-to-image';
 import { useTranslation } from 'react-i18next';
 import '../../languages/i18n';
@@ -48,6 +48,11 @@ export default function ElectionDetails({
     longitude: 69.3451,
     zoom: 5,
   });
+
+  const [elecConfirmModal, setElecConfirmModal] = useState(false);
+  const [elecConfirmModalOne, setElecConfirmModalOne] = useState(false);
+  const [lay7Modal, setLay7Modal] = useState(false);
+  const [pdfModal, setPdfModal] = useState(false);
 
   useEffect(async () => {
     ElectionDetail(user);
@@ -473,150 +478,153 @@ export default function ElectionDetails({
       </section>
 
       {/* <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur reg-modal" id="elec-confirm-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="close-cont">
-              <button class="btn btn-close-x p-0">
-                <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-              </button>
-            </div>
-            <div class="alert-bubble-img rect-pop">
-              <img class="img-fluid" src="images/rectangle-popup.svg" alt="ico" />
-              <div class="cont">
-                <h6 class="text-success text-center">{t('user_register.Almost there!')}</h6>
-                <img class="finger-ico img-fluid" src="images/alert-finger-ico.png" alt="ico" />
-                <p>
-                  <strong>{t('alerts.Please make sure to give your gift for free to the Winner')}.</strong>
-                </p>
-                <p class="text-danger">
-                  {t(
-                    'alerts.If for any reason you do not feel confortable to guaraty the free gift, please do not confirm, or your reputation can be seriously damaged',
-                  )}
-                  .
-                </p>
-                <p>{t('alerts.Instead, if you are able to guaranty the free gift, please')} </p>
-                <p>
-                  <strong>
-                    {t('alerts.click')} "{t('alerts.CONFIRM ELECTION')}"
-                  </strong>
-                </p>
-                <p class="text-success">
-                  <strong>
-                    {t('alerts.and we will be very happy to help you with this election and with your SHOP')} !!!
-                  </strong>
-                </p>
-              </div>
-            </div>
-            <div class="col-12 px-3 mt-4 mb-5">
-              <button class="btn btn-black w-100" data-bs-toggle="modal" data-bs-target="#elec-confirm1-modal">
-                <small>{t('alerts.CONFIRM ELECTION')}</small>
-              </button>
-            </div>
+
+      <CustomModal topClassName="" showClose={false} open={elecConfirmModal} setOpen={setElecConfirmModal}>
+        <div class="close-cont">
+          <button class="btn btn-close-x p-0">
+            <img class="img-fluid" src="images/close-x.svg" alt="ico" onClick={() => setElecConfirmModal(false)} />
+          </button>
+        </div>
+        <div class="alert-bubble-img rect-pop">
+          <img class="img-fluid" src="./images/rectangle-popup.svg" alt="ico" />
+          <div class="cont">
+            <h6 class="text-success text-center">{t('user_register.Almost there!')}</h6>
+            <img class="finger-ico img-fluid" src="images/alert-finger-ico.png" alt="ico" />
+            <p>
+              <strong>{t('alerts.Please make sure to give your gift for free to the Winner')}.</strong>
+            </p>
+            <p class="text-danger">
+              {t(
+                'alerts.If for any reason you do not feel confortable to guaraty the free gift, please do not confirm, or your reputation can be seriously damaged',
+              )}
+              .
+            </p>
+            <p>{t('alerts.Instead, if you are able to guaranty the free gift, please')} </p>
+            <p>
+              <strong>
+                {t('alerts.click')} "{t('alerts.CONFIRM ELECTION')}"
+              </strong>
+            </p>
+            <p class="text-success">
+              <strong>
+                {t('alerts.and we will be very happy to help you with this election and with your SHOP')} !!!
+              </strong>
+            </p>
           </div>
         </div>
-      </div>
+        <div class="col-12 px-3 mt-4 mb-5">
+          <button
+            class="btn btn-black w-100"
+            onClick={() => {
+              setElecConfirmModal(false);
+              setElecConfirmModalOne(true);
+            }}
+          >
+            <small>{t('alerts.CONFIRM ELECTION')}</small>
+          </button>
+        </div>
+      </CustomModal>
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur reg-modal" id="elec-confirm1-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="close-cont">
-              <button class="btn btn-close-x p-0">
-                <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
-              </button>
-              <p>
-                {t(
-                  'businessPage.If you are on a rush, you can Print the QR CODE and SHARE even later from the Election page',
-                )}
-              </p>
-            </div>
-            <div class="alert-bubble-img mb-5">
-              <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
-              <div class="cont">
-                <h5 class="mt-1">{t('alerts.FANTASTIC!')}</h5>
-                <p class="mb-1">
-                  <strong>...{t('alerts.your election is now published')}!!!</strong>
-                </p>
-                <h5 class="mt-1"> {t('alerts.IMPORTANT')}</h5>
-                <p>
-                  <strong>{t('alerts.Print the ELECTION QR-CODE and put it in a visible place in your SHOP')}</strong>
-                </p>
-              </div>
-            </div>
-            <div class="col-12 px-3 mt-4 mb-5">
-              <button class="btn btn-yellow w-100 mb-4" data-bs-toggle="modal" data-bs-target="#pdf-modal">
-                <small>{t('Buttons.PRINT ELECTION QR-CODE')}</small>
-              </button>
-              <button class="btn btn-black w-100" data-bs-toggle="modal" data-bs-target="#lay7-modal">
-                <small>{t('Buttons.SHARE')}</small>
-              </button>
-            </div>
+
+      <CustomModal topClassName="" showClose={false} open={elecConfirmModalOne} setOpen={setElecConfirmModalOne}>
+        <div class="close-cont">
+          <button class="btn btn-close-x p-0">
+            <img class="img-fluid" src="images/close-x.svg" alt="ico" onClick={() => setElecConfirmModalOne(false)} />
+          </button>
+          <p>
+            {t(
+              'businessPage.If you are on a rush, you can Print the QR CODE and SHARE even later from the Election page',
+            )}
+          </p>
+        </div>
+        <div class="alert-bubble-img mb-5">
+          <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
+          <div class="cont">
+            <h5 class="mt-1">{t('alerts.FANTASTIC!')}</h5>
+            <p class="mb-1">
+              <strong>...{t('alerts.your election is now published')}!!!</strong>
+            </p>
+            <h5 class="mt-1"> {t('alerts.IMPORTANT')}</h5>
+            <p>
+              <strong>{t('alerts.Print the ELECTION QR-CODE and put it in a visible place in your SHOP')}</strong>
+            </p>
           </div>
         </div>
-      </div>
-
+        <div class="col-12 px-3 mt-4 mb-5">
+          <button
+            class="btn btn-yellow w-100 mb-4"
+            onClick={() => {
+              setElecConfirmModalOne(false);
+              setPdfModal(true);
+            }}
+          >
+            <small>{t('Buttons.PRINT ELECTION QR-CODE')}</small>
+          </button>
+          <button
+            class="btn btn-black w-100"
+            onClick={() => {
+              setElecConfirmModalOne(false);
+              setLay7Modal(true);
+            }}
+          >
+            <small>{t('Buttons.SHARE')}</small>
+          </button>
+        </div>
+      </CustomModal>
       {/* <!-- Modal Popup Ends here --> */}
       {/* <!-- Modal Popup Starts here --> */}
-      <div class="modal bg-blur" id="lay7-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-5 lay-7 elect-lay" ref={shareImageRef}>
-              <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
-              <div class="cont">
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <img
-                      class="prod-img img-fluid"
-                      src={
-                        election?.gift_images[0]?.picture ? election?.gift_images[0]?.picture : 'images/product-img.jpg'
-                      }
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={
-                          election?.business_details?.avatar
-                            ? election?.business_details?.avatar
-                            : 'images/logo-dummy.png'
-                        }
-                        alt=""
-                      />
-                    </div>
-                    <div class="pls-vote-badge">
-                      <img class="img-fluid" src="images/pls-vote-vertical-badge.png" alt="img" />
-                    </div>
-                  </div>
+      <CustomModal topClassName="" showClose={false} open={lay7Modal} setOpen={setLay7Modal}>
+        <div class="layout-thumb lay-5 lay-7 elect-lay" ref={shareImageRef}>
+          <img class="img-fluid" src="./images/layout-4-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <img
+                  class="prod-img img-fluid"
+                  src={election?.gift_images[0]?.picture ? election?.gift_images[0]?.picture : 'images/product-img.jpg'}
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img
+                    src={
+                      election?.business_details?.avatar ? election?.business_details?.avatar : 'images/logo-dummy.png'
+                    }
+                    alt=""
+                  />
                 </div>
-                <button class="btn btn-black border">
-                  {t('Buttons.CLICK TO')}
-                  <br />
-                  {t('Buttons.ENTER')}
-                </button>
+                <div class="pls-vote-badge">
+                  <img class="img-fluid" src="images/pls-vote-vertical-badge.png" alt="img" />
+                </div>
               </div>
             </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView
-              modalElection={election}
-              // shareImage={shareimage}
-              shareFunc={shareImageToBase64}
-              setLoading={setLoader}
-            />
-
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+            <button class="btn btn-black border">
+              {t('Buttons.CLICK TO')}
+              <br />
+              {t('Buttons.ENTER')}
             </button>
           </div>
         </div>
-      </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView
+          modalElection={election}
+          // shareImage={shareimage}
+          shareFunc={shareImageToBase64}
+          setLoading={setLoader}
+        />
 
-      <div class="modal py-5" id="pdf-modal">
+        <button class="btn btn-close-x">
+          <img class="img-fluid" src="./images/close-x.svg" alt="ico" onClick={() => setLay7Modal(false)} />
+        </button>
+      </CustomModal>
+
+      <CustomModal topClassName="" showClose={false} open={pdfModal} setOpen={setPdfModal}>
         <div ref={ref} class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollabl">
           <div class="modal-content rounded-0 position-relative">
             {/* <!-- Modal Header --> */}
             <div class="modal-">
-              <img src="images/pdf-top-img.png" class="img-fluid" alt="" />
-              <button type="button" class="btn-close __close text-white" data-bs-dismiss="modal"></button>
+              <img src="./images/pdf-top-img.png" class="img-fluid" alt="" />
+              <button type="button" class="btn-close __close text-white" onClick={() => setPdfModal(false)}></button>
             </div>
 
             {/* <!-- Modal body --> */}
@@ -641,9 +649,9 @@ export default function ElectionDetails({
               <div className="d-flex flex-column __content1 __c1">
                 <div className="w-100 d-flex" style={{ height: '260px', padding: '0 30px' }}>
                   <div style={{ height: '100%', width: '100%', marginRight: '5px' }}>
-                    {election?.gift_images && (
+                    {election?.gift_images && election?.gift_images[0]?.picture_base64 != undefined && (
                       <img
-                        src={'data:image/png;base64,' + election?.gift_images[0].picture_base64}
+                        src={'data:image/png;base64,' + election?.gift_images[0]?.picture_base64}
                         className="img-fluid"
                         style={{ width: '300px', height: '250px' }}
                       />
@@ -782,7 +790,7 @@ export default function ElectionDetails({
             )}
           </ReactToPdf> */}
         </div>
-      </div>
+      </CustomModal>
       {/* <!-- Modal Popup Ends here --> */}
     </div>
   );

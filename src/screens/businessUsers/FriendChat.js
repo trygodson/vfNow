@@ -27,45 +27,45 @@ export default function FriendChat() {
   const [user, setUser] = useState();
   const [chatUsers, setChatUsers] = useState([]);
 
-  useEffect(async () => {
-    const userData = await getUserData();
-    if (userData) {
-      setLoader(false);
-      setUser(userData);
-      ChatMessages(userData);
-      ChatReadMessages(userData);
+  // useEffect(async () => {
+  //   const userData = await getUserData();
+  //   if (userData) {
+  //     setLoader(false);
+  //     setUser(userData);
+  //     ChatMessages(userData);
+  //     ChatReadMessages(userData);
 
-      console.log('==================>');
-      console.log(socket);
+  //     console.log('==================>');
+  //     console.log(socket);
 
-      socket.emit(EVENTS.CONNECTED, {
-        user_id: userData?.user_id.toString(),
-      });
+  //     socket.emit(EVENTS.CONNECTED, {
+  //       user_id: userData?.user_id.toString(),
+  //     });
 
-      socket.on(EVENTS.ONLINE_USERS, (value) => {
-        setLoader(false);
-      });
+  //     socket.on(EVENTS.ONLINE_USERS, (value) => {
+  //       setLoader(false);
+  //     });
 
-      socket.on(EVENTS.RECIEVED_MESSAGE, (msg) => {
-        const { senderId, message, type, date, unread, totalUnread } = msg;
-        console.log(msg, 'receive message');
-        if (msg) {
-          let newMsg = {
-            created_at: date,
-            message: message,
-            sender_id: senderId,
-            receiver_id: location?.state?.chatUser?.user_id,
-          };
-          setUserFriendChatMessage((prev) => [newMsg, ...prev]);
-        }
-        setChatUsers(message);
-      });
-    }
+  //     socket.on(EVENTS.RECIEVED_MESSAGE, (msg) => {
+  //       const { senderId, message, type, date, unread, totalUnread } = msg;
+  //       console.log(msg, 'receive message');
+  //       if (msg) {
+  //         let newMsg = {
+  //           created_at: date,
+  //           message: message,
+  //           sender_id: senderId,
+  //           receiver_id: location?.state?.chatUser?.user_id,
+  //         };
+  //         setUserFriendChatMessage((prev) => [newMsg, ...prev]);
+  //       }
+  //       setChatUsers(message);
+  //     });
+  //   }
 
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   function ChatReadMessages(user) {
     var formData = new FormData();
@@ -135,8 +135,6 @@ export default function FriendChat() {
             totalUnread: resp?.data?.data?.messages[0]?.total_unread_chats,
           }),
         );
-
-        console.log('send message');
         console.log(
           JSON.stringify({
             senderId: user?.user_id,
@@ -297,8 +295,8 @@ export default function FriendChat() {
             </div>
           </div> */}
           </ScrollToBottom>
-          <div className="type-area" style={{ marginBottom: '30px' }}>
-            <div className="type-inside">
+          <div class="type-area" style={{ marginBottom: '30px' }}>
+            <div class="type-inside">
               <button class="btn btn-emoti">
                 <img src="images/smilie-ico.svg" alt="ico" />
               </button>

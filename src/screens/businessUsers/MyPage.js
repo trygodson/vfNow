@@ -17,7 +17,7 @@ import { BiChevronRight } from 'react-icons/bi';
 import { getUserData, textSlicer } from '../../Functions/Functions';
 import { Carousel } from 'react-responsive-carousel';
 import StarRatings from 'react-star-ratings';
-import Loader from '../../components/Loader';
+import Loader, { CustomModal } from '../../components/Loader';
 
 var weekday = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 var day = new Date().getDay();
@@ -223,7 +223,7 @@ export default function BusinessHome() {
     setCategory(updatedSelectedItems?.id ?? '');
     setSelectedItems(updatedSelectedItems);
   };
-
+  const [catMOdal, setCatMOdal] = useState(false);
   return (
     <>
       {address ? (
@@ -737,8 +737,9 @@ export default function BusinessHome() {
                               // onMouseOut={(e) => {
                               //   ModifyBusiness(user);
                               // }}
-                              data-bs-toggle="modal"
-                              data-bs-target="#cat-modal"
+                              // data-bs-toggle="modal"
+                              // data-bs-target="#cat-modal"
+                              onClick={() => setCatMOdal(true)}
                             >
                               {selectedItems ? selectedItems?.name : ''}
                             </div>
@@ -945,59 +946,60 @@ export default function BusinessHome() {
           {/* <!-- Footer Ends here --> */}
         </div>
       )}
-      <div className="modal bg-blur" id="cat-modal">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content w-100 ">
-            <div className="d-flex flex-column align-items-center">
-              {/* <button type="button" className="btn-close __close " style={{ position: 'relative' }}>
+      <CustomModal topClassName="w-100" showClose={false} open={catMOdal} setOpen={setCatMOdal}>
+        <div className="d-flex flex-column align-items-center">
+          {/* <button type="button" className="btn-close __close " style={{ position: 'relative' }}>
                 Close
               </button> */}
-              <div style={{ backgroundColor: 'offwhite', maxWidth: '400px', padding: '20px 0px' }}>
-                {categorylist?.map((item, index) => {
-                  return (
-                    <>
-                      <p
-                        key={index}
-                        className="text-uppercase mt-2"
-                        style={{ fontWeight: '500', fontSize: '14px' }}
-                        value={item.id}
-                      >
-                        {item.name}
-                      </p>
-                      {item.sub_categories?.map((itemchild, index) => {
-                        return (
-                          <div
-                            key={itemchild.name}
-                            style={{
-                              borderBottom: '0.5px solid #d3d3d3',
-                              borderTop: '0.5px solid #d3d3d3',
-                              padding: '10px 15px',
-                              marginLeft: '15px',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              backgroundColor: selectedItems === itemchild ? 'yellow' : 'transparent',
-                            }}
-                            data-bs-dismiss="modal"
-                            onClick={() => {
-                              handleItemToggle(itemchild);
+          <div style={{ backgroundColor: 'offwhite', maxWidth: '400px', padding: '20px 0px' }}>
+            {categorylist?.map((item, index) => {
+              return (
+                <>
+                  <p
+                    key={index}
+                    className="text-uppercase mt-2"
+                    style={{ fontWeight: '500', fontSize: '14px' }}
+                    value={item.id}
+                  >
+                    {item.name}
+                  </p>
+                  {item.sub_categories?.map((itemchild, index) => {
+                    return (
+                      <div
+                        key={itemchild.name}
+                        style={{
+                          borderBottom: '0.5px solid #d3d3d3',
+                          borderTop: '0.5px solid #d3d3d3',
+                          padding: '10px 15px',
+                          marginLeft: '15px',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          backgroundColor: selectedItems === itemchild ? 'yellow' : 'transparent',
+                        }}
+                        onClick={() => {
+                          handleItemToggle(itemchild);
 
-                              ModifyBusiness(user);
-                            }}
-                          >
-                            <p className="text-uppercase m-0 p-0" style={{ fontSize: '14px' }}>
-                              {itemchild.name}
-                            </p>
-                            <BiChevronRight size={17} color="black" />
-                          </div>
-                        );
-                      })}
-                    </>
-                  );
-                })}
-              </div>
-            </div>
+                          ModifyBusiness(user);
+                          setCatMOdal(false);
+                        }}
+                      >
+                        <p className="text-uppercase m-0 p-0" style={{ fontSize: '14px' }}>
+                          {itemchild.name}
+                        </p>
+                        <BiChevronRight size={17} color="black" />
+                      </div>
+                    );
+                  })}
+                </>
+              );
+            })}
           </div>
+        </div>
+      </CustomModal>
+      <div className="modal bg-blur" id="cat-modal">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content w-100 "></div>
         </div>
       </div>
     </>

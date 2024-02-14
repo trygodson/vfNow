@@ -42,51 +42,39 @@ function LoadShopPics() {
     var formData = new FormData();
     formData.append('business_id', location.state.business_Data.business_id);
 
-    if (images[0] && images[0].name != undefined) {
-      formData.append(`picture1`, images[0].picture ? images[0].picture : images[0]);
-      formData.append(`description1`, images[0]?.name ? images[0]?.name : images[0]?.description);
-    }
+    console.log('******************************');
+    console.log(images);
+    console.log('******************************');
+    
+    images.map((image, index) => {
 
-    if (images[1] && images[1].name != undefined) {
-      formData.append(`picture2`, images[1].picture ? images[1].picture : images[1]);
-      formData.append(`description2`, images[1]?.name ? images[1]?.name : images[1]?.description);
-    }
+      if (image || image.name != undefined) {
+        formData.append(`picture`, image.picture ? image.picture : image);
+        formData.append(`description`, image.name ? image.name : image.description);
+        formData.append(`order`, index+1);
+      }
 
-    if (images[2] && images[2].name != undefined) {
-      formData.append(`picture3`, images[2].picture ? images[2].picture : images[2]);
-      formData.append(`description3`, images[2]?.name ? images[2]?.name : images[2]?.description);
-    }
-
-    if (images[3] && images[3].name != undefined) {
-      formData.append(`picture4`, images[3].picture ? images[3].picture : images[3]);
-      formData.append(`description4`, images[3]?.name ? images[3]?.name : images[3]?.description);
-    }
-
-    if (images[4] && images[4].name != undefined) {
-      formData.append(`picture5`, images[4].picture ? images[4].picture : images[4]);
-      formData.append(`description5`, images[4]?.name ? images[4]?.name : images[4]?.description);
-    }
-
-    ApiCall('Post', API.businessimagesApi, formData, {
-      Authorization: 'Bearer ' + user?.access_token,
-      Accept: 'application/json',
-    })
-      .catch((error) => {
+      ApiCall('Post', API.businessimageApi, formData, {
+        Authorization: 'Bearer ' + user?.access_token,
+        Accept: 'application/json',
+      }).catch((error) => {
         setLoader(false);
         console.log('erorr savemodification', error);
-        //   reject(error.response);
-      })
-      .then((resp) => {
+
+      }).then((resp) => {
         setLoader(false);
         console.log('sdsdsd', resp.data);
-        navigate(-1);
+
         if (resp.data.success) {
         } else {
           setError(true);
-
           seterror_title(resp.data.message);
         }
       });
+
+    })
+
+    navigate(-1);
   }
 
   const removeImage = (item) => {

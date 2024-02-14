@@ -53,36 +53,35 @@ const BusinessElectionBox = ({
     // console.log("electionDellist check", electionDellist);
   }, [trigger]);
 
-  function ElectionStart(Election_id) {
-    console.log('user', user);
-    var formData = new FormData();
-    formData.append('user_id', user.id);
-    formData.append('election_id', Election_id);
+  // function ElectionStart(Election_id) {
+  //   console.log('user', user);
+  //   var formData = new FormData();
+  //   formData.append('user_id', user.id);
+  //   formData.append('election_id', Election_id);
 
-    ApiCall('Post', API.electionstartApi, formData, {
-      Authorization: 'Bearer ' + user?.access_token,
-      Accept: 'application/json',
-    })
-      .catch((error) => {
-        setLoader(false);
-        setError(true);
-        seterror_title('Error!');
-        console.log('erorr reponse', error);
-        //   reject(error.response);
-      })
-      .then((resp) => {
-        setLoader(false);
+  //   ApiCall('Post', API.electionstartApi, formData, {
+  //     Authorization: 'Bearer ' + user?.access_token,
+  //     Accept: 'application/json',
+  //   })
+  //     .catch((error) => {
+  //       setLoader(false);
+  //       setError(true);
+  //       seterror_title('Error!');
+  //       console.log('erorr reponse', error);
+  //       //   reject(error.response);
+  //     })
+  //     .then((resp) => {
+  //       setLoader(false);
 
-        if (resp.data.success) {
-          setError(true);
-          seterror_title(resp.data.message);
-        } else {
-          setError(true);
-          seterror_title(resp.data.message);
-        }
-      });
-  }
-
+  //       if (resp.data.success) {
+  //         setError(true);
+  //         seterror_title(resp.data.message);
+  //       } else {
+  //         setError(true);
+  //         seterror_title(resp.data.message);
+  //       }
+  //     });
+  // }
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [error, setError] = React.useState(false);
   const [error_title, seterror_title] = useState('');
@@ -102,7 +101,6 @@ const BusinessElectionBox = ({
     delay: 2000,
   };
   const longPressEvent = useLongPress(onLongPress, onClick, defaultOptions);
-
   return (
     <div
       class="election-snippet"
@@ -128,12 +126,12 @@ const BusinessElectionBox = ({
     >
       {item?.election_status == 'Not Started' ? (
         <div class="status">
-          <img class="bg" src="images/not-start-bg-length.svg" alt="" />
+          <img class="bg" src="./images/not-start-bg-length.svg" alt="" />
           <span>{item?.election_status}</span>
         </div>
       ) : item?.election_status == 'Started' ? (
         <div class="status">
-          <img class="bg" src="images/start-bg-length.svg" alt="" />
+          <img class="bg" src="./images/start-bg-length.svg" alt="" />
           <span class="dark">
             <img class="ico" src="images/vote-ico.svg" alt="ico" />
             {item?.election_status}
@@ -141,7 +139,7 @@ const BusinessElectionBox = ({
         </div>
       ) : (
         <div class="status">
-          <img class="bg" src="images/ended-bg-length.svg" alt="" />
+          <img class="bg" src="./images/ended-bg-length.svg" alt="" />
           <span class="dark"> {item?.election_status}</span>
         </div>
       )}
@@ -184,24 +182,27 @@ const BusinessElectionBox = ({
       <div class="cont" {...longPressEvent}>
         <h6 class="text-truncate">{item.gift_title}</h6>
         <p>
-          <img class="ico" src="images/item-msg-ico.svg" alt="ico" />
+          <img class="ico" src="./images/shipped-ico.svg" alt="ico" />
           <span>{item.gift_delivery_option.option}</span>
         </p>
         <p>
-          <img class="ico" src="images/item-people-ico.svg" alt="ico" />
+          <img class="ico" src="./images/item-people-ico.svg" alt="ico" />
           <span>
-            {item.candidates_count} {t('election.Candidates')}
+            {item?.candidates_count === '' || item?.candidates_count == null ? 0 : item?.candidates_count}{' '}
+            {t('election.Candidates')}
           </span>
         </p>
         <p>
-          <img class="ico" src="images/item-finger-ico.svg" alt="ico" />
+          <img class="ico" src="./images/item-finger-ico.svg" alt="ico" />
           <span>
             {item.votes_count} {t('election.Votes')}
           </span>
         </p>
         <p>
-          <img class="ico" src="images/item-qr-code-ico.svg" alt="ico" />
-          <span>123 {t('election.Visit at the place')}</span>
+          <img class="ico" src="./images/item-qr-code-ico.svg" alt="ico" />
+          <span>
+            {item?.visit_at_place ?? ''} {t('election.Visit at the place')}
+          </span>
         </p>
         {item?.election_status != 'Ended' && (
           <p class={`btm-tag  ${item?.election_status == 'Started' && 'text-success'}`}>

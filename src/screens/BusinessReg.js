@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import ButtonClick from '../components/ButtonClick';
 import TopHeader from '../components/TopHeader';
-import Loader from '../components/Loader';
+import Loader, { CustomModal } from '../components/Loader';
 import MessageBox from '../components/MessageBox';
 
 import { useNavigate } from 'react-router-dom';
@@ -190,8 +190,42 @@ function BusinessRegister() {
           });
         }}
       > */}
+      <CustomModal topClassName="minh-unset" showClose={false} open={modalIsOpen} setOpen={setIsOpen}>
+        <div class="alert-bubble-img mt-0">
+          <img class="img-fluid" src="./images/alert-msg-bubble.png" alt="ico" />
+          <div class="cont">
+            <h5>{t('alerts.Hi!')} </h5>
 
-      <div
+            <p className="mb-0">{t('alerts.Please confirm your email address before you proceed')}</p>
+            <div class="button-btm-sec margin-set">
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  EmailVerification();
+                }}
+                // data-bs-dismiss="modal"
+                class="btn btn-yellow text-uppercase w-100 mb-0"
+              >
+                {t('Buttons.Continue')}
+              </button>
+              <button
+                // data-bs-dismiss="modal"
+                onClick={() => {
+                  EmailSendAgain();
+                  setIsOpen(false);
+                }}
+                class="text-link btn text-uppercase font-bold"
+              >
+                {t('Buttons.Send Email Again')}
+              </button>
+              {/* <a href="javascript:;" class="text-link">
+                Continue as Visitor
+              </a> */}
+            </div>
+          </div>
+        </div>
+      </CustomModal>
+      {/* <div
         class="modal bg-blur reg-modal show"
         // onClick={() => {
         //   setIsOpen(false);
@@ -205,36 +239,9 @@ function BusinessRegister() {
       >
         <div class="modal-dialog modal-dialog-centered heigh-cal">
           <div class="modal-content minh-unset">
-            <div class="alert-bubble-img mt-0">
-              <img class="img-fluid" src="images/alert-msg-bubble.png" alt="ico" />
-              <div class="cont">
-                <h5>{t('alerts.Hi!')} </h5>
-
-                <p className="mb-0">{t('alerts.Please confirm your email address before you proceed')}</p>
-                <div class="button-btm-sec margin-set">
-                  <button
-                    onClick={() => EmailVerification()}
-                    data-bs-dismiss="modal"
-                    class="btn btn-yellow text-uppercase w-100 mb-0"
-                  >
-                    {t('Buttons.Continue')}
-                  </button>
-                  <button
-                    data-bs-dismiss="modal"
-                    onClick={() => EmailSendAgain()}
-                    class="text-link btn text-uppercase font-bold"
-                  >
-                    {t('Buttons.Send Email Again')}
-                  </button>
-                  {/* <a href="javascript:;" class="text-link">
-                Continue as Visitor
-              </a> */}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* </ModalView> */}
       {error && <MessageBox error={error} setError={setError} title={error_title} />}
       {/* <!-- Content Section Ends here --> */}

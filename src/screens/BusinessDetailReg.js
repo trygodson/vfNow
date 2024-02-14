@@ -20,7 +20,6 @@ import { useTranslation } from 'react-i18next';
 import '../languages/i18n';
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 
-const fileArray = [];
 function BusinessDetail() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -50,7 +49,7 @@ function BusinessDetail() {
   const [latitude, setLatitude] = useState('34.0151');
   const [longitude, setLongitude] = useState('71.5249');
   const [not_place_in_map, setNot_place_in_map] = useState(false);
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState();
   const [imagePreview, setImagePreview] = useState('');
   const [loadShop, setLoadshop] = useState(false);
   const [hours, sethours] = useState(false);
@@ -85,13 +84,18 @@ function BusinessDetail() {
       setError(true);
       seterror_title(t('alerts.upload upto 5 images'));
     } else {
-      for (let i = 0; i < event.target.files.length; i++) {
-        if (event.target.files[i].name != undefined) {
-          imagesPreview.push(URL.createObjectURL(event.target.files[i]));
-          images.push(event.target.files[i]);
+      const filesArray = Array.from(event.target.files);
+
+      for (let i = 0; i < filesArray.length; i++) {
+        if (filesArray[i].name != undefined) {
+          imagesPreview.push(URL.createObjectURL(filesArray[i]));
+          // images.push(filesArray[i]);
+
+          // setImagePreview((prev) => [...prev, URL.createObjectURL(filesArray[i])]);
+
+          setImages((p) => [...p, filesArray[i]]);
         }
       }
-      // setImages([...images, event.target.files]);
 
       setLoadshop(true);
     }
@@ -178,11 +182,14 @@ function BusinessDetail() {
       setError(true);
       setLoader(false);
       seterror_title(t('alerts.Required Fields are empty'));
-    } else if (images.length < 2) {
-      setError(true);
-      setLoader(false);
-      seterror_title(t('alerts.Minimum 2  images required!'));
-    } else {
+    }
+
+    // else if (images.length < 2) {
+    //   setError(true);
+    //   setLoader(false);
+    //   seterror_title(t('alerts.Minimum 2  images required!'));
+    // }
+    else {
       var formData = new FormData();
       formData.append('user_id', userId);
       formData.append('name', name);
@@ -211,7 +218,7 @@ function BusinessDetail() {
         }
       }
 
-      if (image) {
+      if (image && image.length > 0) {
         formData.append('picture', image, image.name);
       }
 

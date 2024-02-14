@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import TopHeader from '../../components/BusinessHeader';
 import BusinessElectionBox from '../../components/BusinessElectionBox';
-import Loader from '../../components/Loader';
+import Loader, { CustomModal } from '../../components/Loader';
 import { toPng } from 'html-to-image';
 import { useTranslation } from 'react-i18next';
 import '../../languages/i18n';
@@ -466,6 +466,7 @@ export default function ElectionShare() {
         setElectionList(resp.data.data);
       });
   }
+  const [lay7Modal, setLay7Modal] = useState(false);
 
   // console.log("modalElection", modalElection);
   return (
@@ -517,9 +518,12 @@ export default function ElectionShare() {
                   <div
                     key={index}
                     class="election-snippet"
-                    data-bs-toggle="modal"
-                    data-bs-target="#lay7-modal"
-                    onClick={() => setModalElection(item)}
+                    // data-bs-toggle="modal"
+                    // data-bs-target="#lay7-modal"
+                    onClick={() => {
+                      setLay7Modal(true);
+                      setModalElection(item);
+                    }}
                   >
                     <div class="status">
                       <img class="bg" src="/images/start-bg-length.svg" alt="" />
@@ -567,58 +571,54 @@ export default function ElectionShare() {
           </div>
         </div>
       </section>
-      <div class="modal bg-blur" id="lay7-modal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content modal-lay-wrap">
-            <div class="layout-thumb lay-5 lay-7 elect-lay" ref={shareImageRef}>
-              <img class="img-fluid" src="/images/layout-4-bg.png" alt="images" />
-              <div class="cont">
-                <div class="prod-thumb">
-                  <div class="thumb-in">
-                    <img
-                      class="prod-img img-fluid"
-                      src={
-                        modalElection?.gift_images[0]?.picture
-                          ? modalElection?.gift_images[0]?.picture
-                          : '/images/product-img.jpg'
-                      }
-                      alt="ico"
-                    />
-                    <div class="business-logo">
-                      <img
-                        src={
-                          modalElection?.business_details?.avatar
-                            ? modalElection?.business_details?.avatar
-                            : '/images/logo-dummy.png'
-                        }
-                        alt=""
-                      />
-                    </div>
-                    <div class="pls-vote-badge">
-                      <img class="img-fluid" src="/images/pls-vote-vertical-badge.png" alt="img" />
-                    </div>
-                  </div>
+      <CustomModal topClassName="modal-lay-wrap" showClose={false} open={lay7Modal} setOpen={setLay7Modal}>
+        <div class="layout-thumb lay-5 lay-7 elect-lay" ref={shareImageRef}>
+          <img class="img-fluid" src="/images/layout-4-bg.png" alt="images" />
+          <div class="cont">
+            <div class="prod-thumb">
+              <div class="thumb-in">
+                <img
+                  class="prod-img img-fluid"
+                  src={
+                    modalElection?.gift_images[0]?.picture
+                      ? modalElection?.gift_images[0]?.picture
+                      : '/images/product-img.jpg'
+                  }
+                  alt="ico"
+                />
+                <div class="business-logo">
+                  <img
+                    src={
+                      modalElection?.business_details?.avatar
+                        ? modalElection?.business_details?.avatar
+                        : '/images/logo-dummy.png'
+                    }
+                    alt=""
+                  />
                 </div>
-                <button class="btn btn-black border">
-                  {t('Buttons.CLICK TO')}
-                  <br />
-                  {t('Buttons.ENTER')}
-                </button>
+                <div class="pls-vote-badge">
+                  <img class="img-fluid" src="/images/pls-vote-vertical-badge.png" alt="img" />
+                </div>
               </div>
             </div>
-            <h6>{t('vote.Create a story or a post!')}!</h6>
-            <ShareView
-              modalElection={modalElection}
-              // shareImage={shareimage}
-              shareFunc={shareImageToBase64}
-              setLoading={setLoader}
-            />
-            <button class="btn btn-close-x">
-              <img class="img-fluid" src="/images/close-x.svg" alt="ico" data-bs-dismiss="modal" />
+            <button class="btn btn-black border">
+              {t('Buttons.CLICK TO')}
+              <br />
+              {t('Buttons.ENTER')}
             </button>
           </div>
         </div>
-      </div>
+        <h6>{t('vote.Create a story or a post!')}!</h6>
+        <ShareView
+          modalElection={modalElection}
+          // shareImage={shareimage}
+          shareFunc={shareImageToBase64}
+          setLoading={setLoader}
+        />
+        <button class="btn btn-close-x">
+          <img class="img-fluid" src="/images/close-x.svg" alt="ico" onClick={() => setLay7Modal(false)} />
+        </button>
+      </CustomModal>
     </div>
   );
 }

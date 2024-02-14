@@ -25,7 +25,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 var weekday = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 var day = new Date().getDay();
 const BusinessBox = ({ preview, location, user, setLoader, HomeFtn }) => {
-
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -275,12 +274,12 @@ const BusinessBox = ({ preview, location, user, setLoader, HomeFtn }) => {
             <div class={`map-sec ${preview?.business_details?.is_only_online == 0 ? 'business-map' : ''}`}>
               {viewport && (
                 <ReactMapGL
-                  touchAction="pan-y"
+                  // touchAction="pan-y"
                   mapStyle="mapbox://styles/mapbox/streets-v10"
                   mapboxApiAccessToken="pk.eyJ1IjoieGFpbmlraGFuMjAiLCJhIjoiY2tkdmswZjU5MXU4YjJ3cGJkYmpleGhnciJ9.Hn_L5hXdjR4zALA01O_aqQ"
                   {...viewport}
                   width="100%"
-                  height={300}
+                  height={215}
                   dragPan={false}
                   scrollZoom={false}
                   onViewportChange={(viewport) => {
@@ -490,12 +489,14 @@ const BusinessBox = ({ preview, location, user, setLoader, HomeFtn }) => {
       <button
         class={`btn btn-black w-100 text-uppercase mb-4 ${
           preview?.business_details?.user_registered == 0 ? 'opacity-50' : ''
-        }`} onClick={() =>
+        }`}
+        onClick={() =>
           navigate('/UserChat', {
             state: {
               chatUser: preview.business_data,
             },
-          })}
+          })
+        }
       >
         <img class="img-fluid me-2" src={msg} alt="ico" />
         <small> {t('Buttons.Contact_Business')}</small>

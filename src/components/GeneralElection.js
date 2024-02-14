@@ -394,7 +394,7 @@ const GenralElection = ({ items, indexs, user, setLoader, HomeFtn, bottom, setEl
                         }}
                         class="btn btn-empty p-0"
                       >
-                        <img class="img-fluid" src="images/ask-for-vote-rect.svg" alt="ico" />
+                        <img class="img-fluid" src="./images/ask-for-vote-rect.svg" alt="ico" />
                       </Link>
                     )}
                   </div>
@@ -458,7 +458,7 @@ const GenralElection = ({ items, indexs, user, setLoader, HomeFtn, bottom, setEl
                       class="btn btn-clip"
                     >
                       <span class="mt-1">{t('user_register.Receive the FREE GIFT')}</span>
-                      <img class="img-fluid" src="images/arrow-ico.svg" alt="ico" />
+                      <img class="img-fluid" src="./images/arrow-ico.svg" alt="ico" />
                     </Link>
                   </div>
                 </div>

@@ -1,4 +1,4 @@
-const ProgressNetworkBars = ({ number = 0 }) => {
+const ProgressNetworkBars = ({ number = 0, height = '180px' }) => {
   function generateArrayOfObjects(maxHeight) {
     if (typeof maxHeight !== 'number' || maxHeight < 0 || maxHeight > 100) {
       throw new Error('Parameter maxHeight must be a number between 0 and 100');
@@ -22,7 +22,7 @@ const ProgressNetworkBars = ({ number = 0 }) => {
     return objectsArray;
   }
   return (
-    <div className="d-flex" style={{ height: '180px', alignItems: 'flex-end' }}>
+    <div className="d-flex" style={{ height, alignItems: 'flex-end' }}>
       {generateArrayOfObjects(number).map((item, idx) => (
         <div
           key={idx}

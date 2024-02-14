@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
+import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
-
 import TopHeader from '../components/TopHeader';
 import API from '../services/ApiLists';
 import { ApiCall } from '../services/ApiCall';
@@ -11,6 +10,7 @@ import edit from '../images/img-edit-ico.svg';
 import businessthumb from '../images/business-thumb.jpg';
 import { useTranslation } from 'react-i18next';
 import '../languages/i18n';
+import { generateRandomString } from '../Functions/Functions';
 const fileArray = [];
 function LoadShopPics({
   images,
@@ -36,97 +36,77 @@ function LoadShopPics({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [PictureId, setPictureId] = useState(0);
 
-  // useEffect(() => {
-  //   if (location.state == null) {
-  //     BusinessImagesPlacesApi();
-  //   }
-  // }, []);
+  const imageApiCalls = () => {
+    return images.map((image, index) => {
+      var formData = new FormData();
+      formData.append('business_id', business_Data.business_id);
 
-  // function BusinessImagesPlacesApi() {
-  //   var formData = new FormData();
-  //   formData.append("business_id", 1);
-  //   formData.append("user_id", 13);
+      if (image) {
+        formData.append(`picture`, image);
+        formData.append(`description`, generateRandomString());
+        formData.append(`order`, index + 1);
+      }
 
-  //   ApiCall("Post", API.placeImagesApi, formData, {
-  //     Authorization:
-  //       "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiY2Q5NmMwY2ViMGExZTUwNjIzNmViYmFiODIwNjY5NTE2ZmEyNTU4MDBhYzZlMWFjNDk4ZGQ0ZTdhYzJmZTVlMGZkODFlM2I0YzE3YzA0ZjIiLCJpYXQiOjE2NDM4MDcwNjIsIm5iZiI6MTY0MzgwNzA2MiwiZXhwIjoxNjc1MzQzMDYyLCJzdWIiOiIxMyIsInNjb3BlcyI6W119.ZKTgcyxkhl1yLXkXME1EifdBQO48SZ0sZcoz-AlhAdN-2Dw40Im9nej_bg2ei2kY4-o0T6iRpCGZ2_4dl3jPkVDhcoiuEJOsS0xelCjoSPc5I06ABS9NQ7BepQnRET6eRqIcZyeZitPLgLrNqgHZWvHumH_Iw-U64jGJlRfoKvyc1TWeLVLsaCUpMwrnjn1iUVj2JJs_63gUBO2ZjBNJHkoBqskTLUkXtkutWzPcciCBq7FNLckMsx15RFSWsbm3K6rXZqXuiHX-RA5ehPZE1AFvYJQal04ADr2LZN3jSOL_8xkgYOcnjW0PZGBmzY2HZ-ovjWrO8T9PMn3GQ9AH5ykD2PpC-HAIWdOwk589CNHRqN7Zks_vpnt-jjhvOx2SEnI_QwU-T3Oc30KEQ-6QUHqA4oHoVZmyZ1mP8XCB_xVo9SLxeDzRR2X5ZafJIH7IuByjy1fKNkvrj8STNnr7PM8VejJBmEWLPho1_Y1llG7NKTMMIVeoq3sCTS6dmUUUhrWdhrJq2gdYkMZW6YmYiXC25bhqWG6cWZhWAokOB4X3SYuGGiE8KnuuyjmcaL2O2C7wa080O-dzWcaZ3nu4R7SApLE3KVVtLxL21U3MfSODn8tz59R0bKKoREjqRcYqLVGvA1twKhrPr1DyMN6l4uNA5xQeG0DxJDxV0Kqo0PQ",
-  //     Accept: "application/json",
-  //   })
-  //     .catch((error) => {
-  //       console.log("erorr reponse in images", error);
-  //       //   reject(error.response);
-  //     })
-  //     .then((resp) => {
-  //       if (resp.data.success) {
-  //         setImagePreview(resp.data.data);
-  //         setSelectedImage(resp.data.data[0].picture);
-  //         setImages(resp.data.data);
-  //       }
-  //     });
-  // }
+      return ApiCall('Post', API.businessimageApi, formData, {
+        Authorization: 'Bearer ' + business_Data.access_token,
+        Accept: 'application/json',
+      });
+    });
+  };
 
   function BusinessImagesApi() {
+    // if (images) {
+    //   setLoader(true);
+    //   var formData = new FormData();
+    //   formData.append('business_id', business_Data.business_id);
+    //   for (let index = 0; index < images.length; index++) {
+    //     formData.append(`picture${index + 1}`, images[index]);
+    //     formData.append(`description`, generateRandomString());
+    //     formData.append(`order`, index + 1);
+    //   }
+
+    //   ApiCall('Post', API.businessimagesApi, formData, {
+    //     Authorization: 'Bearer ' + business_Data.access_token,
+    //     Accept: 'application/json',
+    //   })
+    //     .then((res) => {
+    //       //console.log(res, 'image response');
+    //       if (res?.data?.success) {
+    //         setLoadshop(false);
+    //         setLoader(false);
+    //       } else {
+    //         setError(true);
+    //         setLoadshop(false);
+    //         seterror_title(res?.data?.message ?? 'Error Uploading');
+    //         setLoader(false);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       setLoader(false);
+    //     });
+    // }
     setLoader(true);
-    var formData = new FormData();
-    formData.append('business_id', business_Data.business_id);
-
-    console.log('=========================');
-    console.log(images);
-    console.log('=========================');
-
-    if (images[0] && images[0].name != undefined) {
-      formData.append(`picture1`, images[0].picture ? images[0].picture : images[0]);
-      formData.append(`description1`, images[0]?.name ? images[0]?.name : images[0]?.description);
-    }
-
-    if (images[1] && images[1].name != undefined) {
-      formData.append(`picture2`, images[1].picture ? images[1].picture : images[1]);
-      formData.append(`description2`, images[1]?.name ? images[1]?.name : images[1]?.description);
-    }
-
-    if (images[2] && images[2].name != undefined) {
-      formData.append(`picture3`, images[2].picture ? images[2].picture : images[2]);
-      formData.append(`description3`, images[2]?.name ? images[2]?.name : images[2]?.description);
-    }
-
-    if (images[3] && images[3].name != undefined) {
-      formData.append(`picture4`, images[3].picture ? images[3].picture : images[3]);
-      formData.append(`description4`, images[3]?.name ? images[3]?.name : images[3]?.description);
-    }
-
-    if (images[4] && images[4].name != undefined) {
-      formData.append(`picture5`, images[4].picture ? images[4].picture : images[4]);
-      formData.append(`description5`, images[4]?.name ? images[4]?.name : images[4]?.description);
-    }
-
-    ApiCall('Post', API.businessimagesApi, formData, {
-      Authorization: 'Bearer ' + business_Data.access_token,
-      Accept: 'application/json',
-    })
-      .catch((error) => {
-        setLoader(false);
-        console.log('erorr reponse', error);
-        //   reject(error.response);
-      })
-      .then((resp) => {
-        setLoader(false);
-        console.log('sdsdsd', resp.data);
-
-        if (resp.data.success) {
+    Promise.all(imageApiCalls())
+      .then((res) => {
+        if (res.every((obj) => obj.data.success === true)) {
           setLoadshop(false);
+          setLoader(false);
+          toast.success('Upload SuccessFull');
         } else {
           setError(true);
           setLoadshop(false);
-          seterror_title(resp.data.message);
+          toast.error('Error Uploading');
+          seterror_title('Error');
+          setLoader(false);
         }
+      })
+      .catch((err) => {
+        toast.error('Error Uploading');
+        setLoader(false);
       });
   }
 
   const removeImage = (item) => {
-    console.log('>>>>>>>>>>>>>>>>');
-    console.log(item);
-    console.log(imagePreview);
-    console.log('>>>>>>>>>>>>>>>>');
     setImagePreview(imagePreview.filter((file) => file !== item));
     setPictureId(imagePreview.findIndex((file) => file !== item));
     setImages(images?.filter((file, index) => index !== selectedImageIndex));
@@ -147,39 +127,20 @@ function LoadShopPics({
     //   event.target.files.length
     // );
     console.log('preview ==> ' + imagePreview.length);
-    // let pic = URL.createObjectURL(event.target.files[0]);
-    // console.log(pic);
-    // console.log(event.target.files[0].name);
-    // console.log(event.target.files[0].picture);
     if (imagePreview.length > 5) {
       seterror_title(t('alerts.upload upto 5 images'));
     } else {
-      for (let i = 0; i < event.target.files.length; i++) {
-        if (event.target.files[i].name != undefined) {
-          imagePreview.push(URL.createObjectURL(event.target.files[i]));
+      const filesArray = Array.from(event.target.files);
+
+      for (let i = 0; i < filesArray.length; i++) {
+        if (filesArray[i].name != undefined) {
+          imagePreview.push(URL.createObjectURL(filesArray[i]));
         }
       }
 
-      // if (event.target.files[0].name != undefined) {
-      //   event.target.files.forEach((element) => {
-      //     imagePreview.push(URL.createObjectURL(element));
-      //   });
-      //   imagePreview.push(URL.createObjectURL(event.target.files[0]));
-      //   console.log('------------------');
-      //   console.log(event.target.files[0]);
-      //   console.log('------------------');
-      //   images.push(event.target.files[0]);
-      // }
-
-      // console.log('xxxxxxxxxxxxxxxxxxxxx');
-      // console.log(images);
-      //setImagePreview([...imagePreview, event.target.files]);
-      setImages([...images, ...event.target.files]);
-      ImageSelectionFtn(
-        URL.createObjectURL(event.target.files[event.target.files.length - 1]),
-        event.target.files.length - 1,
-      );
-      setPictureId(event.target.files.length + 1);
+      setImages((p) => [...p, ...event.target.files]);
+      ImageSelectionFtn(URL.createObjectURL(filesArray[filesArray.length - 1]), filesArray.length - 1);
+      setPictureId(filesArray.length + 1);
     }
   };
 
@@ -242,6 +203,26 @@ function LoadShopPics({
         </div>
       </section>
       {/* <!-- Content Section Ends here --> */}
+
+      <Toaster
+        toastOptions={{
+          success: {
+            position: 'top-center',
+
+            style: {
+              width: '100%',
+            },
+          },
+          error: {
+            position: 'bottom-center',
+            style: {
+              background: 'red',
+              color: 'white',
+              width: '100%',
+            },
+          },
+        }}
+      />
     </div>
   );
 }

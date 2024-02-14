@@ -39,6 +39,17 @@
     transform: rotate(360deg);
   }
 }
+.blur_background {
+  /* Apply a blur effect */
+  backdrop-filter: blur(10px);
+
+  /* Fallback for older browsers */
+  background-color: rgba(255, 255, 255, 0.8); /* Adjust the background color and opacity as needed */
+  /* filter: blur(10px); Adjust the blur radius as needed */
+}
+.back {
+  z-index: -1;
+}
 .checkbox-click {
   width: 20px;
   height: 20px;
