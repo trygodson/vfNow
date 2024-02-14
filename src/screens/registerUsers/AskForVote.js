@@ -52,7 +52,7 @@ export default function UserProfileElections() {
         return;
       } else {
         if (window?.isNative) {
-          return toPng(ref.current, { cacheBust: true })
+          return toPng(dref.current, { cacheBust: true })
             .then((dataUrl) => {
               // setLoader(false);
 
@@ -64,7 +64,7 @@ export default function UserProfileElections() {
             });
         } else {
           // alert(navigator.share);
-          toPng(ref.current, { cacheBust: true })
+          toPng(dref.current, { cacheBust: true })
             .then((dataUrl) => {
               const link = document.createElement('a');
               console.log('image', dataUrl);
