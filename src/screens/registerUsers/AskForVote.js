@@ -83,29 +83,26 @@ export default function UserProfileElections() {
     [ref],
   );
 
-  const onMobileShareVoteImageClick = useCallback(
-    (ref) => {
-      setLoader(true);
-      toPng(ref.current, { cacheBust: true })
-        .then((dataUrl) => {
-          setLoader(false);
-          window.ReactNativeWebView.postMessage(
-            JSON.stringify({
-              shareVotePic: true,
-              data: {
-                name: userProfile?.username,
-                link: `Vote and Fun Vote ${user?.name}`,
-                imageBase64: dataUrl ?? '',
-              },
-            }),
-          );
-        })
-        .catch((err) => {
-          alert('download err', err);
-        });
-    },
-    [ref],
-  );
+  const onMobileShareVoteImageClick = useCallback((ref) => {
+    setLoader(true);
+    toPng(ref.current, { cacheBust: true })
+      .then((dataUrl) => {
+        setLoader(false);
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            shareVotePic: true,
+            data: {
+              name: userProfile?.username,
+              link: `Vote and Fun Vote ${user?.name}`,
+              imageBase64: dataUrl ?? '',
+            },
+          }),
+        );
+      })
+      .catch((err) => {
+        alert('download err', err);
+      });
+  }, []);
 
   const [user, setUser] = useState();
 
@@ -1107,7 +1104,7 @@ export default function UserProfileElections() {
 
       {/* <!-- Modal1 Popup Starts here --> */}
       <CustomModal topClassName="modal-lay-wrap" open={layOne} setOpen={setLayOne}>
-        <div class="layout-thumb" ref={shareImageRef}>
+        <div class="layout-thumb" ref={ref}>
           <img class="img-fluid" src="./images/layout-1-bg.png" alt="images" />
           <div class="cont">
             <div class="avatar">
@@ -1166,7 +1163,7 @@ export default function UserProfileElections() {
     <!-- Modal Popup Starts here --> */}
 
       <CustomModal topClassName="modal-lay-wrap" open={layTwo} setOpen={setLayTwo}>
-        <div class="layout-thumb lay-2">
+        <div class="layout-thumb lay-2" ref={ref2}>
           <img class="img-fluid" src="images/layout-2-bg.png" alt="images" />
           <div class="cont">
             <div class="avatar av-1">
@@ -1253,7 +1250,7 @@ export default function UserProfileElections() {
     <!-- Modal Popup Starts here --> */}
 
       <CustomModal topClassName="modal-lay-wrap" open={layThree} setOpen={setLayThree}>
-        <div class="layout-thumb lay-3">
+        <div class="layout-thumb lay-3" ref={ref3}>
           <img class="img-fluid" src="images/layout-3-bg.png" alt="images" />
           <div class="cont">
             <div class="avatar">
@@ -1303,7 +1300,7 @@ export default function UserProfileElections() {
     <!-- Modal Popup Starts here --> */}
 
       <CustomModal topClassName="modal-lay-wrap" open={layFour} setOpen={setLayFour}>
-        <div class="layout-thumb lay-4">
+        <div class="layout-thumb lay-4" ref={ref4}>
           <img class="lamp-img" src="images/lamp-light.png" alt="ico" />
           <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
           <div class="cont">
@@ -1347,7 +1344,7 @@ export default function UserProfileElections() {
     <!-- Modal Popup Starts here --> */}
 
       <CustomModal topClassName="modal-lay-wrap" open={layFive} setOpen={setLayFive}>
-        <div class="layout-thumb lay-5">
+        <div class="layout-thumb lay-5" ref={ref5}>
           <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
           <div class="cont">
             <div class="prod-thumb">
@@ -1393,7 +1390,7 @@ export default function UserProfileElections() {
     <!-- Modal Popup Starts here --> */}
 
       <CustomModal topClassName="modal-lay-wrap" open={laySix} setOpen={setLaySix}>
-        <div class="layout-thumb lay-6">
+        <div class="layout-thumb lay-6" ref={ref6}>
           <img class="img-fluid w-100" src="images/layout-6-bg.png" alt="images" />
           <div class="cont">
             <div class="prod-thumb">
@@ -1430,12 +1427,13 @@ export default function UserProfileElections() {
             </button>
           </div>
         </div>
+        <ShareView shareFunc={() => onButtonClick(ref6)} setLoading={setLoader} />
       </CustomModal>
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
 
       <CustomModal topClassName="modal-lay-wrap" open={laySeven} setOpen={setLaySeven}>
-        <div class="layout-thumb lay-5 lay-7">
+        <div class="layout-thumb lay-5 lay-7" ref={ref7}>
           <img class="img-fluid" src="images/layout-4-bg.png" alt="images" />
           <div class="cont">
             <div class="prod-thumb">
@@ -1476,7 +1474,7 @@ export default function UserProfileElections() {
       {/* <!-- Modal Popup Ends here -->
     <!-- Modal Popup Starts here --> */}
       <CustomModal topClassName="modal-lay-wrap" open={layEight} setOpen={setLayEight}>
-        <div class="layout-thumb lay-8">
+        <div class="layout-thumb lay-8" ref={ref8}>
           <img class="img-fluid" src="images/layout-8-bg.png" alt="images" />
           <div class="cont">
             <div class="prod-thumb">
@@ -1512,7 +1510,7 @@ export default function UserProfileElections() {
     <!-- Modal Popup Starts here --> */}
 
       <CustomModal topClassName="modal-lay-wrap" open={layNine} setOpen={setLayNine}>
-        <div class="layout-thumb lay-9">
+        <div class="layout-thumb lay-9" ref={ref9}>
           <img class="img-fluid" src="images/layout-9-bg.png" alt="images" />
           <div class="cont">
             <div class="prod-thumb">
@@ -1670,7 +1668,7 @@ export default function UserProfileElections() {
     <!-- Modal Popup Starts here --> */}
 
       <CustomModal topClassName="modal-lay-wrap" open={layTen} setOpen={setLayTen}>
-        <div class="layout-thumb lay-10">
+        <div class="layout-thumb lay-10" ref={ref10}>
           <img class="img-fluid" src="images/layout-10-bg.png" alt="images" />
           <div class="cont">
             <span class="vote-txt">
